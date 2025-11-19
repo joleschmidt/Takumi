@@ -1,0 +1,23 @@
+# Takumi Project Rules
+
+## Section Height Management
+- All full-screen sections should use `h-[calc(100vh-4rem)]` to account for the navbar height (4rem = 64px)
+- This ensures sections align perfectly with the viewport bottom edge
+- Never use `overflow-y-auto` on sections - it creates annoying scrollbars
+- Use `max-h-screen` only if you want to limit height but allow natural scrolling
+
+## Section Structure Pattern
+For full-viewport sections:
+```tsx
+<section className="relative h-[calc(100vh-4rem)] flex items-center bg-background">
+  <div className="container px-4 md:px-6 w-full">
+    {/* content */}
+  </div>
+</section>
+```
+
+## Image Sizing in Sections
+- Use `h-full` with `min-h-[400px]` or similar for responsive image containers
+- Avoid fixed aspect ratios that might cause overflow
+- Use `object-cover` for background images to maintain aspect ratio
+
