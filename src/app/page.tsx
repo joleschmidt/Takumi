@@ -44,7 +44,7 @@ const ProjectSpotlight = () => {
   ];
 
   return (
-    <section className="py-32 px-4 md:px-8 lg:px-12 bg-[#FAFAF8]">
+    <section className="py-32 px-4 md:px-8 lg:px-12 bg-[#1A1A1A] text-[#FAFAF8]">
       <div className="max-w-[1800px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         {/* Left: List */}
         <div className="space-y-12">
@@ -58,7 +58,7 @@ const ProjectSpotlight = () => {
               <div
                 key={index}
                 onMouseEnter={() => setActiveImage(index)}
-                className={`group py-8 border-b border-black/20 cursor-pointer transition-all duration-300 ${activeImage === index ? 'opacity-100 pl-8 border-black' : 'opacity-50 hover:opacity-80'}`}
+                className={`group py-8 border-b border-white/20 cursor-pointer transition-all duration-300 ${activeImage === index ? 'opacity-100 pl-8 border-white' : 'opacity-50 hover:opacity-80'}`}
               >
                 <Link href={project.href} className="flex justify-between items-center">
                   <div>
@@ -73,7 +73,7 @@ const ProjectSpotlight = () => {
         </div>
 
         {/* Right: Image Display */}
-        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-sm bg-stone-200">
+        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-sm bg-stone-800">
           {projects.map((project, index) => (
             <motion.div
               key={index}
@@ -104,9 +104,9 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-[#F2F0EA] text-[#1a1a1a] overflow-hidden">
 
-      {/* Hero Section - Light Background */}
-      <section className="relative min-h-[90vh] flex flex-col justify-center px-4 md:px-8 lg:px-12 pt-20 bg-[#F2F0EA]">
-        <div className="max-w-[1800px] mx-auto w-full z-10">
+      {/* Hero Section - Light Background with Sticky Effect */}
+      <section className="sticky top-0 z-0 min-h-screen flex flex-col justify-center px-4 md:px-8 lg:px-12 pt-32 bg-[#F2F0EA]">
+        <div className="max-w-[1800px] mx-auto w-full z-10 pb-20">
           <motion.div
             initial="hidden"
             animate="visible"
@@ -150,8 +150,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Marquee Section - Dark Background */}
-      <section className="py-8 bg-[#1A1A1A] text-[#FAFAF8] overflow-hidden whitespace-nowrap">
+      {/* Marquee Section - Dark Background - Z-Index 10 to cover Sticky Hero */}
+      <section className="relative z-10 py-8 bg-[#1A1A1A] text-[#FAFAF8] overflow-hidden whitespace-nowrap">
         <motion.div
           animate={{ x: ["0%", "-50%"] }}
           transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
@@ -177,7 +177,7 @@ export default function Home() {
       </section>
 
       {/* Categories Grid - Light/Image Background */}
-      <section className="bg-white">
+      <section className="relative z-10 bg-white">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
           {categories.map((category, index) => (
             <Link key={index} href={category.href} className="group relative min-h-[600px] flex flex-col justify-between overflow-hidden bg-stone-100">
@@ -214,11 +214,38 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Changing Image / Spotlight Section - Cream Background */}
-      <ProjectSpotlight />
+      {/* Changing Image / Spotlight Section - Dark Background (Alternating) */}
+      <div className="relative z-10">
+        <ProjectSpotlight />
+      </div>
+
+      {/* New Section: "We Are Takumi" / Niwaki Variants - Cream Background */}
+      <section className="relative z-10 py-32 px-4 md:px-8 lg:px-12 bg-[#F2F0EA] text-[#1A1A1A] border-t border-black/10">
+        <div className="max-w-[1800px] mx-auto text-center">
+          <p className="text-sm font-bold uppercase tracking-widest text-gray-500 mb-8">The Art of Pruning</p>
+          <h2 className="text-6xl md:text-9xl font-oswald font-bold uppercase tracking-tighter leading-none mb-16">
+            We Are <br /> Takumi
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4 border-t border-black">
+            {[
+              { name: "Chokkan", desc: "Formal Upright", detail: "The trunk is straight and upright, tapering naturally from bottom to top." },
+              { name: "Moyogi", desc: "Informal Upright", detail: "The trunk grows in a sinuous shape, but the apex is located directly over the base." },
+              { name: "Shakan", desc: "Slanting", detail: "The trunk leans at an angle, representing trees growing in the wind or shadow." }
+            ].map((style, i) => (
+              <div key={i} className="border-b md:border-b-0 md:border-r border-black last:border-r-0 p-8 md:p-12 hover:bg-[#E5E3DD] transition-colors duration-300 text-left group cursor-pointer">
+                <span className="block text-xs font-bold mb-4 text-[#6B7F59]">Style 0{i + 1}</span>
+                <h3 className="text-4xl font-oswald font-bold uppercase mb-4 group-hover:translate-x-2 transition-transform">{style.name}</h3>
+                <h4 className="text-lg font-bold uppercase tracking-wider mb-2">{style.desc}</h4>
+                <p className="text-gray-600 leading-relaxed max-w-xs">{style.detail}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Philosophy Section - Dark Background */}
-      <section className="py-32 px-4 md:px-8 lg:px-12 bg-[#1A1A1A] text-[#FAFAF8]">
+      <section className="relative z-10 py-32 px-4 md:px-8 lg:px-12 bg-[#1A1A1A] text-[#FAFAF8]">
         <div className="max-w-[1800px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
 
           <div className="space-y-16 sticky top-32">
@@ -258,7 +285,7 @@ export default function Home() {
       </section>
 
       {/* Featured / Big Visual Section - Full Height Image */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden bg-black">
+      <section className="relative z-10 h-screen flex items-center justify-center overflow-hidden bg-black">
         <Image
           src="/images/japanese-garden.jpg"
           alt="Japanese Garden"
