@@ -55,7 +55,7 @@ export default async function ProductPage({
             {productData.isNew && (
               <Badge className="mb-4 bg-primary hover:bg-primary/90">Neuheit</Badge>
             )}
-            <h1 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-2">
+            <h1 className="text-3xl md:text-4xl font-oswald font-bold text-foreground mb-2">
               {productData.title}
             </h1>
             {productData.originalName && (
@@ -99,7 +99,7 @@ export default async function ProductPage({
 
           <div className="space-y-6">
              <div>
-                <h3 className="font-serif font-bold text-xl mb-3">Besonderheiten</h3>
+                <h3 className="font-oswald font-bold text-xl mb-3">Besonderheiten</h3>
                 <ul className="grid gap-2">
                    {productData.features.map((feature, i) => (
                       <li key={i} className="flex items-start gap-2 text-muted-foreground">
@@ -114,17 +114,17 @@ export default async function ProductPage({
 
              <div className="grid gap-6 md:grid-cols-2">
                 <div>
-                   <h3 className="font-serif font-bold text-lg mb-2">Einsatzbereich</h3>
+                   <h3 className="font-oswald font-bold text-lg mb-2">Einsatzbereich</h3>
                    <p className="text-sm text-muted-foreground leading-relaxed">{productData.usage}</p>
                 </div>
                 <div>
-                   <h3 className="font-serif font-bold text-lg mb-2">Pflege</h3>
+                   <h3 className="font-oswald font-bold text-lg mb-2">Pflege</h3>
                    <p className="text-sm text-muted-foreground leading-relaxed">{productData.care}</p>
                 </div>
              </div>
 
              <div className="bg-primary/5 p-6 rounded-lg">
-                <h3 className="font-serif font-bold text-lg mb-2 text-primary flex items-center gap-2">
+                <h3 className="font-oswald font-bold text-lg mb-2 text-primary flex items-center gap-2">
                    <Info className="h-4 w-4" />
                    Die Geschichte
                 </h3>
@@ -138,4 +138,5 @@ export default async function ProductPage({
     </div>
   )
 }
+
 

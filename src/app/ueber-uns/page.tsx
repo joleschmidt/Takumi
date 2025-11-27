@@ -4,7 +4,7 @@ export default function AboutPage() {
   return (
     <div className="container px-4 py-12 md:py-24">
       <div className="max-w-4xl mx-auto space-y-12">
-        <h1 className="text-4xl md:text-5xl font-serif font-bold text-center">Über Takumi</h1>
+        <h1 className="text-4xl md:text-5xl font-oswald font-bold text-center">Über Takumi</h1>
         <div className="relative aspect-video md:aspect-[16/9] rounded-lg overflow-hidden">
           <Image 
             src="/images/japanese-garden.jpg" 

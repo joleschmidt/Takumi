@@ -4,7 +4,7 @@ export function Footer() {
       <div className="container mx-auto px-4 py-12 md:py-16">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="space-y-4">
-            <h3 className="text-lg font-serif font-bold">Takumi</h3>
+            <h3 className="text-lg font-oswald font-bold uppercase">Takumi</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Traditionelle japanische Gartenwerkzeuge, kuratiert für Enthusiasten, die Handwerkskunst und Langlebigkeit schätzen.
             </p>
@@ -47,4 +47,5 @@ export function Footer() {
     </footer>
   )
 }
+
 

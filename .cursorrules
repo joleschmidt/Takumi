@@ -21,3 +21,4 @@ For full-viewport sections:
 - Avoid fixed aspect ratios that might cause overflow
 - Use `object-cover` for background images to maintain aspect ratio
 
+

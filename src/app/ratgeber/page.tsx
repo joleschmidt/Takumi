@@ -5,7 +5,7 @@ export default function RatgeberPage() {
     <div className="container px-4 py-12 md:py-24">
       <div className="max-w-4xl mx-auto space-y-12">
         <div className="text-center space-y-6">
-          <h1 className="text-4xl md:text-5xl font-serif font-bold">Ratgeber & Pflege</h1>
+          <h1 className="text-4xl md:text-5xl font-oswald font-bold">Ratgeber & Pflege</h1>
           <p className="text-xl text-muted-foreground">
             Erfahren Sie, wie Sie Ihre japanischen Werkzeuge richtig pflegen, schärfen und anwenden.
           </p>

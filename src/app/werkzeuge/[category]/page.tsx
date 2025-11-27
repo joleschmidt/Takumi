@@ -36,7 +36,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
            <span>/</span>
            <span className="text-foreground capitalize">{title}</span>
         </div>
-        <h1 className="text-4xl md:text-5xl font-serif font-bold">{title}</h1>
+        <h1 className="text-4xl md:text-5xl font-oswald font-bold">{title}</h1>
         <p className="text-muted-foreground text-lg max-w-2xl">
           Entdecken Sie unsere Auswahl in der Kategorie {title}.
         </p>
@@ -59,4 +59,5 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
     </div>
   )
 }
+
 

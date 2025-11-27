@@ -47,7 +47,7 @@ export function Navbar() {
       <div className="container mx-auto flex h-16 items-center px-4">
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <span className="text-2xl font-serif font-bold tracking-tight">Takumi</span>
+            <span className="text-2xl font-oswald font-bold tracking-tight uppercase">Takumi</span>
           </Link>
           <NavigationMenu>
             <NavigationMenuList>
@@ -102,7 +102,7 @@ export function Navbar() {
           </SheetTrigger>
           <SheetContent side="left" className="pr-0">
             <Link href="/" className="flex items-center">
-              <span className="font-serif font-bold text-2xl">Takumi</span>
+              <span className="font-oswald font-bold text-2xl uppercase">Takumi</span>
             </Link>
             <div className="my-4 pb-10 pl-6">
               <div className="flex flex-col space-y-3">

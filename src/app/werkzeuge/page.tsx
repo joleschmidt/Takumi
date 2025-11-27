@@ -6,7 +6,7 @@ export default function WerkzeugePage() {
   return (
     <div className="container px-4 py-12 md:py-16">
       <div className="mb-12 space-y-4">
-        <h1 className="text-4xl md:text-5xl font-serif font-bold">Unsere Werkzeug-Kollektion</h1>
+        <h1 className="text-4xl md:text-5xl font-oswald font-bold">Unsere Werkzeug-Kollektion</h1>
         <p className="text-muted-foreground text-lg max-w-2xl">
           Eine kuratierte Auswahl der besten japanischen Gartenwerkzeuge. 
           Jedes Stück wurde aufgrund seiner Qualität, Geschichte und Handwerkskunst ausgewählt.
@@ -50,4 +50,5 @@ export default function WerkzeugePage() {
     </div>
   )
 }
+
 

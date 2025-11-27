@@ -50,7 +50,7 @@ export function ProductCard({
         <CardHeader className="p-5 pb-2">
           <div className="flex justify-between items-start gap-2">
             <div>
-              <h3 className="font-serif font-bold text-lg leading-tight group-hover:text-primary transition-colors">
+              <h3 className="font-oswald font-bold text-lg leading-tight group-hover:text-primary transition-colors">
                 {title}
               </h3>
               {originalName && (
