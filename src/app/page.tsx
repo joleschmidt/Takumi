@@ -37,10 +37,10 @@ const revealText = {
 const ProjectSpotlight = () => {
   const [activeImage, setActiveImage] = useState(0);
   const projects = [
-    { title: "The Master's Choice", subtitle: "Okatsune 103", image: "/images/garden-shears.jpg", href: "/werkzeuge/scheren-zangen" },
-    { title: "Forged in Fire", subtitle: "Sanjo Craftsmanship", image: "/images/blacksmith.jpg", href: "/handwerker" },
-    { title: "Silent Cut", subtitle: "Silky Saws", image: "/images/artisan-tools.jpg", href: "/werkzeuge/saegen-beile" },
-    { title: "Earth & Steel", subtitle: "Niwaki Basics", image: "/images/garden-trowel.jpg", href: "/ratgeber" },
+    { title: "Die Wahl des Meisters", subtitle: "Okatsune 103", image: "/images/garden-shears.jpg", href: "/werkzeuge/scheren-zangen" },
+    { title: "Im Feuer geschmiedet", subtitle: "Sanjo Handwerkskunst", image: "/images/blacksmith.jpg", href: "/handwerker" },
+    { title: "Der Stille Schnitt", subtitle: "Silky Sägen", image: "/images/artisan-tools.jpg", href: "/werkzeuge/saegen-beile" },
+    { title: "Erde & Stahl", subtitle: "Niwaki Basics", image: "/images/garden-trowel.jpg", href: "/ratgeber" },
   ];
 
   return (
@@ -49,8 +49,8 @@ const ProjectSpotlight = () => {
         {/* Left: List */}
         <div className="space-y-12">
           <div className="space-y-2">
-            <h2 className="text-sm font-bold uppercase tracking-widest text-gray-500">Curated Highlights</h2>
-            <h3 className="text-5xl md:text-7xl font-oswald font-bold uppercase tracking-tighter">Essentials</h3>
+            <h2 className="text-sm font-bold uppercase tracking-widest text-gray-500">Kuratierte Highlights</h2>
+            <h3 className="text-5xl md:text-7xl font-oswald font-bold uppercase tracking-tighter">Essenzielles</h3>
           </div>
 
           <div className="flex flex-col">
@@ -115,17 +115,17 @@ export default function Home() {
           >
             <div className="overflow-hidden">
               <motion.h1 variants={revealText} className="text-[12vw] leading-[0.9] font-oswald font-bold uppercase tracking-tighter text-black">
-                Japanese
+                Japanische
               </motion.h1>
             </div>
             <div className="overflow-hidden">
               <motion.h1 variants={revealText} className="text-[12vw] leading-[0.9] font-oswald font-bold uppercase tracking-tighter text-black">
-                Garden Tools
+                Gartenwerkzeuge
               </motion.h1>
             </div>
             <div className="overflow-hidden">
               <motion.h1 variants={revealText} className="text-[12vw] leading-[0.9] font-oswald font-bold uppercase tracking-tighter text-[#6B7F59]">
-                With Soul
+                mit Seele
               </motion.h1>
             </div>
           </motion.div>
@@ -137,12 +137,12 @@ export default function Home() {
             className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 border-t border-black/10 pt-8"
           >
             <p className="max-w-md text-lg md:text-xl font-medium leading-tight">
-              Hand-forged by masters in Japan. <br />
-              Curated for those who shape nature with respect.
+              Handgeschmiedet von Meistern in Japan. <br />
+              Kuratiert für jene, die die Natur mit Respekt formen.
             </p>
             <div className="flex gap-4">
               <Link href="/werkzeuge" className="group flex items-center gap-2 text-lg font-bold uppercase tracking-wider hover:opacity-60 transition-opacity">
-                Explore Collection
+                Kollektion Entdecken
                 <ArrowRight className="group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
@@ -159,21 +159,21 @@ export default function Home() {
           transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
           className="flex items-center gap-12 text-4xl md:text-6xl font-oswald font-bold uppercase tracking-widest"
         >
-          <span>Tradition</span>
+          <span>Tradition (Dentō)</span>
           <span className="text-[#6B7F59]">●</span>
-          <span>Craftsmanship</span>
+          <span>Handwerk (Takumi)</span>
           <span className="text-[#6B7F59]">●</span>
-          <span>Precision</span>
+          <span>Präzision (Seimitsu)</span>
           <span className="text-[#6B7F59]">●</span>
-          <span>Soul</span>
+          <span>Seele (Kokoro)</span>
           <span className="text-[#6B7F59]">●</span>
-          <span>Tradition</span>
+          <span>Tradition (Dentō)</span>
           <span className="text-[#6B7F59]">●</span>
-          <span>Craftsmanship</span>
+          <span>Handwerk (Takumi)</span>
           <span className="text-[#6B7F59]">●</span>
-          <span>Precision</span>
+          <span>Präzision (Seimitsu)</span>
           <span className="text-[#6B7F59]">●</span>
-          <span>Soul</span>
+          <span>Seele (Kokoro)</span>
           <span className="text-[#6B7F59]">●</span>
         </motion.div>
       </motion.section>
@@ -224,16 +224,16 @@ export default function Home() {
       {/* New Section: "We Are Takumi" / Niwaki Variants - Cream Background */}
       <section className="relative z-10 min-h-[calc(100vh-5rem+10vh)] px-4 md:px-8 lg:px-12 bg-[#F2F0EA] text-[#1A1A1A] border-t border-black/10 flex items-center">
         <div className="max-w-[1800px] mx-auto w-full text-center">
-          <p className="text-sm font-bold uppercase tracking-widest text-gray-500 mb-8">The Art of Pruning</p>
+          <p className="text-sm font-bold uppercase tracking-widest text-gray-500 mb-8">Die Kunst des Schnitts (Sentei)</p>
           <h2 className="text-6xl md:text-9xl font-oswald font-bold uppercase tracking-tighter leading-none mb-16">
-            We Are <br /> Takumi
+            Wir Sind <br /> Takumi
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4 border-t border-black">
             {[
-              { name: "Chokkan", desc: "Formal Upright", detail: "The trunk is straight and upright, tapering naturally from bottom to top." },
-              { name: "Moyogi", desc: "Informal Upright", detail: "The trunk grows in a sinuous shape, but the apex is located directly over the base." },
-              { name: "Shakan", desc: "Slanting", detail: "The trunk leans at an angle, representing trees growing in the wind or shadow." }
+              { name: "Chokkan", desc: "Formal Aufrecht", detail: "Der Stamm ist gerade und aufrecht, er verjüngt sich natürlich von unten nach oben." },
+              { name: "Moyogi", desc: "Frei Aufrecht", detail: "Der Stamm wächst in einer geschwungenen Form, aber die Spitze befindet sich direkt über der Basis." },
+              { name: "Shakan", desc: "Geneigt", detail: "Der Stamm neigt sich in einem Winkel, was Bäume darstellt, die im Wind oder Schatten wachsen." }
             ].map((style, i) => (
               <div key={i} className="border-b md:border-b-0 md:border-r border-black last:border-r-0 p-8 md:p-12 hover:bg-[#E5E3DD] transition-colors duration-300 text-left group cursor-pointer">
                 <span className="block text-xs font-bold mb-4 text-[#6B7F59]">Style 0{i + 1}</span>
@@ -252,22 +252,22 @@ export default function Home() {
 
           <div className="space-y-16 sticky top-32">
             <h2 className="text-7xl md:text-9xl font-oswald font-bold uppercase tracking-tighter leading-[0.8]">
-              We Make <br />
-              It Last
+              Für die <br />
+              Ewigkeit
             </h2>
             <div className="h-[1px] w-full bg-white/20"></div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-12">
               <div className="space-y-4">
-                <h3 className="text-2xl font-bold uppercase tracking-wider">Mastery</h3>
-                <p className="text-gray-400 leading-relaxed">Forged by artisans who have dedicated their lives to the craft. Each tool is unique.</p>
+                <h3 className="text-2xl font-bold uppercase tracking-wider">Meisterschaft</h3>
+                <p className="text-gray-400 leading-relaxed">Geschmiedet von Handwerkern, die ihr Leben dem Handwerk gewidmet haben. Jedes Werkzeug ein Unikat.</p>
               </div>
               <div className="space-y-4">
-                <h3 className="text-2xl font-bold uppercase tracking-wider">Longevity</h3>
-                <p className="text-gray-400 leading-relaxed">Tools designed to be passed down. Replaceable parts, sharpenable blades.</p>
+                <h3 className="text-2xl font-bold uppercase tracking-wider">Langlebigkeit</h3>
+                <p className="text-gray-400 leading-relaxed">Werkzeuge, die weitergegeben werden. Austauschbare Teile, schärfbare Klingen.</p>
               </div>
             </div>
             <Button asChild size="lg" className="bg-white text-black hover:bg-gray-200 rounded-none text-lg px-12 py-8 uppercase tracking-wider font-bold">
-              <Link href="/ueber-uns">Our Story</Link>
+              <Link href="/ueber-uns">Unsere Geschichte</Link>
             </Button>
           </div>
 
@@ -305,10 +305,10 @@ export default function Home() {
             Niwaki
           </motion.h2>
           <p className="text-xl md:text-3xl max-w-3xl mx-auto font-light tracking-wide mb-16 leading-relaxed">
-            The art of sculpting trees. It demands patience, vision, and the perfect cut.
+            Die Kunst, Bäume zu formen. Sie verlangt Geduld, Vision und den perfekten Schnitt.
           </p>
           <Link href="/ratgeber" className="inline-block border border-white px-16 py-6 text-xl font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-colors">
-            Read The Guide
+            Zum Ratgeber
           </Link>
         </div>
       </section>
@@ -319,26 +319,26 @@ export default function Home() {
 
 const categories = [
   {
-    title: "Shears",
-    description: "Precision cuts for healthy plants. Bonsai to heavy duty.",
+    title: "Scheren",
+    description: "Präzise Schnitte für gesunde Pflanzen. Von Bonsai bis Grobästung.",
     href: "/werkzeuge/scheren-zangen",
     image: "/images/garden-shears.jpg",
   },
   {
-    title: "Saws",
-    description: "Japanese pull saws that glide through wood like butter.",
+    title: "Sägen",
+    description: "Japanische Zugsägen, die durch Holz gleiten wie Butter.",
     href: "/werkzeuge/saegen-beile",
     image: "/images/artisan-tools.jpg",
   },
   {
-    title: "Soil",
-    description: "Hori Hori knives and forged hoes for perfect earth.",
+    title: "Boden",
+    description: "Hori Hori Messer und geschmiedete Hacken für perfekte Erde.",
     href: "/werkzeuge/bodenbearbeitung",
     image: "/images/garden-trowel.jpg",
   },
   {
-    title: "Care",
-    description: "Camellia oil, whetstones and maintenance gear.",
+    title: "Pflege",
+    description: "Kamelienöl, Schleifsteine und Pflegezubehör.",
     href: "/werkzeuge/zubehoer",
     image: "/images/craftsman-workshop.jpg",
   },

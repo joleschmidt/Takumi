@@ -21,27 +21,27 @@ import { Input } from "@/components/ui/input"
 
 const tools = [
   {
-    title: "Shears & Pliers",
+    title: "Scheren & Zangen",
     href: "/werkzeuge/scheren-zangen",
-    description: "Precision tools for Bonsai & pruning.",
+    description: "Präzisionswerkzeuge für Bonsai & Schnitt.",
     image: "/images/garden-shears.jpg"
   },
   {
-    title: "Saws & Axes",
+    title: "Sägen & Beile",
     href: "/werkzeuge/saegen-beile",
-    description: "Japanese pull saws & hatchets.",
+    description: "Japanische Zugsägen & Beile.",
     image: "/images/artisan-tools.jpg"
   },
   {
-    title: "Soil Work",
+    title: "Bodenbearbeitung",
     href: "/werkzeuge/bodenbearbeitung",
-    description: "Hori Hori & forged hoes.",
+    description: "Hori Hori & geschmiedete Hacken.",
     image: "/images/garden-trowel.jpg"
   },
   {
-    title: "Brooms & Rakes",
+    title: "Besen & Rechen",
     href: "/werkzeuge/besen-rechen",
-    description: "Traditional bamboo tools.",
+    description: "Traditionelle Bambuswerkzeuge.",
     image: "/images/craftsman-workshop.jpg"
   },
 ]
@@ -53,7 +53,7 @@ export function Navbar() {
 
         {/* Logo */}
         <Link href="/" className="mr-12 flex items-center space-x-2">
-          <span className="text-3xl font-oswald font-bold tracking-tighter uppercase text-black">Takumi</span>
+          <span className="text-3xl font-oswald font-bold tracking-tighter uppercase text-black">Takumi <span className="text-[#BC002D]">匠</span></span>
         </Link>
 
         {/* Desktop Nav */}
@@ -62,7 +62,7 @@ export function Navbar() {
             <NavigationMenuList className="gap-2">
               <NavigationMenuItem>
                 <NavigationMenuTrigger className="text-sm font-bold uppercase tracking-widest bg-transparent hover:bg-transparent data-[state=open]:bg-transparent text-black">
-                  Collection
+                  Kollektion
                 </NavigationMenuTrigger>
                 <NavigationMenuContent className="!bg-white border border-black shadow-xl p-0 w-auto min-w-[600px]">
                   <div className="grid grid-cols-2 gap-0 w-[600px] lg:w-[800px]">
@@ -95,7 +95,7 @@ export function Navbar() {
                   </div>
                   <div className="bg-gray-50 p-4 text-center border-t border-black">
                     <Link href="/werkzeuge" className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest hover:underline">
-                      View All Products <ArrowRight className="w-4 h-4" />
+                      Alle Produkte ansehen <ArrowRight className="w-4 h-4" />
                     </Link>
                   </div>
                 </NavigationMenuContent>
@@ -103,21 +103,21 @@ export function Navbar() {
               <NavigationMenuItem>
                 <NavigationMenuLink asChild>
                   <Link href="/handwerker" className="text-sm font-bold uppercase tracking-widest bg-transparent hover:bg-transparent px-4 py-2 hover:underline underline-offset-4 decoration-2 text-black">
-                    Artisans
+                    Marken
                   </Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuLink asChild>
                   <Link href="/ratgeber" className="text-sm font-bold uppercase tracking-widest bg-transparent hover:bg-transparent px-4 py-2 hover:underline underline-offset-4 decoration-2 text-black">
-                    Journal
+                    Magazin
                   </Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuLink asChild>
                   <Link href="/ueber-uns" className="text-sm font-bold uppercase tracking-widest bg-transparent hover:bg-transparent px-4 py-2 hover:underline underline-offset-4 decoration-2 text-black">
-                    About
+                    Über Uns
                   </Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
@@ -135,12 +135,12 @@ export function Navbar() {
           </SheetTrigger>
           <SheetContent side="left" className="pr-0 w-full border-r-0 bg-[#FAFAF8]">
             <Link href="/" className="flex items-center mb-12">
-              <span className="font-oswald font-bold text-4xl uppercase tracking-tighter">Takumi</span>
+              <span className="font-oswald font-bold text-4xl uppercase tracking-tighter">Takumi <span className="text-[#BC002D]">匠</span></span>
             </Link>
             <div className="pr-6">
               <div className="flex flex-col space-y-6">
                 <div className="space-y-4 pb-6 border-b border-black">
-                  <p className="text-xs font-bold uppercase tracking-widest text-gray-500">Collection</p>
+                  <p className="text-xs font-bold uppercase tracking-widest text-gray-500">Kollektion</p>
                   {tools.map((item) => (
                     <Link
                       key={item.href}
@@ -150,17 +150,17 @@ export function Navbar() {
                       {item.title}
                     </Link>
                   ))}
-                  <Link href="/werkzeuge" className="block text-sm font-bold uppercase tracking-widest pt-2">View All →</Link>
+                  <Link href="/werkzeuge" className="block text-sm font-bold uppercase tracking-widest pt-2">Alle Ansehen →</Link>
                 </div>
 
                 <Link href="/handwerker" className="text-3xl font-oswald font-bold uppercase hover:text-[#6B7F59]">
-                  Artisans
+                  Marken
                 </Link>
                 <Link href="/ratgeber" className="text-3xl font-oswald font-bold uppercase hover:text-[#6B7F59]">
-                  Journal
+                  Magazin
                 </Link>
                 <Link href="/ueber-uns" className="text-3xl font-oswald font-bold uppercase hover:text-[#6B7F59]">
-                  About
+                  Über Uns
                 </Link>
               </div>
             </div>
@@ -172,7 +172,7 @@ export function Navbar() {
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               type="text"
-              placeholder="Search..."
+              placeholder="Suchen..."
               className="pl-8 bg-muted/30 shadow-none border-none focus-visible:ring-0"
             />
           </div>

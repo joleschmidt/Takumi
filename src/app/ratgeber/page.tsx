@@ -7,27 +7,27 @@ import { motion } from "framer-motion";
 
 const guides = [
   {
-    title: "Maintenance Basics",
-    desc: "How to prevent rust and keep your blades singing.",
-    category: "Care",
+    title: "Pflege Grundlagen",
+    desc: "Wie man Rost vermeidet und die Klingen singen lässt.",
+    category: "Pflege",
     image: "/images/garden-trowel.jpg"
   },
   {
-    title: "Steel 101",
-    desc: "Understanding the difference between Carbon Steel (Aogami) and Stainless.",
-    category: "Knowledge",
+    title: "Stahlkunde 101",
+    desc: "Der Unterschied zwischen Carbonstahl (Aogami) und rostfreiem Stahl.",
+    category: "Wissen",
     image: "/images/artisan-tools.jpg"
   },
   {
-    title: "Sharpening Guide",
-    desc: "Master the whetstone. A step-by-step visual guide.",
-    category: "Technique",
+    title: "Schleif-Guide",
+    desc: "Meistere den Schleifstein. Eine Schritt-für-Schritt Anleitung.",
+    category: "Technik",
     image: "/images/craftsman-workshop.jpg"
   },
   {
-    title: "Choosing Your Shears",
-    desc: "Okatsune vs. Tobisho. Which one fits your hand?",
-    category: "Selection",
+    title: "Die richtige Schere",
+    desc: "Okatsune vs. Tobisho. Welche passt in deine Hand?",
+    category: "Auswahl",
     image: "/images/garden-shears.jpg"
   }
 ];
@@ -44,7 +44,7 @@ export default function GuidePage() {
              transition={{ duration: 0.8 }}
              className="text-[10vw] leading-[0.8] font-oswald font-bold uppercase tracking-tighter mb-12"
           >
-            Guide <span className="text-[#6B7F59]">&</span> Care
+            Ratgeber <span className="text-[#6B7F59]">&</span> Pflege
           </motion.h1>
           <div className="h-[1px] w-full bg-black"></div>
         </div>
