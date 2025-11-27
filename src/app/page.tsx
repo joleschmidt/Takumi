@@ -44,8 +44,8 @@ const ProjectSpotlight = () => {
   ];
 
   return (
-    <section className="py-32 px-4 md:px-8 lg:px-12 bg-[#1A1A1A] text-[#FAFAF8]">
-      <div className="max-w-[1800px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <section className="min-h-[calc(100vh-5rem+10vh)] px-4 md:px-8 lg:px-12 bg-[#1A1A1A] text-[#FAFAF8] flex items-center">
+      <div className="max-w-[1800px] mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         {/* Left: List */}
         <div className="space-y-12">
           <div className="space-y-2">
@@ -151,7 +151,9 @@ export default function Home() {
       </section>
 
       {/* Marquee Section - Dark Background - Z-Index 10 to cover Sticky Hero */}
-      <section className="relative z-10 py-8 bg-[#1A1A1A] text-[#FAFAF8] overflow-hidden whitespace-nowrap">
+      <motion.section
+        className="relative z-10 py-8 bg-[#1A1A1A] text-[#FAFAF8] overflow-hidden whitespace-nowrap"
+      >
         <motion.div
           animate={{ x: ["0%", "-50%"] }}
           transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
@@ -174,13 +176,13 @@ export default function Home() {
           <span>Soul</span>
           <span className="text-[#6B7F59]">●</span>
         </motion.div>
-      </section>
+      </motion.section>
 
       {/* Categories Grid - Light/Image Background */}
-      <section className="relative z-10 bg-white">
+      <section className="relative z-10 bg-white min-h-[calc(100vh-5rem+10vh)]">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
           {categories.map((category, index) => (
-            <Link key={index} href={category.href} className="group relative min-h-[600px] flex flex-col justify-between overflow-hidden bg-stone-100">
+            <Link key={index} href={category.href} className="group relative min-h-[50vh] md:min-h-screen flex flex-col justify-between overflow-hidden bg-stone-100">
               {/* Persistent Background Image with Overlay */}
               <div className="absolute inset-0 z-0">
                 <Image
@@ -215,13 +217,13 @@ export default function Home() {
       </section>
 
       {/* Changing Image / Spotlight Section - Dark Background (Alternating) */}
-      <div className="relative z-10">
+      <div className="relative z-10 bg-[#1A1A1A]">
         <ProjectSpotlight />
       </div>
 
       {/* New Section: "We Are Takumi" / Niwaki Variants - Cream Background */}
-      <section className="relative z-10 py-32 px-4 md:px-8 lg:px-12 bg-[#F2F0EA] text-[#1A1A1A] border-t border-black/10">
-        <div className="max-w-[1800px] mx-auto text-center">
+      <section className="relative z-10 min-h-[calc(100vh-5rem+10vh)] px-4 md:px-8 lg:px-12 bg-[#F2F0EA] text-[#1A1A1A] border-t border-black/10 flex items-center">
+        <div className="max-w-[1800px] mx-auto w-full text-center">
           <p className="text-sm font-bold uppercase tracking-widest text-gray-500 mb-8">The Art of Pruning</p>
           <h2 className="text-6xl md:text-9xl font-oswald font-bold uppercase tracking-tighter leading-none mb-16">
             We Are <br /> Takumi
@@ -245,8 +247,8 @@ export default function Home() {
       </section>
 
       {/* Philosophy Section - Dark Background */}
-      <section className="relative z-10 py-32 px-4 md:px-8 lg:px-12 bg-[#1A1A1A] text-[#FAFAF8]">
-        <div className="max-w-[1800px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
+      <section className="relative z-10 px-4 md:px-8 lg:px-12 bg-[#1A1A1A] text-[#FAFAF8] min-h-[calc(100vh-5rem+10vh)] flex items-center">
+        <div className="max-w-[1800px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
 
           <div className="space-y-16 sticky top-32">
             <h2 className="text-7xl md:text-9xl font-oswald font-bold uppercase tracking-tighter leading-[0.8]">
@@ -269,23 +271,23 @@ export default function Home() {
             </Button>
           </div>
 
-          <div className="relative aspect-[3/4] w-full overflow-hidden">
+          <div className="relative w-full h-[calc(100vh-5rem+10vh)] overflow-hidden">
             <Image
               src="/images/blacksmith.jpg"
               alt="Japanese Blacksmith"
               fill
               className="object-cover hover:scale-105 transition-transform duration-1000"
             />
-            <div className="absolute bottom-0 left-0 p-8 bg-black/50 backdrop-blur-md w-full">
+            {/* <div className="absolute bottom-0 left-0 p-8 bg-black/50 backdrop-blur-md w-full">
               <p className="text-2xl font-oswald font-bold uppercase">The Soul of Steel</p>
-            </div>
+            </div> */}
           </div>
 
         </div>
       </section>
 
       {/* Featured / Big Visual Section - Full Height Image */}
-      <section className="relative z-10 h-screen flex items-center justify-center overflow-hidden bg-black">
+      <section className="relative z-10 min-h-[calc(100vh-5rem+10vh)] flex items-center justify-center overflow-hidden bg-black">
         <Image
           src="/images/japanese-garden.jpg"
           alt="Japanese Garden"

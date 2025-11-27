@@ -33,7 +33,7 @@ export default function AboutPage() {
                </p>
              </div>
              
-             <div className="relative aspect-[4/5] w-full bg-stone-200">
+             <div className="relative w-full aspect-[4/5] max-h-[60vh] bg-stone-200">
                 <Image 
                   src="/images/japanese-garden.jpg" 
                   alt="Japanese Garden Philosophy" 
