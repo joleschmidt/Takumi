@@ -5,11 +5,11 @@ import { notFound } from "next/navigation"
 // Helper to format category title
 const formatCategoryTitle = (slug: string) => {
   const titles: Record<string, string> = {
-    "scheren-zangen": "Shears & Pliers",
-    "saegen-beile": "Saws & Axes",
-    "bodenbearbeitung": "Soil Work",
-    "besen-rechen": "Brooms & Rakes",
-    "zubehoer": "Care & Accessories"
+    "scheren-zangen": "Scheren & Zangen",
+    "saegen-beile": "Sägen & Beile",
+    "bodenbearbeitung": "Bodenbearbeitung",
+    "besen-rechen": "Besen & Rechen",
+    "zubehoer": "Pflege & Zubehör"
   }
   return titles[slug] || slug.replace(/-/g, " ")
 }
@@ -27,9 +27,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
         <div className="max-w-[1800px] mx-auto">
           
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-500 mb-8">
-             <a href="/" className="hover:text-black">Home</a>
+             <a href="/" className="hover:text-black">Startseite</a>
              <span>/</span>
-             <a href="/werkzeuge" className="hover:text-black">Collection</a>
+             <a href="/werkzeuge" className="hover:text-black">Kollektion</a>
              <span>/</span>
              <span className="text-black">{title}</span>
           </div>
@@ -53,8 +53,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
             </div>
           ) : (
             <div className="py-32 text-center border border-black/10 bg-[#F5F5F0]">
-              <h3 className="font-oswald text-2xl uppercase mb-2">No tools found</h3>
-              <p className="text-gray-500">This collection is currently being curated.</p>
+              <h3 className="font-oswald text-2xl uppercase mb-2">Keine Werkzeuge gefunden</h3>
+              <p className="text-gray-500">Diese Kollektion wird derzeit kuratiert.</p>
             </div>
           )}
         </div>

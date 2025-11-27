@@ -10,14 +10,11 @@ export default function HandwerkerPage() {
       {/* Hero */}
       <section className="pt-32 px-4 md:px-8 lg:px-12 mb-24">
         <div className="max-w-[1800px] mx-auto">
-           <motion.h1 
-             initial={{ opacity: 0, y: 100 }}
-             animate={{ opacity: 1, y: 0 }}
-             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+           <h1 
              className="text-[12vw] leading-[0.8] font-oswald font-bold uppercase tracking-tighter mb-8"
            >
              Die Marken <span className="text-[#6B7F59] text-[0.5em] align-top">銘柄</span>
-           </motion.h1>
+           </h1>
            <div className="h-[1px] w-full bg-black mb-12"></div>
            
            <div className="flex flex-col md:flex-row justify-between gap-12">

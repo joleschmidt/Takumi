@@ -35,7 +35,7 @@ export default async function ProductPage({
               {/* Product Badge */}
               {productData.isNew && (
                 <div className="absolute top-8 left-8 bg-black text-white px-4 py-2 font-bold uppercase tracking-widest text-sm z-10">
-                  New Arrival
+                  Neuheit
                 </div>
               )}
            </div>
@@ -43,7 +43,7 @@ export default async function ProductPage({
            {/* Mobile Breadcrumb overlay */}
            <div className="absolute top-24 left-4 md:left-8 lg:hidden z-20">
               <Link href={`/werkzeuge/${category}`} className="bg-white/80 backdrop-blur px-4 py-2 text-xs font-bold uppercase tracking-widest border border-black/10">
-                ← Back
+                ← Zurück
               </Link>
            </div>
         </div>
@@ -52,7 +52,7 @@ export default async function ProductPage({
         <div className="p-8 md:p-16 lg:pt-32 flex flex-col justify-center">
            
            <div className="hidden lg:flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-500 mb-12">
-             <Link href="/werkzeuge" className="hover:text-black transition-colors">Collection</Link>
+             <Link href="/werkzeuge" className="hover:text-black transition-colors">Kollektion</Link>
              <span>/</span>
              <Link href={`/werkzeuge/${category}`} className="hover:text-black transition-colors">{category.replace(/-/g, ' ')}</Link>
            </div>
@@ -77,21 +77,21 @@ export default async function ProductPage({
 
            <div className="space-y-4 mb-16">
               <Button size="lg" className="w-full h-16 rounded-none bg-[#1a1a1a] text-white hover:bg-[#6B7F59] text-lg font-bold uppercase tracking-widest flex justify-between px-8">
-                <span>Buy at Dictum</span>
+                <span>Bei Dictum kaufen</span>
                 <ArrowUpRight />
               </Button>
               <Button variant="outline" size="lg" className="w-full h-16 rounded-none border-2 border-black/10 hover:bg-black hover:text-white text-lg font-bold uppercase tracking-widest flex justify-between px-8">
-                <span>Check Amazon</span>
+                <span>Bei Amazon prüfen</span>
                 <ArrowUpRight />
               </Button>
               <p className="text-xs text-gray-400 text-center uppercase tracking-wider">
-                * We earn a commission from partner links.
+                * Wir erhalten eine Provision von Partnerlinks.
               </p>
            </div>
 
            <div className="grid gap-12">
               <div>
-                <h3 className="font-oswald font-bold text-2xl uppercase border-b border-black pb-4 mb-6">Features</h3>
+                <h3 className="font-oswald font-bold text-2xl uppercase border-b border-black pb-4 mb-6">Eigenschaften</h3>
                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
                    {productData.features.map((feature, i) => (
                       <li key={i} className="flex items-start gap-3">
@@ -104,11 +104,11 @@ export default async function ProductPage({
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                  <div className="bg-[#F5F5F0] p-8">
-                    <h4 className="font-bold uppercase tracking-widest text-sm mb-4 text-[#6B7F59]">Usage</h4>
+                    <h4 className="font-bold uppercase tracking-widest text-sm mb-4 text-[#6B7F59]">Verwendung</h4>
                     <p className="text-sm leading-relaxed">{productData.usage}</p>
                  </div>
                  <div className="bg-[#F5F5F0] p-8">
-                    <h4 className="font-bold uppercase tracking-widest text-sm mb-4 text-[#6B7F59]">Care</h4>
+                    <h4 className="font-bold uppercase tracking-widest text-sm mb-4 text-[#6B7F59]">Pflege</h4>
                     <p className="text-sm leading-relaxed">{productData.care}</p>
                  </div>
               </div>

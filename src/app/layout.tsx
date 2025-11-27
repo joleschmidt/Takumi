@@ -10,7 +10,7 @@ const oswald = Oswald({ subsets: ["latin"], variable: "--font-oswald" });
 
 export const metadata: Metadata = {
   title: "Takumi - Japanische Gartenwerkzeuge mit Seele",
-  description: "Entdecken Sie handgeschmiedete japanische Gartenwerkzeuge. Eine kuratierte Auswahl für Enthusiasten, die Qualität und Tradition schätzen.",
+  description: "Entdecken Sie Handgefertigte japanische Gartenwerkzeuge. Eine kuratierte Auswahl für Enthusiasten, die Qualität und Tradition schätzen.",
 };
 
 import { SmoothScroll } from "@/components/SmoothScroll";

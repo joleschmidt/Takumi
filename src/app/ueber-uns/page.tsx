@@ -12,16 +12,13 @@ export default function AboutPage() {
       {/* Hero Header */}
       <section className="pt-32 pb-16 px-4 md:px-8 lg:px-12">
         <div className="max-w-[1800px] mx-auto">
-          <motion.div 
-             initial={{ opacity: 0, y: 20 }}
-             animate={{ opacity: 1, y: 0 }}
-             transition={{ duration: 0.8 }}
+          <div 
              className="border-b border-black pb-8 mb-12"
           >
             <h1 className="text-[10vw] leading-[0.8] font-oswald font-bold uppercase tracking-tighter">
               Über <span className="text-[#6B7F59]">Takumi</span>
             </h1>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
              <div className="text-xl md:text-2xl font-medium leading-relaxed space-y-8">

@@ -137,7 +137,7 @@ export default function Home() {
             className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 border-t border-black/10 pt-8"
           >
             <p className="max-w-md text-lg md:text-xl font-medium leading-tight">
-              Handgeschmiedet von Meistern in Japan. <br />
+              Handgefertigt von Meistern in Japan. <br />
               Kuratiert für jene, die die Natur mit Respekt formen.
             </p>
             <div className="flex gap-4">

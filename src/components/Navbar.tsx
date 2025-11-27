@@ -53,7 +53,7 @@ export function Navbar() {
 
         {/* Logo */}
         <Link href="/" className="mr-12 flex items-center space-x-2">
-          <span className="text-3xl font-oswald font-bold tracking-tighter uppercase text-black">Takumi <span className="text-[#BC002D]">匠</span></span>
+          <span className="text-3xl font-oswald font-bold tracking-tighter uppercase text-black">Takumi<span className="text-[#BC002D]">匠</span></span>
         </Link>
 
         {/* Desktop Nav */}
@@ -64,37 +64,47 @@ export function Navbar() {
                 <NavigationMenuTrigger className="text-sm font-bold uppercase tracking-widest bg-transparent hover:bg-transparent data-[state=open]:bg-transparent text-black">
                   Kollektion
                 </NavigationMenuTrigger>
-                <NavigationMenuContent className="!bg-white border border-black shadow-xl p-0 w-auto min-w-[600px]">
-                  <div className="grid grid-cols-2 gap-0 w-[600px] lg:w-[800px]">
-                    {tools.map((tool) => (
-                      <NavigationMenuLink key={tool.title} asChild>
-                        <Link
-                          href={tool.href}
-                          className="group block select-none space-y-1 p-6 leading-none no-underline outline-none transition-colors hover:bg-black hover:text-white border-b border-r border-gray-100 last:border-b-0 even:border-r-0 h-full relative overflow-hidden"
-                        >
-                          <div className="flex items-start gap-4 z-10 relative">
-                            <div className="w-16 h-16 relative shrink-0 overflow-hidden border border-gray-200 group-hover:border-white/30 transition-colors">
-                              <Image
-                                src={tool.image}
-                                alt={tool.title}
-                                fill
-                                className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-                              />
+                <NavigationMenuContent className="!bg-white border-2 border-black shadow-xl p-0 w-auto min-w-[600px] rounded-none">
+                  <div className="grid grid-cols-2 w-[600px] lg:w-[800px]">
+                    {tools.map((tool, index) => {
+                      const isFirstRow = index < 2;
+                      const isFirstCol = index % 2 === 0;
+                      return (
+                        <NavigationMenuLink key={tool.title} asChild>
+                          <Link
+                            href={tool.href}
+                            className={cn(
+                              "group block select-none p-8 leading-none no-underline outline-none h-full relative bg-white hover:bg-black transition-colors duration-150",
+                              isFirstRow && "border-b-2 border-black",
+                              isFirstCol && "border-r-2 border-black"
+                            )}
+                          >
+                            <div className="flex items-start gap-4 relative">
+                              <div className="w-20 h-20 relative shrink-0 overflow-hidden border-2 border-black group-hover:border-white transition-colors duration-150">
+                                <Image
+                                  src={tool.image}
+                                  alt={tool.title}
+                                  fill
+                                  sizes="80px"
+                                  className="object-cover grayscale group-hover:grayscale-0 transition-filter duration-200"
+                                  loading="lazy"
+                                />
+                              </div>
+                              <div className="flex-1">
+                                <div className="text-xl font-oswald font-bold uppercase mb-2 text-black group-hover:text-white tracking-tighter transition-colors duration-150">{tool.title}</div>
+                                <p className="text-sm text-gray-600 group-hover:text-gray-200 leading-snug font-medium transition-colors duration-150">
+                                  {tool.description}
+                                </p>
+                              </div>
                             </div>
-                            <div>
-                              <div className="text-lg font-oswald font-bold uppercase mb-1 text-black group-hover:text-white">{tool.title}</div>
-                              <p className="text-sm text-gray-600 leading-snug group-hover:text-gray-300 font-medium">
-                                {tool.description}
-                              </p>
-                            </div>
-                          </div>
-                          <ArrowRight className="absolute top-6 right-6 w-5 h-5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-white" />
-                        </Link>
-                      </NavigationMenuLink>
-                    ))}
+                            <ArrowRight className="absolute top-8 right-8 w-6 h-6 text-black group-hover:text-white transition-all duration-150" />
+                          </Link>
+                        </NavigationMenuLink>
+                      );
+                    })}
                   </div>
-                  <div className="bg-gray-50 p-4 text-center border-t border-black">
-                    <Link href="/werkzeuge" className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest hover:underline">
+                  <div className="bg-[#F2F0EA] p-6 text-center border-t-2 border-black hover:bg-black group transition-colors duration-150">
+                    <Link href="/werkzeuge" className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-black group-hover:text-white transition-colors duration-150">
                       Alle Produkte ansehen <ArrowRight className="w-4 h-4" />
                     </Link>
                   </div>

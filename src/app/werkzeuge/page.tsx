@@ -18,7 +18,7 @@ export default function WerkzeugePage() {
              transition={{ duration: 0.8 }}
              className="text-[10vw] leading-[0.8] font-oswald font-bold uppercase tracking-tighter mb-12"
           >
-            Tool <br/><span className="text-[#6B7F59]">Collection</span>
+            Werkzeug <br/><span className="text-[#6B7F59]">Kollektion</span>
           </motion.h1>
           <div className="h-[1px] w-full bg-black"></div>
         </div>
@@ -30,19 +30,19 @@ export default function WerkzeugePage() {
           {/* Sidebar */}
           <div className="hidden md:block space-y-12 sticky top-32 h-fit">
             <div className="space-y-6">
-              <h3 className="font-oswald font-bold text-xl uppercase border-b border-black pb-2">Categories</h3>
+              <h3 className="font-oswald font-bold text-xl uppercase border-b border-black pb-2">Kategorien</h3>
               <ul className="space-y-3 text-sm font-medium uppercase tracking-widest">
-                <li><a href="/werkzeuge/scheren-zangen" className="hover:text-[#6B7F59] transition-colors block py-1">Shears & Pliers</a></li>
-                <li><a href="/werkzeuge/saegen-beile" className="hover:text-[#6B7F59] transition-colors block py-1">Saws & Axes</a></li>
-                <li><a href="/werkzeuge/bodenbearbeitung" className="hover:text-[#6B7F59] transition-colors block py-1">Soil Work</a></li>
-                <li><a href="/werkzeuge/besen-rechen" className="hover:text-[#6B7F59] transition-colors block py-1">Brooms & Rakes</a></li>
+                <li><a href="/werkzeuge/scheren-zangen" className="hover:text-[#6B7F59] transition-colors block py-1">Scheren & Zangen</a></li>
+                <li><a href="/werkzeuge/saegen-beile" className="hover:text-[#6B7F59] transition-colors block py-1">Sägen & Beile</a></li>
+                <li><a href="/werkzeuge/bodenbearbeitung" className="hover:text-[#6B7F59] transition-colors block py-1">Bodenbearbeitung</a></li>
+                <li><a href="/werkzeuge/besen-rechen" className="hover:text-[#6B7F59] transition-colors block py-1">Besen & Rechen</a></li>
               </ul>
             </div>
             
             <div className="space-y-6">
-               <h3 className="font-oswald font-bold text-xl uppercase border-b border-black pb-2">Filters</h3>
+               <h3 className="font-oswald font-bold text-xl uppercase border-b border-black pb-2">Filter</h3>
                <div className="flex flex-wrap gap-2">
-                  {['Hand-Forged', 'Carbon Steel', 'Traditional', 'Stainless'].map(tag => (
+                  {['Handgeschmiedet', 'Carbonstahl', 'Traditionell', 'Rostfrei'].map(tag => (
                     <span key={tag} className="border border-black px-3 py-1 text-xs font-bold uppercase hover:bg-black hover:text-white cursor-pointer transition-colors">
                       {tag}
                     </span>

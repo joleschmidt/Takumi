@@ -38,14 +38,11 @@ export default function GuidePage() {
 
       <section className="pt-32 px-4 md:px-8 lg:px-12 mb-16">
         <div className="max-w-[1800px] mx-auto">
-          <motion.h1
-            initial={{ opacity: 0, y: "100%" }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+          <h1
             className="text-[10vw] leading-[0.8] font-oswald font-bold uppercase tracking-tighter mb-12"
           >
             Ratgeber <span className="text-[#6B7F59]">&</span> Pflege
-          </motion.h1>
+          </h1>
           <div className="h-[1px] w-full bg-black"></div>
         </div>
       </section>
