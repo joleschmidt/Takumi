@@ -51,14 +51,16 @@
 :root {
   /* Custom Palette for Takumi */
   --takumi-charcoal: #2C2C2C;
-  --takumi-white: #FAFAF8;
+  --takumi-white: #F2F0EA;
   --takumi-moss: #6B7F59;
   --takumi-bamboo: #D4C5A9;
   --takumi-stone: #8B8B83;
 
   /* Mapping to Shadcn/Tailwind variables */
-  --background: 60 10% 98%; /* #FAFAF8 Warm White */
-  --foreground: 0 0% 17%; /* #2C2C2C Charcoal */
+  --background: 50 20% 93%;
+  /* #F2F0EA Premium Beige/Cream */
+  --foreground: 0 0% 10%;
+  /* #1A1A1A Deep Black */
 
   --card: 0 0% 100%;
   --card-foreground: 0 0% 17%;
@@ -66,16 +68,20 @@
   --popover: 0 0% 100%;
   --popover-foreground: 0 0% 17%;
 
-  --primary: 100 17% 42%; /* #6B7F59 Moss Green */
+  --primary: 100 17% 42%;
+  /* #6B7F59 Moss Green */
   --primary-foreground: 60 10% 98%;
 
-  --secondary: 39 30% 75%; /* #D4C5A9 Bamboo Beige */
+  --secondary: 39 30% 75%;
+  /* #D4C5A9 Bamboo Beige */
   --secondary-foreground: 0 0% 17%;
 
   --muted: 60 5% 90%;
-  --muted-foreground: 60 3% 55%; /* Stone-ish */
+  --muted-foreground: 60 3% 55%;
+  /* Stone-ish */
 
-  --accent: 39 30% 75%; /* Bamboo as accent */
+  --accent: 39 30% 75%;
+  /* Bamboo as accent */
   --accent-foreground: 0 0% 17%;
 
   --destructive: 0 84.2% 60.2%;
@@ -85,8 +91,9 @@
   --input: 60 5% 90%;
   --ring: 100 17% 42%;
 
-  --radius: 0.25rem; /* More square/clean lines */
-  
+  --radius: 0.25rem;
+  /* More square/clean lines */
+
   --chart-1: 12 76% 61%;
   --chart-2: 173 58% 39%;
   --chart-3: 197 37% 24%;
@@ -96,8 +103,10 @@
 
 .dark {
   /* Dark mode disabled - using light mode values */
-  --background: 60 10% 98%; /* #FAFAF8 Warm White */
-  --foreground: 0 0% 17%; /* #2C2C2C Charcoal */
+  --background: 50 20% 93%;
+  /* #F2F0EA Premium Beige/Cream */
+  --foreground: 0 0% 10%;
+  /* #1A1A1A Deep Black */
 
   --card: 0 0% 100%;
   --card-foreground: 0 0% 17%;
@@ -105,16 +114,20 @@
   --popover: 0 0% 100%;
   --popover-foreground: 0 0% 17%;
 
-  --primary: 100 17% 42%; /* #6B7F59 Moss Green */
+  --primary: 100 17% 42%;
+  /* #6B7F59 Moss Green */
   --primary-foreground: 60 10% 98%;
 
-  --secondary: 39 30% 75%; /* #D4C5A9 Bamboo Beige */
+  --secondary: 39 30% 75%;
+  /* #D4C5A9 Bamboo Beige */
   --secondary-foreground: 0 0% 17%;
 
   --muted: 60 5% 90%;
-  --muted-foreground: 60 3% 55%; /* Stone-ish */
+  --muted-foreground: 60 3% 55%;
+  /* Stone-ish */
 
-  --accent: 39 30% 75%; /* Bamboo as accent */
+  --accent: 39 30% 75%;
+  /* Bamboo as accent */
   --accent-foreground: 0 0% 17%;
 
   --destructive: 0 84.2% 60.2%;
@@ -142,6 +155,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

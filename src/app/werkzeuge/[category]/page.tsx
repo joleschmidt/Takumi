@@ -5,11 +5,11 @@ import { notFound } from "next/navigation"
 // Helper to format category title
 const formatCategoryTitle = (slug: string) => {
   const titles: Record<string, string> = {
-    "scheren-zangen": "Scheren & Zangen",
-    "saegen-beile": "Sägen & Beile",
-    "bodenbearbeitung": "Bodenbearbeitung",
-    "besen-rechen": "Besen & Rechen",
-    "zubehoer": "Pflege & Zubehör"
+    "scheren-zangen": "Shears & Pliers",
+    "saegen-beile": "Saws & Axes",
+    "bodenbearbeitung": "Soil Work",
+    "besen-rechen": "Brooms & Rakes",
+    "zubehoer": "Care & Accessories"
   }
   return titles[slug] || slug.replace(/-/g, " ")
 }
@@ -20,44 +20,45 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
   const categoryProducts = products.filter((p) => p.category === category)
   const title = formatCategoryTitle(category)
 
-  if (categoryProducts.length === 0) {
-    // In a real app, you might want to check if the category is valid even if empty
-    // For now, if no products, we treat it as potential empty category or invalid
-    // But let's just show empty state instead of 404 to be softer
-  }
-
   return (
-    <div className="container px-4 py-12 md:py-16">
-      <div className="mb-12 space-y-4">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-           <a href="/" className="hover:text-foreground">Home</a>
-           <span>/</span>
-           <a href="/werkzeuge" className="hover:text-foreground">Werkzeuge</a>
-           <span>/</span>
-           <span className="text-foreground capitalize">{title}</span>
-        </div>
-        <h1 className="text-4xl md:text-5xl font-oswald font-bold">{title}</h1>
-        <p className="text-muted-foreground text-lg max-w-2xl">
-          Entdecken Sie unsere Auswahl in der Kategorie {title}.
-        </p>
-      </div>
+    <div className="min-h-screen bg-[#FAFAF8] text-[#1a1a1a]">
+      
+      <section className="pt-32 pb-16 px-4 md:px-8 lg:px-12">
+        <div className="max-w-[1800px] mx-auto">
+          
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-500 mb-8">
+             <a href="/" className="hover:text-black">Home</a>
+             <span>/</span>
+             <a href="/werkzeuge" className="hover:text-black">Collection</a>
+             <span>/</span>
+             <span className="text-black">{title}</span>
+          </div>
 
-      {categoryProducts.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {categoryProducts.map((product) => (
-            <ProductCard
-              key={product.id}
-              {...product}
-            />
-          ))}
+          <h1 className="text-[10vw] leading-[0.8] font-oswald font-bold uppercase tracking-tighter mb-12">
+            {title}
+          </h1>
+          <div className="h-[1px] w-full bg-black"></div>
         </div>
-      ) : (
-        <div className="py-20 text-center border rounded-lg bg-muted/20">
-          <p className="text-muted-foreground">Momentan keine Produkte in dieser Kategorie.</p>
+      </section>
+
+      <section className="px-4 md:px-8 lg:px-12 pb-24">
+        <div className="max-w-[1800px] mx-auto">
+          {categoryProducts.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-0 border-t border-l border-black/10">
+              {categoryProducts.map((product) => (
+                <div key={product.id} className="-ml-[1px] -mt-[1px]">
+                  <ProductCard {...product} />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="py-32 text-center border border-black/10 bg-[#F5F5F0]">
+              <h3 className="font-oswald text-2xl uppercase mb-2">No tools found</h3>
+              <p className="text-gray-500">This collection is currently being curated.</p>
+            </div>
+          )}
         </div>
-      )}
+      </section>
     </div>
   )
 }
-
-

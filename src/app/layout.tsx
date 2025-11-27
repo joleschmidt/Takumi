@@ -13,6 +13,8 @@ export const metadata: Metadata = {
   description: "Entdecken Sie handgeschmiedete japanische Gartenwerkzeuge. Eine kuratierte Auswahl für Enthusiasten, die Qualität und Tradition schätzen.",
 };
 
+import { SmoothScroll } from "@/components/SmoothScroll";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -25,11 +27,13 @@ export default function RootLayout({
         inter.variable,
         oswald.variable
       )}>
-        <Navbar />
-        <main className="flex-1">
-          {children}
-        </main>
-        <Footer />
+        <SmoothScroll>
+          <Navbar />
+          <main className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </SmoothScroll>
       </body>
     </html>
   );

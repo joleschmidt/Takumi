@@ -2,7 +2,8 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { Menu, Search, ShoppingBag } from "lucide-react"
+import Image from "next/image"
+import { Menu, Search, ShoppingBag, ArrowRight } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import {
@@ -20,71 +21,105 @@ import { Input } from "@/components/ui/input"
 
 const tools = [
   {
-    title: "Scheren & Zangen",
+    title: "Shears & Pliers",
     href: "/werkzeuge/scheren-zangen",
-    description: "Präzisionswerkzeuge für Bonsai, Ikebana und Formschnitt.",
+    description: "Precision tools for Bonsai & pruning.",
+    image: "/images/garden-shears.jpg"
   },
   {
-    title: "Sägen & Beile",
+    title: "Saws & Axes",
     href: "/werkzeuge/saegen-beile",
-    description: "Scharfe japanische Zugsägen und handgeschmiedete Beile.",
+    description: "Japanese pull saws & hatchets.",
+    image: "/images/artisan-tools.jpg"
   },
   {
-    title: "Bodenbearbeitung",
+    title: "Soil Work",
     href: "/werkzeuge/bodenbearbeitung",
-    description: "Hori Hori, Hacken und Sicheln für die perfekte Beetpflege.",
+    description: "Hori Hori & forged hoes.",
+    image: "/images/garden-trowel.jpg"
   },
   {
-    title: "Besen & Rechen",
+    title: "Brooms & Rakes",
     href: "/werkzeuge/besen-rechen",
-    description: "Traditionelle Bambusbesen und Rechen für Zen-Gärten.",
+    description: "Traditional bamboo tools.",
+    image: "/images/craftsman-workshop.jpg"
   },
 ]
 
 export function Navbar() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto flex h-16 items-center px-4">
-        <div className="mr-4 hidden md:flex">
-          <Link href="/" className="mr-6 flex items-center space-x-2">
-            <span className="text-2xl font-oswald font-bold tracking-tight uppercase">Takumi</span>
-          </Link>
+    <header className="sticky top-0 z-50 w-full border-b border-black bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container mx-auto flex h-20 items-center px-4 md:px-8">
+
+        {/* Logo */}
+        <Link href="/" className="mr-12 flex items-center space-x-2">
+          <span className="text-3xl font-oswald font-bold tracking-tighter uppercase">Takumi</span>
+        </Link>
+
+        {/* Desktop Nav */}
+        <div className="hidden md:flex flex-1">
           <NavigationMenu>
-            <NavigationMenuList>
+            <NavigationMenuList className="gap-2">
               <NavigationMenuItem>
-                <NavigationMenuTrigger>Werkzeuge</NavigationMenuTrigger>
-                <NavigationMenuContent className="!bg-white border border-border shadow-lg">
-                  <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-2">
+                <NavigationMenuTrigger className="text-sm font-bold uppercase tracking-widest bg-transparent hover:bg-transparent data-[state=open]:bg-transparent">
+                  Collection
+                </NavigationMenuTrigger>
+                <NavigationMenuContent className="!bg-white border border-black shadow-xl p-0 w-auto min-w-[600px]">
+                  <div className="grid grid-cols-2 gap-0 w-[600px] lg:w-[800px]">
                     {tools.map((tool) => (
-                      <ListItem
+                      <Link
                         key={tool.title}
-                        title={tool.title}
                         href={tool.href}
+                        legacyBehavior
+                        passHref
                       >
-                        {tool.description}
-                      </ListItem>
+                        <NavigationMenuLink className="group block select-none space-y-1 p-6 leading-none no-underline outline-none transition-colors hover:bg-black hover:text-white border-b border-r border-gray-100 last:border-b-0 even:border-r-0 h-full relative overflow-hidden">
+                          <div className="flex items-start gap-4 z-10 relative">
+                            <div className="w-16 h-16 relative shrink-0 overflow-hidden border border-gray-200 group-hover:border-white/30 transition-colors">
+                              <Image
+                                src={tool.image}
+                                alt={tool.title}
+                                fill
+                                className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                              />
+                            </div>
+                            <div>
+                              <div className="text-lg font-oswald font-bold uppercase mb-1 group-hover:text-white">{tool.title}</div>
+                              <p className="text-sm text-muted-foreground leading-snug group-hover:text-gray-300 font-medium">
+                                {tool.description}
+                              </p>
+                            </div>
+                          </div>
+                          <ArrowRight className="absolute top-6 right-6 w-5 h-5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-white" />
+                        </NavigationMenuLink>
+                      </Link>
                     ))}
-                  </ul>
+                  </div>
+                  <div className="bg-gray-50 p-4 text-center border-t border-black">
+                    <Link href="/werkzeuge" className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest hover:underline">
+                      View All Products <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  </div>
                 </NavigationMenuContent>
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <Link href="/handwerker" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    Handwerker
+                  <NavigationMenuLink className="text-sm font-bold uppercase tracking-widest bg-transparent hover:bg-transparent px-4 py-2 hover:underline underline-offset-4 decoration-2">
+                    Artisans
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <Link href="/ratgeber" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    Ratgeber
+                  <NavigationMenuLink className="text-sm font-bold uppercase tracking-widest bg-transparent hover:bg-transparent px-4 py-2 hover:underline underline-offset-4 decoration-2">
+                    Journal
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <Link href="/ueber-uns" legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    Über Uns
+                  <NavigationMenuLink className="text-sm font-bold uppercase tracking-widest bg-transparent hover:bg-transparent px-4 py-2 hover:underline underline-offset-4 decoration-2">
+                    About
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
@@ -96,78 +131,57 @@ export function Navbar() {
         <Sheet>
           <SheetTrigger asChild>
             <Button variant="ghost" className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden">
-              <Menu className="h-6 w-6" />
-              <span className="sr-only">Menü öffnen</span>
+              <Menu className="h-8 w-8" />
+              <span className="sr-only">Menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="pr-0">
-            <Link href="/" className="flex items-center">
-              <span className="font-oswald font-bold text-2xl uppercase">Takumi</span>
+          <SheetContent side="left" className="pr-0 w-full border-r-0 bg-[#FAFAF8]">
+            <Link href="/" className="flex items-center mb-12">
+              <span className="font-oswald font-bold text-4xl uppercase tracking-tighter">Takumi</span>
             </Link>
-            <div className="my-4 pb-10 pl-6">
-              <div className="flex flex-col space-y-3">
-                {tools.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="text-muted-foreground hover:text-foreground"
-                  >
-                    {item.title}
-                  </Link>
-                ))}
-                <Link href="/handwerker" className="text-muted-foreground hover:text-foreground">
-                  Handwerker
+            <div className="pr-6">
+              <div className="flex flex-col space-y-6">
+                <div className="space-y-4 pb-6 border-b border-black">
+                  <p className="text-xs font-bold uppercase tracking-widest text-gray-500">Collection</p>
+                  {tools.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="block text-2xl font-oswald font-bold uppercase hover:text-[#6B7F59] transition-colors"
+                    >
+                      {item.title}
+                    </Link>
+                  ))}
+                  <Link href="/werkzeuge" className="block text-sm font-bold uppercase tracking-widest pt-2">View All →</Link>
+                </div>
+
+                <Link href="/handwerker" className="text-3xl font-oswald font-bold uppercase hover:text-[#6B7F59]">
+                  Artisans
                 </Link>
-                <Link href="/ratgeber" className="text-muted-foreground hover:text-foreground">
-                  Ratgeber
+                <Link href="/ratgeber" className="text-3xl font-oswald font-bold uppercase hover:text-[#6B7F59]">
+                  Journal
                 </Link>
-                <Link href="/ueber-uns" className="text-muted-foreground hover:text-foreground">
-                  Über Uns
+                <Link href="/ueber-uns" className="text-3xl font-oswald font-bold uppercase hover:text-[#6B7F59]">
+                  About
                 </Link>
               </div>
             </div>
           </SheetContent>
         </Sheet>
 
-        <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-          <div className="w-full flex-1 md:w-auto md:flex-none">
-            <div className="relative">
-              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Suche..."
-                className="pl-8 md:w-[300px] lg:w-[300px] bg-muted/50"
-              />
-            </div>
+        <div className="flex items-center space-x-4 md:space-x-6">
+          <div className="hidden md:block relative w-full max-w-xs">
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search..."
+              className="pl-8 bg-muted/30 shadow-none border-none focus-visible:ring-0"
+            />
           </div>
+          <ShoppingBag className="h-6 w-6 cursor-pointer hover:opacity-60 transition-opacity" />
         </div>
+
       </div>
     </header>
   )
 }
-
-const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
-          )}
-          {...props}
-        >
-          <div className="text-sm font-medium leading-none text-foreground">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-foreground/70">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  )
-})
-ListItem.displayName = "ListItem"
-

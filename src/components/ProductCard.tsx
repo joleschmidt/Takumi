@@ -1,6 +1,5 @@
 import Image from "next/image"
 import Link from "next/link"
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight } from "lucide-react"
 
@@ -26,54 +25,57 @@ export function ProductCard({
   isNew,
 }: ProductCardProps) {
   return (
-    <Link href={`/werkzeuge/${category}/${slug}`} className="group h-full">
-      <Card className="h-full overflow-hidden border-none shadow-sm hover:shadow-md transition-all duration-300 bg-card flex flex-col">
-        <div className="relative aspect-[4/5] bg-stone-100 overflow-hidden">
-          {isNew && (
-            <Badge className="absolute top-3 left-3 z-10 bg-primary hover:bg-primary/90 text-white border-none">
-              Neu
-            </Badge>
-          )}
-          {imageUrl ? (
-            <Image 
-              src={imageUrl} 
-              alt={title} 
-              fill 
-              className="object-cover group-hover:scale-105 transition-transform duration-500" 
-            />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center text-stone-300 bg-stone-50">
-              <span className="text-4xl">🛠️</span>
-            </div>
-          )}
-        </div>
-        <CardHeader className="p-5 pb-2">
-          <div className="flex justify-between items-start gap-2">
-            <div>
-              <h3 className="font-oswald font-bold text-lg leading-tight group-hover:text-primary transition-colors">
-                {title}
-              </h3>
-              {originalName && (
-                <p className="text-xs text-muted-foreground mt-1 font-medium tracking-wide uppercase">
-                  {originalName}
-                </p>
-              )}
-            </div>
+    <Link href={`/werkzeuge/${category}/${slug}`} className="group block h-full border border-black/10 bg-white hover:border-black transition-colors duration-300">
+      <div className="relative aspect-[4/5] bg-[#F5F5F0] overflow-hidden border-b border-black/10">
+        {isNew && (
+          <div className="absolute top-0 left-0 z-10 bg-black text-white text-xs font-bold uppercase px-3 py-1 tracking-widest">
+            New
           </div>
-        </CardHeader>
-        <CardContent className="p-5 pt-2 flex-grow">
-          <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">
+        )}
+        {imageUrl ? (
+          <Image 
+            src={imageUrl} 
+            alt={title} 
+            fill 
+            className="object-cover group-hover:scale-105 transition-transform duration-700 grayscale group-hover:grayscale-0" 
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center text-stone-300">
+            <span className="text-4xl grayscale">🛠️</span>
+          </div>
+        )}
+        
+        {/* Hover overlay with "View" button */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/10">
+           <div className="bg-white text-black px-6 py-2 uppercase font-bold text-sm tracking-widest translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+             View
+           </div>
+        </div>
+      </div>
+
+      <div className="p-6 flex flex-col h-[200px] justify-between">
+        <div>
+          <div className="flex justify-between items-start mb-2">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#6B7F59]">{category.replace(/-/g, ' ')}</span>
+            <span className="font-bold text-sm">{priceRange}</span>
+          </div>
+          <h3 className="font-oswald font-bold text-2xl uppercase leading-none mb-1 group-hover:underline decoration-2 underline-offset-4">
+            {title}
+          </h3>
+          {originalName && (
+            <p className="text-xs text-gray-400 font-medium tracking-wide uppercase mb-4">
+              {originalName}
+            </p>
+          )}
+          <p className="text-sm text-gray-600 line-clamp-2 leading-relaxed">
             {description}
           </p>
-        </CardContent>
-        <CardFooter className="p-5 pt-0 flex items-center justify-between text-sm">
-          <span className="font-medium text-foreground">{priceRange}</span>
-          <span className="text-primary font-medium opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 flex items-center">
-            Details <ArrowRight className="ml-1 h-3 w-3" />
-          </span>
-        </CardFooter>
-      </Card>
+        </div>
+        
+        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest mt-4">
+           Details <ArrowRight className="w-4 h-4" />
+        </div>
+      </div>
     </Link>
   )
 }
-
