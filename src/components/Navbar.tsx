@@ -53,7 +53,7 @@ export function Navbar() {
 
         {/* Logo */}
         <Link href="/" className="mr-12 flex items-center space-x-2">
-          <span className="text-3xl font-oswald font-bold tracking-tighter uppercase">Takumi</span>
+          <span className="text-3xl font-oswald font-bold tracking-tighter uppercase text-black">Takumi</span>
         </Link>
 
         {/* Desktop Nav */}
@@ -61,19 +61,17 @@ export function Navbar() {
           <NavigationMenu>
             <NavigationMenuList className="gap-2">
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="text-sm font-bold uppercase tracking-widest bg-transparent hover:bg-transparent data-[state=open]:bg-transparent">
+                <NavigationMenuTrigger className="text-sm font-bold uppercase tracking-widest bg-transparent hover:bg-transparent data-[state=open]:bg-transparent text-black">
                   Collection
                 </NavigationMenuTrigger>
                 <NavigationMenuContent className="!bg-white border border-black shadow-xl p-0 w-auto min-w-[600px]">
                   <div className="grid grid-cols-2 gap-0 w-[600px] lg:w-[800px]">
                     {tools.map((tool) => (
-                      <Link
-                        key={tool.title}
-                        href={tool.href}
-                        legacyBehavior
-                        passHref
-                      >
-                        <NavigationMenuLink className="group block select-none space-y-1 p-6 leading-none no-underline outline-none transition-colors hover:bg-black hover:text-white border-b border-r border-gray-100 last:border-b-0 even:border-r-0 h-full relative overflow-hidden">
+                      <NavigationMenuLink key={tool.title} asChild>
+                        <Link
+                          href={tool.href}
+                          className="group block select-none space-y-1 p-6 leading-none no-underline outline-none transition-colors hover:bg-black hover:text-white border-b border-r border-gray-100 last:border-b-0 even:border-r-0 h-full relative overflow-hidden"
+                        >
                           <div className="flex items-start gap-4 z-10 relative">
                             <div className="w-16 h-16 relative shrink-0 overflow-hidden border border-gray-200 group-hover:border-white/30 transition-colors">
                               <Image
@@ -84,15 +82,15 @@ export function Navbar() {
                               />
                             </div>
                             <div>
-                              <div className="text-lg font-oswald font-bold uppercase mb-1 group-hover:text-white">{tool.title}</div>
-                              <p className="text-sm text-muted-foreground leading-snug group-hover:text-gray-300 font-medium">
+                              <div className="text-lg font-oswald font-bold uppercase mb-1 text-black group-hover:text-white">{tool.title}</div>
+                              <p className="text-sm text-gray-600 leading-snug group-hover:text-gray-300 font-medium">
                                 {tool.description}
                               </p>
                             </div>
                           </div>
                           <ArrowRight className="absolute top-6 right-6 w-5 h-5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 text-white" />
-                        </NavigationMenuLink>
-                      </Link>
+                        </Link>
+                      </NavigationMenuLink>
                     ))}
                   </div>
                   <div className="bg-gray-50 p-4 text-center border-t border-black">
@@ -103,25 +101,25 @@ export function Navbar() {
                 </NavigationMenuContent>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link href="/handwerker" legacyBehavior passHref>
-                  <NavigationMenuLink className="text-sm font-bold uppercase tracking-widest bg-transparent hover:bg-transparent px-4 py-2 hover:underline underline-offset-4 decoration-2">
+                <NavigationMenuLink asChild>
+                  <Link href="/handwerker" className="text-sm font-bold uppercase tracking-widest bg-transparent hover:bg-transparent px-4 py-2 hover:underline underline-offset-4 decoration-2 text-black">
                     Artisans
-                  </NavigationMenuLink>
-                </Link>
+                  </Link>
+                </NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link href="/ratgeber" legacyBehavior passHref>
-                  <NavigationMenuLink className="text-sm font-bold uppercase tracking-widest bg-transparent hover:bg-transparent px-4 py-2 hover:underline underline-offset-4 decoration-2">
+                <NavigationMenuLink asChild>
+                  <Link href="/ratgeber" className="text-sm font-bold uppercase tracking-widest bg-transparent hover:bg-transparent px-4 py-2 hover:underline underline-offset-4 decoration-2 text-black">
                     Journal
-                  </NavigationMenuLink>
-                </Link>
+                  </Link>
+                </NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
-                <Link href="/ueber-uns" legacyBehavior passHref>
-                  <NavigationMenuLink className="text-sm font-bold uppercase tracking-widest bg-transparent hover:bg-transparent px-4 py-2 hover:underline underline-offset-4 decoration-2">
+                <NavigationMenuLink asChild>
+                  <Link href="/ueber-uns" className="text-sm font-bold uppercase tracking-widest bg-transparent hover:bg-transparent px-4 py-2 hover:underline underline-offset-4 decoration-2 text-black">
                     About
-                  </NavigationMenuLink>
-                </Link>
+                  </Link>
+                </NavigationMenuLink>
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
@@ -178,7 +176,7 @@ export function Navbar() {
               className="pl-8 bg-muted/30 shadow-none border-none focus-visible:ring-0"
             />
           </div>
-          <ShoppingBag className="h-6 w-6 cursor-pointer hover:opacity-60 transition-opacity" />
+          <ShoppingBag className="h-6 w-6 cursor-pointer hover:opacity-60 transition-opacity text-black" />
         </div>
 
       </div>
