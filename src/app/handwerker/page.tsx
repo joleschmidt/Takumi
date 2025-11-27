@@ -8,8 +8,8 @@ export default function HandwerkerPage() {
     <div className="min-h-screen bg-[#FAFAF8] text-[#1a1a1a]">
       
       {/* Hero */}
-      <section className="pt-32 px-4 md:px-8 lg:px-12 mb-24">
-        <div className="max-w-[1800px] mx-auto">
+      <section className="sticky top-0 z-0 pt-32 px-4 md:px-8 lg:px-12 bg-[#FAFAF8] min-h-[50vh] flex flex-col justify-center">
+        <div className="max-w-[1800px] mx-auto w-full">
            <h1 
              className="text-[12vw] leading-[0.8] font-oswald font-bold uppercase tracking-tighter mb-8"
            >
@@ -29,7 +29,7 @@ export default function HandwerkerPage() {
       </section>
 
       {/* Visual */}
-      <section className="px-4 md:px-8 lg:px-12 pb-24">
+      <section className="relative z-10 bg-white px-4 md:px-8 lg:px-12 pb-24 pt-24 min-h-[calc(100vh-5rem+10vh)]">
         <div className="max-w-[1800px] mx-auto">
           <div className="relative aspect-[21/9] w-full overflow-hidden bg-stone-900">
              <Image 
@@ -45,14 +45,12 @@ export default function HandwerkerPage() {
              </div>
           </div>
         </div>
-      </section>
 
-      {/* Placeholder Grid */}
-      <section className="py-24 px-4 md:px-8 lg:px-12 bg-[#1a1a1a] text-[#FAFAF8]">
-         <div className="max-w-[1800px] mx-auto text-center py-24">
-            <h3 className="text-4xl font-oswald font-bold uppercase mb-6">Geschichten entstehen...</h3>
-            <p className="text-gray-400">Wir dokumentieren derzeit die Geschichten unserer Partner in Sanjo und Miki.</p>
-         </div>
+        {/* Placeholder Grid */}
+        <div className="max-w-[1800px] mx-auto text-center py-24 mt-24 border-t border-black">
+           <h3 className="text-4xl font-oswald font-bold uppercase mb-6">Geschichten entstehen...</h3>
+           <p className="text-gray-400">Wir dokumentieren derzeit die Geschichten unserer Partner in Sanjo und Miki.</p>
+        </div>
       </section>
 
     </div>

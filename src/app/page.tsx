@@ -102,38 +102,53 @@ const ProjectSpotlight = () => {
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen bg-[#F2F0EA] text-[#1a1a1a] overflow-hidden">
+    <div className="bg-[#F2F0EA] text-[#1a1a1a]">
 
       {/* Hero Section - Light Background with Sticky Effect */}
-      <section className="sticky top-0 z-0 min-h-screen flex flex-col justify-center px-4 md:px-8 lg:px-12 pt-32 bg-[#F2F0EA]">
-        <div className="max-w-[1800px] mx-auto w-full z-10 pb-20">
+      <section className="sticky top-0 z-0 h-screen flex flex-col px-4 md:px-8 lg:px-12 pt-20 pb-12 bg-[#F2F0EA]">
+        <div className="max-w-[1800px] mx-auto w-full h-full flex flex-col justify-between">
           <motion.div
             initial="hidden"
             animate="visible"
             variants={staggerContainer}
-            className="space-y-[-1vw] mb-12"
+            className="space-y-[-1vw] flex-1 flex flex-col justify-center"
           >
             <div className="overflow-hidden">
-              <motion.h1 variants={revealText} className="text-[12vw] leading-[0.9] font-oswald font-bold uppercase tracking-tighter text-black">
+              <motion.h1
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                className="text-[12vw] leading-[0.9] font-oswald font-bold uppercase tracking-tighter text-black"
+              >
                 Japanische
               </motion.h1>
             </div>
             <div className="overflow-hidden">
-              <motion.h1 variants={revealText} className="text-[12vw] leading-[0.9] font-oswald font-bold uppercase tracking-tighter text-black">
+              <motion.h1
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+                className="text-[12vw] leading-[0.9] font-oswald font-bold uppercase tracking-tighter text-black"
+              >
                 Gartenwerkzeuge
               </motion.h1>
             </div>
             <div className="overflow-hidden">
-              <motion.h1 variants={revealText} className="text-[12vw] leading-[0.9] font-oswald font-bold uppercase tracking-tighter text-[#6B7F59]">
+              <motion.h1
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+                className="text-[12vw] leading-[0.9] font-oswald font-bold uppercase tracking-tighter text-[#6B7F59]"
+              >
                 mit Seele
               </motion.h1>
             </div>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 1 }}
             className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 border-t border-black/10 pt-8"
           >
             <p className="max-w-md text-lg md:text-xl font-medium leading-tight">
@@ -151,70 +166,72 @@ export default function Home() {
       </section>
 
       {/* Marquee Section - Dark Background - Z-Index 10 to cover Sticky Hero */}
-      <motion.section
-        className="relative z-10 py-8 bg-[#1A1A1A] text-[#FAFAF8] overflow-hidden whitespace-nowrap"
-      >
-        <motion.div
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
-          className="flex items-center gap-12 text-4xl md:text-6xl font-oswald font-bold uppercase tracking-widest"
+      <div className="relative z-10 bg-[#1A1A1A]">
+        <motion.section
+          className="py-8 bg-[#1A1A1A] text-[#FAFAF8] overflow-hidden whitespace-nowrap"
         >
-          <span>Tradition (Dentō)</span>
-          <span className="text-[#6B7F59]">●</span>
-          <span>Handwerk (Takumi)</span>
-          <span className="text-[#6B7F59]">●</span>
-          <span>Präzision (Seimitsu)</span>
-          <span className="text-[#6B7F59]">●</span>
-          <span>Seele (Kokoro)</span>
-          <span className="text-[#6B7F59]">●</span>
-          <span>Tradition (Dentō)</span>
-          <span className="text-[#6B7F59]">●</span>
-          <span>Handwerk (Takumi)</span>
-          <span className="text-[#6B7F59]">●</span>
-          <span>Präzision (Seimitsu)</span>
-          <span className="text-[#6B7F59]">●</span>
-          <span>Seele (Kokoro)</span>
-          <span className="text-[#6B7F59]">●</span>
-        </motion.div>
-      </motion.section>
+          <motion.div
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
+            className="flex items-center gap-12 text-4xl md:text-6xl font-oswald font-bold uppercase tracking-widest"
+          >
+            <span>Tradition (Dentō)</span>
+            <span className="text-[#6B7F59]">●</span>
+            <span>Handwerk (Takumi)</span>
+            <span className="text-[#6B7F59]">●</span>
+            <span>Präzision (Seimitsu)</span>
+            <span className="text-[#6B7F59]">●</span>
+            <span>Seele (Kokoro)</span>
+            <span className="text-[#6B7F59]">●</span>
+            <span>Tradition (Dentō)</span>
+            <span className="text-[#6B7F59]">●</span>
+            <span>Handwerk (Takumi)</span>
+            <span className="text-[#6B7F59]">●</span>
+            <span>Präzision (Seimitsu)</span>
+            <span className="text-[#6B7F59]">●</span>
+            <span>Seele (Kokoro)</span>
+            <span className="text-[#6B7F59]">●</span>
+          </motion.div>
+        </motion.section>
 
-      {/* Categories Grid - Light/Image Background */}
-      <section className="relative z-10 bg-white min-h-[calc(100vh-5rem+10vh)]">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-          {categories.map((category, index) => (
-            <Link key={index} href={category.href} className="group relative min-h-[50vh] md:min-h-screen flex flex-col justify-between overflow-hidden bg-stone-100">
-              {/* Persistent Background Image with Overlay */}
-              <div className="absolute inset-0 z-0">
-                <Image
-                  src={category.image}
-                  alt={category.title}
-                  fill
-                  className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000 ease-out"
-                />
-                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors duration-700" />
-              </div>
-
-              <div className="z-10 relative p-8 md:p-16 h-full flex flex-col justify-between">
-                <div>
-                  <span className="block text-xs font-bold mb-4 text-white/80 tracking-widest">0{index + 1} / 04</span>
-                  <h3 className="text-6xl md:text-8xl font-oswald font-bold uppercase leading-none text-white group-hover:translate-x-4 transition-transform duration-500">
-                    {category.title}
-                  </h3>
+        {/* Categories Grid - Light/Image Background */}
+        <section className="bg-white min-h-[calc(100vh-5rem+10vh)]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+            {categories.map((category, index) => (
+              <Link key={index} href={category.href} className="group relative min-h-[50vh] md:min-h-screen flex flex-col justify-between overflow-hidden bg-stone-100">
+                {/* Persistent Background Image with Overlay */}
+                <div className="absolute inset-0 z-0">
+                  <Image
+                    src={category.image}
+                    alt={category.title}
+                    fill
+                    className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000 ease-out"
+                  />
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors duration-700" />
                 </div>
 
-                <div className="flex justify-between items-end border-t border-white/30 pt-8">
-                  <p className="max-w-[250px] text-sm text-white/90 font-medium leading-relaxed opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-100">
-                    {category.description}
-                  </p>
-                  <div className="w-16 h-16 rounded-full border border-white/50 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-300">
-                    <ArrowRight className="w-6 h-6 text-white group-hover:text-black transform -rotate-45 group-hover:rotate-0 transition-transform duration-500" />
+                <div className="z-10 relative p-8 md:p-16 h-full flex flex-col justify-between">
+                  <div>
+                    <span className="block text-xs font-bold mb-4 text-white/80 tracking-widest">0{index + 1} / 04</span>
+                    <h3 className="text-6xl md:text-8xl font-oswald font-bold uppercase leading-none text-white group-hover:translate-x-4 transition-transform duration-500">
+                      {category.title}
+                    </h3>
+                  </div>
+
+                  <div className="flex justify-between items-end border-t border-white/30 pt-8">
+                    <p className="max-w-[250px] text-sm text-white/90 font-medium leading-relaxed opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-100">
+                      {category.description}
+                    </p>
+                    <div className="w-16 h-16 rounded-full border border-white/50 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-300">
+                      <ArrowRight className="w-6 h-6 text-white group-hover:text-black transform -rotate-45 group-hover:rotate-0 transition-transform duration-500" />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
+              </Link>
+            ))}
+          </div>
+        </section>
+      </div>
 
       {/* Changing Image / Spotlight Section - Dark Background (Alternating) */}
       <div className="relative z-10 bg-[#1A1A1A]">

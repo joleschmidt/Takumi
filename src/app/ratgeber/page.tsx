@@ -36,8 +36,8 @@ export default function GuidePage() {
   return (
     <div className="min-h-screen bg-[#FAFAF8] text-[#1a1a1a]">
 
-      <section className="pt-32 px-4 md:px-8 lg:px-12 mb-16">
-        <div className="max-w-[1800px] mx-auto">
+      <section className="sticky top-0 z-0 pt-32 px-4 md:px-8 lg:px-12 bg-[#FAFAF8] min-h-[50vh] flex flex-col justify-center">
+        <div className="max-w-[1800px] mx-auto w-full">
           <h1
             className="text-[10vw] leading-[0.8] font-oswald font-bold uppercase tracking-tighter mb-12"
           >
@@ -47,7 +47,7 @@ export default function GuidePage() {
         </div>
       </section>
 
-      <section className="px-4 md:px-8 lg:px-12 pb-32">
+      <section className="relative z-10 bg-white px-4 md:px-8 lg:px-12 pb-32 min-h-[calc(100vh-5rem+10vh)] pt-24">
         <div className="max-w-[1800px] mx-auto">
 
           <div className="grid grid-cols-1 gap-0">

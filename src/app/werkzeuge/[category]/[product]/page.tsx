@@ -24,7 +24,7 @@ export default async function ProductPage({
       <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
         
         {/* Left: Sticky Image Gallery */}
-        <div className="relative bg-[#F5F5F0] lg:h-screen lg:sticky lg:top-0 flex items-center justify-center p-8 md:p-16">
+        <div className="relative bg-[#F5F5F0] lg:h-[calc(100vh-5rem+10vh)] lg:sticky lg:top-20 flex items-center justify-center p-8 md:p-16">
            <div className="relative w-full aspect-[4/5] max-w-xl shadow-2xl shadow-black/5">
               {/* Main Image */}
               <div className="absolute inset-0 bg-white flex items-center justify-center overflow-hidden">
@@ -49,7 +49,7 @@ export default async function ProductPage({
         </div>
 
         {/* Right: Content */}
-        <div className="p-8 md:p-16 lg:pt-32 flex flex-col justify-center">
+        <div className="p-8 md:p-16 lg:pt-32 flex flex-col justify-center min-h-[calc(100vh-5rem+10vh)]">
            
            <div className="hidden lg:flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-500 mb-12">
              <Link href="/werkzeuge" className="hover:text-black transition-colors">Kollektion</Link>
