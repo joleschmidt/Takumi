@@ -53,7 +53,7 @@ export function Navbar() {
 
         {/* Logo */}
         <Link href="/" className="mr-12 flex items-center space-x-2">
-          <span className="text-3xl font-oswald font-bold tracking-tighter uppercase text-black">Takumi<span className="text-[#BC002D]">匠</span></span>
+          <span className="text-3xl font-oswald font-bold tracking-tighter uppercase text-black leading-none">Takumi<span className="text-[#BC002D] inline-flex items-center justify-center" style={{ transform: 'translateY(-0.05em)', lineHeight: '1' }}>匠</span></span>
         </Link>
 
         {/* Desktop Nav */}
