@@ -101,6 +101,9 @@ const ProjectSpotlight = () => {
 };
 
 export default function Home() {
+  const { scrollYProgress } = useScroll();
+  const xTranslation = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]);
+
   return (
     <div className="flex flex-col min-h-screen bg-[#F2F0EA] text-[#1a1a1a] overflow-hidden">
 
@@ -169,32 +172,23 @@ export default function Home() {
 
       {/* Marquee Section - Dark Background - Z-Index 10 to cover Sticky Hero */}
       <div className="relative z-10">
-        <motion.section
-          className="py-8 bg-[#1A1A1A] text-[#FAFAF8] overflow-hidden whitespace-nowrap"
-        >
+        <section className="bg-[#1A1A1A] text-[#FAFAF8] overflow-hidden whitespace-nowrap py-8">
           <motion.div
-            animate={{ x: ["0%", "-50%"] }}
-            transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
-            className="flex items-center gap-12 text-4xl md:text-6xl font-oswald font-bold uppercase tracking-widest"
+            style={{ x: xTranslation }}
+            className="flex items-center gap-12 text-4xl md:text-6xl font-oswald font-bold uppercase tracking-widest w-fit"
           >
-            <span>Tradition (Dentō)</span>
-            <span className="text-[#6B7F59]">●</span>
-            <span>Handwerk (Takumi)</span>
-            <span className="text-[#6B7F59]">●</span>
-            <span>Präzision (Seimitsu)</span>
-            <span className="text-[#6B7F59]">●</span>
-            <span>Seele (Kokoro)</span>
-            <span className="text-[#6B7F59]">●</span>
-            <span>Tradition (Dentō)</span>
-            <span className="text-[#6B7F59]">●</span>
-            <span>Handwerk (Takumi)</span>
-            <span className="text-[#6B7F59]">●</span>
-            <span>Präzision (Seimitsu)</span>
-            <span className="text-[#6B7F59]">●</span>
-            <span>Seele (Kokoro)</span>
-            <span className="text-[#6B7F59]">●</span>
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="flex items-center gap-12 shrink-0">
+                <span className="leading-none">Tradition (Dentō)</span>
+                <span className="text-[#6B7F59] flex items-center justify-center leading-none" style={{ transform: 'translateY(-0.25em)' }}>●</span>
+                <span className="leading-none">Präzision (Seimitsu)</span>
+                <span className="text-[#6B7F59] flex items-center justify-center leading-none" style={{ transform: 'translateY(-0.25em)' }}>●</span>
+                <span className="leading-none">Seele (Kokoro)</span>
+                <span className="text-[#6B7F59] flex items-center justify-center leading-none" style={{ transform: 'translateY(-0.25em)' }}>●</span>
+              </div>
+            ))}
           </motion.div>
-        </motion.section>
+        </section>
 
         {/* Categories Grid - Light/Image Background */}
         <section className="bg-white min-h-[calc(100vh-5rem+10vh)]">
