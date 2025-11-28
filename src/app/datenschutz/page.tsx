@@ -55,7 +55,18 @@ export default function DatenschutzPage() {
                   Diese Website wird bei Vercel gehostet. Anbieter ist Vercel Inc. 340 S Lemon Ave Ste 5136, Walnut, CA 91789, USA.
                 </p>
                 <p className="mt-4">
-                  Wenn Sie diese Website besuchen, erfasst Vercel verschiedene Logfiles inklusive Ihrer IP-Adressen. Details entnehmen Sie der Datenschutzerklärung von Vercel: https://vercel.com/legal/privacy-policy.
+                  Wenn Sie diese Website besuchen, erfasst Vercel verschiedene Logfiles inklusive Ihrer IP-Adressen. Details entnehmen Sie der Datenschutzerklärung von Vercel:{" "}
+                  <a
+                    href="https://vercel.com/legal/privacy-policy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#6B7F59] hover:underline"
+                  >
+                    https://vercel.com/legal/privacy-policy
+                  </a>.
+                </p>
+                <p className="mt-4">
+                  <strong>Datenübertragung in Drittländer:</strong> Da Vercel ein US-amerikanisches Unternehmen ist, erfolgt eine Datenübertragung in die USA. Die Datenübertragung erfolgt auf Grundlage der Standardvertragsklauseln (SCC) der EU-Kommission, die ein angemessenes Datenschutzniveau gewährleisten. Weitere Informationen zur Datenübertragung und den verwendeten Standardvertragsklauseln finden Sie in der Datenschutzerklärung von Vercel.
                 </p>
               </div>
 
@@ -122,6 +133,27 @@ export default function DatenschutzPage() {
                 <p>
                   Im Falle von Verstößen gegen die DSGVO steht den Betroffenen ein Beschwerderecht bei einer Aufsichtsbehörde, insbesondere in dem Mitgliedstaat ihres gewöhnlichen Aufenthalts, ihres Arbeitsplatzes oder des Orts des mutmaßlichen Verstoßes zu. Das Beschwerderecht besteht unbeschadet anderweitiger verwaltungsrechtlicher oder gerichtlicher Rechtsbehelfe.
                 </p>
+                <p className="mt-4">
+                  <strong>Zuständige Aufsichtsbehörde:</strong> Die für uns zuständige Aufsichtsbehörde ist:
+                </p>
+                <p className="mt-2">
+                  Der Hessische Beauftragte für Datenschutz und Informationsfreiheit<br />
+                  Postfach 3163<br />
+                  65021 Wiesbaden<br />
+                  Deutschland<br />
+                  <br />
+                  Telefon: +49 611 1408-0<br />
+                  E-Mail: poststelle@datenschutz.hessen.de<br />
+                  Website:{" "}
+                  <a
+                    href="https://datenschutz.hessen.de"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#6B7F59] hover:underline"
+                  >
+                    https://datenschutz.hessen.de
+                  </a>
+                </p>
 
                 <h3 className="text-xl font-bold mb-3 mt-6">Recht auf Datenübertragbarkeit</h3>
                 <p>
@@ -164,8 +196,28 @@ export default function DatenschutzPage() {
                   Diese Website verwendet technisch notwendige Cookies, um die Funktionalität der Website zu gewährleisten. Diese Cookies werden automatisch gesetzt, wenn Sie die Website besuchen.
                 </p>
                 <p className="mt-4">
-                  {/* TODO: Falls Sie Analytics-Tools (Google Analytics, etc.) verwenden, fügen Sie hier einen entsprechenden Abschnitt hinzu */}
-                  <em>Hinweis: Falls Sie Analytics-Tools, Marketing-Cookies oder andere Tracking-Technologien verwenden, müssen Sie diese hier detailliert beschreiben und die Rechtsgrundlage (Einwilligung) angeben.</em>
+                  <strong>Verwendete Cookies im Detail:</strong>
+                </p>
+                <div className="mt-4 space-y-4">
+                  <div>
+                    <p className="font-semibold mb-2">Cookie-Consent-Speicherung (LocalStorage)</p>
+                    <ul className="list-disc pl-6 space-y-1 text-sm">
+                      <li><strong>Name:</strong> cookie-consent</li>
+                      <li><strong>Zweck:</strong> Speicherung Ihrer Cookie-Einstellungen (Akzeptiert/Ablehnt)</li>
+                      <li><strong>Kategorie:</strong> Technisch notwendig</li>
+                      <li><strong>Speicherdauer:</strong> Dauerhaft (bis Sie die Einstellungen ändern oder LocalStorage löschen)</li>
+                      <li><strong>Rechtsgrundlage:</strong> Berechtigtes Interesse (Art. 6 Abs. 1 lit. f DSGVO)</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="font-semibold mb-2">Technisch notwendige Cookies</p>
+                    <p className="text-sm mb-2">
+                      Diese Website verwendet keine weiteren Cookies. Alle technisch notwendigen Funktionen werden über LocalStorage oder Session-Storage realisiert, die automatisch gelöscht werden, wenn Sie Ihren Browser schließen.
+                    </p>
+                  </div>
+                </div>
+                <p className="mt-4">
+                  Sie können Ihre Cookie-Einstellungen jederzeit über den Link "Cookie-Einstellungen" im Footer dieser Website ändern oder Ihre Einwilligung widerrufen.
                 </p>
 
                 <h3 className="text-xl font-bold mb-3 mt-6">Server-Log-Dateien</h3>
@@ -183,19 +235,19 @@ export default function DatenschutzPage() {
                 <p className="mt-4">
                   Eine Zusammenführung dieser Daten mit anderen Datenquellen wird nicht vorgenommen. Die Erfassung dieser Daten erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Der Websitebetreiber hat ein berechtigtes Interesse an der technisch fehlerfreien Darstellung und der Optimierung seiner Website – hierzu müssen die Server-Log-Files erfasst werden.
                 </p>
+                <p className="mt-4">
+                  <strong>Speicherdauer:</strong> Die Server-Log-Dateien werden von unserem Hosting-Anbieter Vercel für einen Zeitraum von bis zu 30 Tagen gespeichert und anschließend automatisch gelöscht, sofern keine gesetzlichen Aufbewahrungspflichten entgegenstehen.
+                </p>
 
-                <h3 className="text-xl font-bold mb-3 mt-6">Kontaktformular</h3>
+                <h3 className="text-xl font-bold mb-3 mt-6">Kontakt per E-Mail</h3>
                 <p>
-                  Wenn Sie uns per Kontaktformular Anfragen zukommen lassen, werden Ihre Angaben aus dem Anfrageformular inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter.
+                  Wenn Sie uns per E-Mail kontaktieren, werden Ihre Angaben aus der E-Mail inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter.
                 </p>
                 <p className="mt-4">
                   Die Verarbeitung dieser Daten erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO, sofern Ihre Anfrage mit der Erfüllung eines Vertrags zusammenhängt oder zur Durchführung vorvertraglicher Maßnahmen erforderlich ist. In allen übrigen Fällen beruht die Verarbeitung auf unserem berechtigten Interesse an der effektiven Bearbeitung der an uns gerichteten Anfragen (Art. 6 Abs. 1 lit. f DSGVO) oder auf Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO), sofern diese abgefragt wurde.
                 </p>
                 <p className="mt-4">
-                  Die von Ihnen im Kontaktformular eingegebenen Daten verbleiben bei uns, bis Sie uns zur Löschung auffordern, Ihre Einwilligung zur Speicherung widerrufen oder der Zweck für die Datenspeicherung entfällt (z. B. nach abgeschlossener Bearbeitung Ihrer Anfrage). Zwingende gesetzliche Bestimmungen – insbesondere Aufbewahrungsfristen – bleiben unberührt.
-                </p>
-                <p className="text-sm text-gray-600 mt-2">
-                  <em>Falls Sie kein Kontaktformular haben, können Sie diesen Abschnitt entfernen.</em>
+                  Die von Ihnen per E-Mail übermittelten Daten verbleiben bei uns, bis Sie uns zur Löschung auffordern, Ihre Einwilligung zur Speicherung widerrufen oder der Zweck für die Datenspeicherung entfällt (z. B. nach abgeschlossener Bearbeitung Ihrer Anfrage). Zwingende gesetzliche Bestimmungen – insbesondere Aufbewahrungsfristen – bleiben unberührt.
                 </p>
               </div>
 

@@ -1,0 +1,341 @@
+---
+alwaysApply: true
+---
+
+# Legal Compliance Rules for Web Development (German/EU Focus)
+
+You are a web development assistant with deep knowledge of German and European legal requirements for websites. Always ensure that any code, content, or features you create comply with GDPR/DSGVO, TMG, and TTDSG regulations.
+
+## Core Principles
+
+1. **Privacy by Design**: Always implement privacy-protective solutions by default
+2. **Data Minimization**: Only collect necessary data
+3. **Transparency**: Make data processing clear and understandable
+4. **Consent First**: Never implement tracking without explicit consent
+5. **User Rights**: Always provide mechanisms for users to exercise their rights
+
+## Mandatory Requirements
+
+### 1. Cookie Consent Management
+
+**NEVER implement cookies or tracking without proper consent mechanism.**
+```javascript
+// ❌ WRONG - Loading tracking before consent
+<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+
+// ✅ CORRECT - Load only after consent
+function loadGoogleAnalytics() {
+  if (hasConsent('analytics')) {
+    const script = document.createElement('script');
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID';
+    document.head.appendChild(script);
+  }
+}
+```
+
+**Required consent banner elements:**
+- Clear accept/reject options
+- Granular cookie categories (necessary, functional, analytics, marketing)
+- Link to privacy policy
+- Easy withdrawal mechanism
+- No pre-checked boxes for non-essential cookies
+- Reject must be as easy as accept
+
+### 2. Impressum (Imprint) Requirements
+
+Always remind to include in easily accessible location (max 2 clicks):
+```html
+<!-- ✅ Required Impressum Structure -->
+<footer>
+  <nav>
+    <a href="/impressum">Impressum</a>
+    <a href="/datenschutz">Datenschutz</a>
+  </nav>
+</footer>
+
+<!-- Impressum must contain (§5 TMG): -->
+<!-- 
+- Full name/company name
+- Legal form (GmbH, UG, etc.)
+- Complete postal address (no P.O. boxes)
+- Phone number
+- Email address
+- Register entry (Handelsregister, HRB number)
+- VAT ID (Umsatzsteuer-Identifikationsnummer)
+- Responsible person for content (V.i.S.d.P.)
+-->
+```
+
+### 3. Privacy Policy (Datenschutzerklärung)
+
+Must be present and include:
+```html
+<!-- ✅ Privacy Policy Link - Visible on every page -->
+<footer>
+  <a href="/datenschutz">Datenschutzerklärung</a>
+</footer>
+
+<!-- Privacy Policy must cover:
+- Data controller information
+- Data Protection Officer (if applicable)
+- Types of data collected
+- Legal basis for processing (GDPR Art. 6)
+- Data retention periods
+- User rights (access, rectification, erasure, portability, objection)
+- Right to lodge complaint with supervisory authority
+- Information about all third-party services
+- Cookie information
+- SSL/TLS encryption notice
+-->
+```
+
+### 4. Form Data Collection
+
+**Always implement proper consent and information for forms:**
+```html
+<!-- ❌ WRONG - No privacy information -->
+<form>
+  <input type="email" name="email" required>
+  <button type="submit">Subscribe</button>
+</form>
+
+<!-- ✅ CORRECT - With consent and privacy link -->
+<form>
+  <input type="email" name="email" required aria-label="E-Mail-Adresse">
+  
+  <label>
+    <input type="checkbox" name="consent" required>
+    Ich habe die <a href="/datenschutz">Datenschutzerklärung</a> zur Kenntnis genommen.*
+  </label>
+  
+  <label>
+    <input type="checkbox" name="newsletter">
+    Ich möchte den Newsletter erhalten (optional)
+  </label>
+  
+  <p class="privacy-note">
+    * Pflichtfeld. Ihre Daten werden nur für die angegebenen Zwecke verwendet.
+  </p>
+  
+  <button type="submit">Absenden</button>
+</form>
+```
+
+### 5. Third-Party Integrations
+
+**Always implement with consent mechanism:**
+```javascript
+// ❌ WRONG - Direct embed
+<iframe src="https://www.youtube.com/embed/VIDEO_ID"></iframe>
+
+// ✅ CORRECT - Two-click solution
+<div class="youtube-consent-wrapper">
+  <div class="consent-overlay">
+    <p>Dieses Video wird von YouTube gehostet. Beim Laden werden Daten an YouTube übertragen.</p>
+    <button onclick="loadYouTubeVideo(this)">
+      Video laden und Datenschutzerklärung von YouTube akzeptieren
+    </button>
+    <a href="https://policies.google.com/privacy" target="_blank">
+      Datenschutzerklärung von YouTube
+    </a>
+  </div>
+</div>
+
+<script>
+function loadYouTubeVideo(button) {
+  const wrapper = button.closest('.youtube-consent-wrapper');
+  const iframe = document.createElement('iframe');
+  iframe.src = 'https://www.youtube-nocookie.com/embed/VIDEO_ID';
+  iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+  iframe.allowFullscreen = true;
+  wrapper.innerHTML = '';
+  wrapper.appendChild(iframe);
+}
+</script>
+```
+
+### 6. Google Fonts Compliance
+
+**NEVER load Google Fonts from Google servers directly (privacy violation):**
+```css
+/* ❌ WRONG - Loading from Google */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* ✅ CORRECT - Self-hosted fonts */
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/roboto-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+/* Alternative: Use system fonts */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+```
+
+### 7. SSL/HTTPS Enforcement
+
+**Always enforce HTTPS:**
+```javascript
+// ✅ Redirect HTTP to HTTPS
+if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+  location.replace(`https:${location.href.substring(location.protocol.length)}`);
+}
+```
+```html
+<!-- ✅ Content Security Policy Header -->
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+```
+
+### 8. Contact Information Protection
+```html
+<!-- ❌ WRONG - Plain email (spam target) -->
+<a href="mailto:info@example.de">info@example.de</a>
+
+<!-- ✅ BETTER - Obfuscated or contact form -->
+<a href="#" onclick="location.href='mailto:'+'info'+'@'+'example.de'">
+  Kontakt per E-Mail
+</a>
+
+<!-- ✅ BEST - Contact form with CSRF protection -->
+<form action="/contact" method="POST">
+  <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
+  <!-- form fields -->
+</form>
+```
+
+### 9. Social Media Integration
+```html
+<!-- ❌ WRONG - Direct social media embeds -->
+<div class="fb-like" data-href="https://example.de"></div>
+
+<!-- ✅ CORRECT - Shariff or similar privacy-friendly solution -->
+<div class="shariff" 
+     data-services="['facebook','twitter','linkedin']"
+     data-lang="de"
+     data-title="<?= page_title ?>">
+</div>
+<!-- Shariff loads social media buttons without tracking until user clicks -->
+```
+
+### 10. Analytics Implementation
+```javascript
+// ✅ CORRECT - Google Analytics with consent
+function initAnalytics() {
+  if (!hasConsent('analytics')) return;
+  
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'GA_MEASUREMENT_ID', {
+    'anonymize_ip': true,  // IP anonymization (required in Germany)
+    'allow_google_signals': false,  // Disable advertising features
+    'allow_ad_personalization_signals': false
+  });
+}
+
+// ✅ BETTER - Use privacy-friendly alternatives
+// Consider: Matomo (self-hosted), Plausible, Fathom Analytics
+```
+
+### 11. Local Storage / Cookies
+```javascript
+// ❌ WRONG - Setting cookies without consent
+document.cookie = "user_preference=dark_mode";
+
+// ✅ CORRECT - Check consent first
+function setCookie(name, value, days) {
+  if (!hasConsent('functional')) {
+    console.warn('Functional cookies not allowed');
+    return false;
+  }
+  
+  const expires = new Date(Date.now() + days * 864e5).toUTCString();
+  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Strict; Secure`;
+  return true;
+}
+
+// ✅ Strictly necessary cookies (no consent needed)
+// Only for: session management, security, load balancing
+function setEssentialCookie(name, value) {
+  const expires = new Date(Date.now() + 86400e3).toUTCString(); // 24h
+  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Strict; Secure`;
+}
+```
+
+## Legal Compliance Checklist
+
+Before deploying ANY website feature, verify:
+
+- [ ] **Impressum**: Present and complete?
+- [ ] **Privacy Policy**: Present and covers all data processing?
+- [ ] **Cookie Consent**: Implemented and GDPR-compliant?
+- [ ] **SSL/HTTPS**: Enforced on all pages?
+- [ ] **Forms**: Include consent checkboxes and privacy links?
+- [ ] **Third-party Services**: Loaded only after consent?
+- [ ] **Fonts**: Self-hosted or system fonts used?
+- [ ] **Analytics**: IP anonymization enabled?
+- [ ] **Social Media**: Privacy-friendly integration?
+- [ ] **Contact Data**: Protected against spam?
+
+## Red Flags to Always Avoid
+
+1. ❌ Loading Google Analytics/Tag Manager without consent
+2. ❌ Loading Google Fonts from Google servers
+3. ❌ Facebook Pixel or other tracking pixels without consent
+4. ❌ Pre-checked consent checkboxes
+5. ❌ Missing or incomplete Impressum
+6. ❌ Missing or incomplete privacy policy
+7. ❌ Forms without privacy policy links
+8. ❌ Plain text email addresses (spam risk)
+9. ❌ No SSL/HTTPS
+10. ❌ Cookies set before consent given
+
+## Recommended Tools & Libraries
+
+- **Cookie Consent**: Cookiebot, Usercentrics, Klaro!, Complianz
+- **Social Sharing**: Shariff (privacy-friendly social media buttons)
+- **Analytics**: Matomo (self-hosted), Plausible, Fathom Analytics
+- **Form Protection**: CSRF tokens, reCAPTCHA (with consent)
+- **Impressum Generator**: eRecht24, Impressum-Generator.de
+
+## When Creating New Features
+
+**ALWAYS ask yourself:**
+1. What personal data does this collect/process?
+2. What is the legal basis (GDPR Art. 6)?
+3. Is consent required?
+4. Is it mentioned in the privacy policy?
+5. Can users access/delete their data?
+6. Is data minimization applied?
+7. Are third-party services involved?
+8. Is data transfer to non-EU countries involved?
+
+## Emergency Response
+
+If you discover a compliance issue:
+1. **High Risk** (tracking without consent, missing impressum): Fix immediately
+2. **Medium Risk** (incomplete privacy policy): Fix within 24-48h
+3. **Low Risk** (accessibility issues): Schedule fix
+
+## References
+
+- GDPR/DSGVO: EU General Data Protection Regulation
+- TMG: German Telemedia Act (Telemediengesetz)
+- TTDSG: German Telecommunications-Telemedia Data Protection Act
+- ePrivacy Directive / upcoming ePrivacy Regulation
+
+## Note to Developer
+
+Legal compliance is NOT optional. Non-compliance can result in:
+- Fines up to €20 million or 4% of annual turnover (GDPR)
+- Warning letters from competitors (Abmahnungen)
+- Legal action from data protection authorities
+- Reputation damage
+
+When in doubt about legal requirements, always:
+1. Consult the privacy policy generator/lawyer
+2. Choose the more privacy-protective option
+3. Document your decisions and legal basis
