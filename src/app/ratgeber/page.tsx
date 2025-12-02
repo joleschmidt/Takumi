@@ -75,17 +75,17 @@ export default function GuidePage() {
 
                 {/* Hover Image Reveal - Absolute centered or following cursor could be cool, but fixed placement is safer for mobile */}
                 <div className="absolute right-0 top-0 bottom-0 w-1/3 opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none hidden lg:block">
-                  <Image
+          <Image 
                     src={guide.image}
                     alt={guide.title}
-                    fill
+            fill
                     className="object-cover grayscale"
-                  />
-                </div>
+          />
+        </div>
 
-              </div>
+           </div>
             ))}
-          </div>
+           </div>
 
         </div>
       </section>

@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
-import { ArrowLeft, Save, Plus, X } from 'lucide-react'
+import { ArrowLeft, Save, Plus, X, ArrowUp, ArrowDown } from 'lucide-react'
 import Link from 'next/link'
 
 interface Product {
@@ -25,7 +25,7 @@ interface Product {
   care?: string
   image_url?: string
   images?: string[]
-  vendors?: Array<{ name: string; url: string }>
+  vendors?: Array<{ name: string; url: string; price?: string; shipping_cost?: string }>
 }
 
 interface ProductFormProps {
@@ -37,10 +37,10 @@ export function ProductForm({ product }: ProductFormProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const [vendors, setVendors] = useState<Array<{ name: string; url: string }>>(
-    product?.vendors && product.vendors.length > 0 
+  const [vendors, setVendors] = useState<Array<{ name: string; url: string; price?: string; shipping_cost?: string }>>(
+    product?.vendors && product.vendors.length > 0
       ? product.vendors
-      : [{ name: '', url: '' }]
+      : [{ name: '', url: '', price: '', shipping_cost: '' }]
   )
 
   const [images, setImages] = useState<Array<string>>(
@@ -77,10 +77,17 @@ export function ProductForm({ product }: ProductFormProps) {
         .split('\n')
         .map(f => f.trim())
         .filter(f => f.length > 0)
-      
+
       // Filter out empty images and vendors
       const validImages = images.filter(img => img.trim().length > 0)
-      const validVendors = vendors.filter(v => v.name.trim().length > 0 && v.url.trim().length > 0)
+      const validVendors = vendors
+        .filter(v => v.name.trim().length > 0 && v.url.trim().length > 0)
+        .map(v => ({
+          name: v.name.trim(),
+          url: v.url.trim(),
+          price: v.price?.trim() || undefined,
+          shipping_cost: v.shipping_cost?.trim() || undefined,
+        }))
 
       const payload = {
         title: formData.title,
@@ -99,10 +106,10 @@ export function ProductForm({ product }: ProductFormProps) {
         vendors: validVendors.length > 0 ? validVendors : [],
       }
 
-      const url = product?.id 
+      const url = product?.id
         ? `/api/products/${product.id}`
         : '/api/products'
-      
+
       const method = product?.id ? 'PUT' : 'POST'
 
       const response = await fetch(url, {
@@ -128,7 +135,7 @@ export function ProductForm({ product }: ProductFormProps) {
     <div className="min-h-screen bg-[#FAFAF8] text-[#1a1a1a]">
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
-          
+
           {/* Left: Image Preview/Input */}
           <div className="relative bg-[#F5F5F0] lg:h-[calc(100vh-5rem+10vh)] lg:sticky lg:top-20 flex items-start justify-center p-8 md:p-16 overflow-y-auto">
             <div className="relative w-full space-y-6">
@@ -150,36 +157,108 @@ export function ProductForm({ product }: ProductFormProps) {
                 </div>
                 <div className="space-y-3">
                   {images.map((image, index) => (
-                    <div key={index} className="flex gap-2">
-                      <Input
-                        value={image}
-                        onChange={(e) => {
-                          const newImages = [...images]
-                          newImages[index] = e.target.value
-                          setImages(newImages)
-                          // Update main image_url if it's the first image
-                          if (index === 0) {
-                            setFormData(prev => ({ ...prev, image_url: e.target.value }))
-                          }
-                        }}
-                        placeholder="https://assets.katogroup.eu/i/..."
-                        className="bg-white border-black font-mono text-xs flex-1"
-                      />
+                    <div key={index} className="flex gap-2 items-start">
+                      {image.trim() && (
+                        <div className="relative w-20 h-20 bg-white border border-black/20 overflow-hidden shrink-0">
+                          <img
+                            src={image}
+                            alt={`Preview ${index + 1}`}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).style.display = 'none'
+                              const parent = (e.target as HTMLImageElement).parentElement
+                              if (parent) {
+                                parent.innerHTML = '<div class="w-full h-full flex items-center justify-center text-xs text-gray-400">Fehler</div>'
+                              }
+                            }}
+                          />
+                        </div>
+                      )}
+                      <div className="flex flex-col gap-1 shrink-0 mt-1">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            if (index > 0) {
+                              const newImages = [...images]
+                              const temp = newImages[index]
+                              newImages[index] = newImages[index - 1]
+                              newImages[index - 1] = temp
+                              setImages(newImages)
+                              // Update main image_url if we moved the first image
+                              if (index === 1) {
+                                setFormData(prev => ({ ...prev, image_url: newImages[0] }))
+                              } else if (index === 0) {
+                                setFormData(prev => ({ ...prev, image_url: newImages[0] }))
+                              }
+                            }
+                          }}
+                          disabled={index === 0}
+                          className="border-black h-6 w-6 p-0 hover:bg-black hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+                          title="Nach oben"
+                        >
+                          <ArrowUp className="h-3 w-3" />
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            if (index < images.length - 1) {
+                              const newImages = [...images]
+                              const temp = newImages[index]
+                              newImages[index] = newImages[index + 1]
+                              newImages[index + 1] = temp
+                              setImages(newImages)
+                              // Update main image_url if we moved the first image
+                              if (index === 0) {
+                                setFormData(prev => ({ ...prev, image_url: newImages[0] }))
+                              }
+                            }
+                          }}
+                          disabled={index === images.length - 1}
+                          className="border-black h-6 w-6 p-0 hover:bg-black hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+                          title="Nach unten"
+                        >
+                          <ArrowDown className="h-3 w-3" />
+                        </Button>
+                      </div>
+                      <div className="flex items-start gap-2 flex-1 min-w-0">
+                        <span className="text-xs font-bold text-gray-500 shrink-0 w-6 text-center pt-2">
+                          {index + 1}
+                        </span>
+                        <Input
+                          value={image}
+                          onChange={(e) => {
+                            const newImages = [...images]
+                            newImages[index] = e.target.value
+                            setImages(newImages)
+                            // Update main image_url if it's the first image
+                            if (index === 0) {
+                              setFormData(prev => ({ ...prev, image_url: e.target.value }))
+                            }
+                          }}
+                          placeholder="https://assets.katogroup.eu/i/..."
+                          className="bg-white border-black font-mono text-xs flex-1"
+                        />
+                      </div>
                       {images.length > 1 && (
                         <Button
                           type="button"
                           variant="outline"
                           size="sm"
-                        onClick={() => {
-                          const newImages = images.filter((_, i) => i !== index)
-                          setImages(newImages)
-                          if (index === 0 && newImages.length > 0) {
-                            setFormData(prev => ({ ...prev, image_url: newImages[0] }))
-                          } else if (newImages.length === 0) {
-                            setFormData(prev => ({ ...prev, image_url: '' }))
-                          }
-                        }}
-                          className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white shrink-0"
+                          onClick={() => {
+                            const newImages = images.filter((_, i) => i !== index)
+                            setImages(newImages)
+                            if (index === 0 && newImages.length > 0) {
+                              setFormData(prev => ({ ...prev, image_url: newImages[0] }))
+                            } else if (newImages.length === 0) {
+                              setFormData(prev => ({ ...prev, image_url: '' }))
+                            }
+                          }}
+                          className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white shrink-0 mt-1"
+                          title="Entfernen"
                         >
                           <X className="h-4 w-4" />
                         </Button>
@@ -189,24 +268,27 @@ export function ProductForm({ product }: ProductFormProps) {
                 </div>
               </div>
 
-              {images[0] && images[0].trim() && (
-                <div className="relative aspect-square bg-white border-2 border-black">
+              {/* {images[0] && images[0].trim() && (
+                <div className="relative w-full max-w-xs aspect-square bg-white border-2 border-black mx-auto">
+                  <div className="absolute -top-2 left-2 bg-black text-white text-xs px-2 py-1 font-bold uppercase">
+                    Hauptbild
+                  </div>
                   <img
                     src={images[0]}
-                    alt="Preview"
+                    alt="Hauptbild Preview"
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       (e.target as HTMLImageElement).style.display = 'none'
                     }}
                   />
                 </div>
-              )}
+              )} */}
             </div>
           </div>
 
           {/* Right: Form Fields */}
           <div className="p-8 md:p-16 lg:pt-32 flex flex-col justify-center min-h-[calc(100vh-5rem+10vh)] space-y-8">
-            
+
             <div className="flex items-center gap-4 mb-4">
               <Link href="/admin/produkte">
                 <Button type="button" variant="outline" className="border-black">
@@ -384,48 +466,82 @@ export function ProductForm({ product }: ProductFormProps) {
                     type="button"
                     variant="outline"
                     size="sm"
-                    onClick={() => setVendors([...vendors, { name: '', url: '' }])}
+                    onClick={() => setVendors([...vendors, { name: '', url: '', price: '', shipping_cost: '' }])}
                     className="border-black h-8 px-3"
                   >
                     <Plus className="h-4 w-4 mr-1" />
                     Händler hinzufügen
                   </Button>
                 </div>
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {vendors.map((vendor, index) => (
-                    <div key={index} className="flex gap-2">
-                      <Input
-                        value={vendor.name}
-                        onChange={(e) => {
-                          const newVendors = [...vendors]
-                          newVendors[index].name = e.target.value
-                          setVendors(newVendors)
-                        }}
-                        placeholder="Shop Name (z.B. Dictum)"
-                        className="bg-white border-black flex-1"
-                      />
-                      <Input
-                        value={vendor.url}
-                        onChange={(e) => {
-                          const newVendors = [...vendors]
-                          newVendors[index].url = e.target.value
-                          setVendors(newVendors)
-                        }}
-                        placeholder="https://www.dictum.com/..."
-                        className="bg-white border-black flex-1 font-mono text-xs"
-                      />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                          const newVendors = vendors.filter((_, i) => i !== index)
-                          setVendors(newVendors.length > 0 ? newVendors : [{ name: '', url: '' }])
-                        }}
-                        className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white shrink-0"
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
+                    <div key={index} className="border-2 border-black/10 p-4 space-y-3">
+                      <div className="flex gap-2">
+                        <Input
+                          value={vendor.name}
+                          onChange={(e) => {
+                            const newVendors = [...vendors]
+                            newVendors[index].name = e.target.value
+                            setVendors(newVendors)
+                          }}
+                          placeholder="Shop Name (z.B. Dictum)"
+                          className="bg-white border-black flex-1"
+                        />
+                        <Input
+                          value={vendor.url}
+                          onChange={(e) => {
+                            const newVendors = [...vendors]
+                            newVendors[index].url = e.target.value
+                            setVendors(newVendors)
+                          }}
+                          placeholder="https://www.dictum.com/..."
+                          className="bg-white border-black flex-1 font-mono text-xs"
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const newVendors = vendors.filter((_, i) => i !== index)
+                            setVendors(newVendors.length > 0 ? newVendors : [{ name: '', url: '', price: '', shipping_cost: '' }])
+                          }}
+                          className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white shrink-0"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <Label className="text-xs font-bold uppercase tracking-widest mb-1 block text-gray-600">
+                            Preis
+                          </Label>
+                          <Input
+                            value={vendor.price || ''}
+                            onChange={(e) => {
+                              const newVendors = [...vendors]
+                              newVendors[index].price = e.target.value
+                              setVendors(newVendors)
+                            }}
+                            placeholder="z.B. 65€"
+                            className="bg-white border-black text-sm"
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-xs font-bold uppercase tracking-widest mb-1 block text-gray-600">
+                            Versandkosten
+                          </Label>
+                          <Input
+                            value={vendor.shipping_cost || ''}
+                            onChange={(e) => {
+                              const newVendors = [...vendors]
+                              newVendors[index].shipping_cost = e.target.value
+                              setVendors(newVendors)
+                            }}
+                            placeholder="z.B. 5€ oder kostenlos"
+                            className="bg-white border-black text-sm"
+                          />
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>

@@ -132,14 +132,8 @@ export default function AdminLoginPage() {
           </form>
 
           <div className="mt-8 pt-8 border-t border-black/10">
-            <p className="text-sm text-center text-muted-foreground">
-              Noch kein Konto?{' '}
-              <Link href="/admin-signup" className="font-bold hover:text-black transition-colors">
-                Jetzt registrieren
-              </Link>
-            </p>
-            <p className="text-xs text-muted-foreground text-center mt-4">
-              Sie benötigen Admin-Berechtigung, um sich anzumelden.
+            <p className="text-xs text-muted-foreground text-center">
+              Admin-Konten werden manuell über Supabase erstellt.
             </p>
           </div>
         </div>

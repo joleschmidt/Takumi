@@ -27,23 +27,23 @@ export function ProductCard({
   return (
     <Link href={`/werkzeuge/${category}/${slug}`} className="group block h-full border border-black/10 bg-white hover:border-black transition-colors duration-300">
       <div className="relative aspect-[4/5] bg-[#F5F5F0] overflow-hidden border-b border-black/10">
-        {isNew && (
+          {isNew && (
           <div className="absolute top-0 left-0 z-10 bg-black text-white text-xs font-bold uppercase px-3 py-1 tracking-widest">
             New
           </div>
-        )}
-        {imageUrl ? (
-          <Image 
-            src={imageUrl} 
-            alt={title} 
-            fill 
+          )}
+          {imageUrl ? (
+            <Image 
+              src={imageUrl} 
+              alt={title} 
+              fill 
             className="object-cover group-hover:scale-105 transition-transform duration-700 grayscale group-hover:grayscale-0" 
-          />
-        ) : (
+            />
+          ) : (
           <div className="absolute inset-0 flex items-center justify-center text-stone-300">
             <span className="text-4xl grayscale">🛠️</span>
-          </div>
-        )}
+            </div>
+          )}
         
         {/* Hover overlay with "View" button */}
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/10">
@@ -54,19 +54,19 @@ export function ProductCard({
       </div>
 
       <div className="p-6 flex flex-col h-[200px] justify-between">
-        <div>
+            <div>
           <div className="flex justify-between items-start mb-2">
             <span className="text-xs font-bold uppercase tracking-widest text-[#6B7F59]">{category.replace(/-/g, ' ')}</span>
             <span className="font-bold text-sm">{priceRange}</span>
           </div>
           <h3 className="font-oswald font-bold text-2xl uppercase leading-none mb-1 group-hover:underline decoration-2 underline-offset-4">
-            {title}
-          </h3>
-          {originalName && (
+                {title}
+              </h3>
+              {originalName && (
             <p className="text-xs text-gray-400 font-medium tracking-wide uppercase mb-4">
-              {originalName}
-            </p>
-          )}
+                  {originalName}
+                </p>
+              )}
           <p className="text-sm text-gray-600 line-clamp-2 leading-relaxed">
             {description}
           </p>

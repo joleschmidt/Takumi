@@ -14,17 +14,17 @@ function calculateReadTime(content: string): string {
 export default async function ArtikelDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const supabase = await createServerClient()
-  
+
   // Try to find article by slug (from source_url) or by id
   let article = null
-  
+
   // First try to find by source_url containing the slug
   const { data: articlesByUrl } = await supabase
     .from('articles')
     .select('*')
     .or(`source_url.ilike.%${slug}%,id.eq.${slug}`)
     .limit(1)
-  
+
   if (articlesByUrl && articlesByUrl.length > 0) {
     article = articlesByUrl[0]
   } else {
@@ -34,7 +34,7 @@ export default async function ArtikelDetailPage({ params }: { params: Promise<{ 
       .select('*')
       .eq('id', slug)
       .single()
-    
+
     if (articleById) {
       article = articleById
     }
@@ -45,7 +45,7 @@ export default async function ArtikelDetailPage({ params }: { params: Promise<{ 
   }
 
   const readTime = article.content ? calculateReadTime(article.content) : '5 Min'
-  const publishedDate = article.published_date 
+  const publishedDate = article.published_date
     ? new Date(article.published_date).toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' })
     : new Date(article.created_at || '').toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' })
 
@@ -55,7 +55,7 @@ export default async function ArtikelDetailPage({ params }: { params: Promise<{ 
       {/* Hero Section */}
       <section className="pt-32 pb-16 px-4 md:px-8 lg:px-12 bg-[#FAFAF8]">
         <div className="max-w-[1800px] mx-auto w-full">
-          
+
           <Link href="/artikel" className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-gray-500 hover:text-black transition-colors mb-8">
             <ArrowLeft className="w-4 h-4" />
             Zurück zu allen Artikeln
@@ -105,7 +105,7 @@ export default async function ArtikelDetailPage({ params }: { params: Promise<{ 
       {/* Content Section */}
       <section className="px-4 md:px-8 lg:px-12 pb-32 bg-white">
         <div className="max-w-[1200px] mx-auto">
-          <div 
+          <div
             className="prose prose-lg max-w-none prose-headings:font-oswald prose-headings:font-bold prose-headings:uppercase prose-headings:tracking-tighter prose-headings:text-black prose-h2:text-4xl prose-h2:mb-6 prose-h3:text-2xl prose-h3:mb-4 prose-p:text-lg prose-p:leading-relaxed prose-p:text-gray-700 prose-p:mb-6"
             dangerouslySetInnerHTML={{ __html: article.content }}
           />
