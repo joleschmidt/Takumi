@@ -1,68 +1,35 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { createServerClient } from '@/lib/supabase-server'
+import { isAdmin } from '@/lib/supabase-server'
 
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
+  const admin = await isAdmin()
+  if (!admin) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   try {
-    const { searchParams } = new URL(request.url)
-    const category = searchParams.get('category')
-    const slug = searchParams.get('slug')
+    const body = await request.json()
+    const supabase = await createServerClient()
 
-    let query = supabase
+    const { data, error } = await supabase
       .from('products')
-      .select('*')
-      .order('created_at', { ascending: false })
-
-    if (category) {
-      query = query.eq('category', category)
-    }
-
-    if (slug) {
-      query = query.eq('slug', slug).single()
-    }
-
-    const { data, error } = await query
+      .insert([body])
+      .select()
+      .single()
 
     if (error) {
-      console.error('Error fetching products:', error)
       return NextResponse.json(
-        { error: 'Failed to fetch products', details: error.message },
+        { error: 'Failed to create product', details: error.message },
         { status: 500 }
       )
     }
 
-    // Transform data to match frontend interface
-    const transformed = Array.isArray(data) 
-      ? data.map(transformProduct)
-      : transformProduct(data)
-
-    return NextResponse.json(
-      slug ? { product: transformed } : { products: transformed },
-      { status: 200 }
-    )
+    return NextResponse.json({ product: data }, { status: 201 })
   } catch (error) {
-    console.error('Unexpected error:', error)
     return NextResponse.json(
       { error: 'Internal server error', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     )
   }
 }
-
-function transformProduct(dbProduct: any) {
-  return {
-    id: dbProduct.id,
-    title: dbProduct.title,
-    originalName: dbProduct.original_name,
-    description: dbProduct.description,
-    category: dbProduct.category,
-    slug: dbProduct.slug,
-    priceRange: dbProduct.price_range,
-    isNew: dbProduct.is_new,
-    features: dbProduct.features || [],
-    history: dbProduct.history,
-    usage: dbProduct.usage,
-    care: dbProduct.care,
-    imageUrl: dbProduct.image_url,
-  }
-}
-
