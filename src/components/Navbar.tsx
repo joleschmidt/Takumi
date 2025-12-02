@@ -126,6 +126,13 @@ export function Navbar() {
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuLink asChild>
+                  <Link href="/artikel" className="text-sm font-bold uppercase tracking-widest bg-transparent hover:bg-transparent px-4 py-2 hover:underline underline-offset-4 decoration-2 text-black">
+                    Artikel
+                  </Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink asChild>
                   <Link href="/ueber-uns" className="text-sm font-bold uppercase tracking-widest bg-transparent hover:bg-transparent px-4 py-2 hover:underline underline-offset-4 decoration-2 text-black">
                     Über Uns
                   </Link>
@@ -168,6 +175,9 @@ export function Navbar() {
                 </Link>
                 <Link href="/ratgeber" className="text-3xl font-oswald font-bold uppercase hover:text-[#6B7F59]">
                   Magazin
+                </Link>
+                <Link href="/artikel" className="text-3xl font-oswald font-bold uppercase hover:text-[#6B7F59]">
+                  Artikel
                 </Link>
                 <Link href="/ueber-uns" className="text-3xl font-oswald font-bold uppercase hover:text-[#6B7F59]">
                   Über Uns

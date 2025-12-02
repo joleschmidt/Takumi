@@ -40,5 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-#folder
+#folder & files
 /analysen
+/chrome-extension/README.md

@@ -1,5 +1,4 @@
 import { ProductCard } from "@/components/ProductCard"
-import { products } from "@/lib/data"
 import { notFound } from "next/navigation"
 
 // Helper to format category title
@@ -14,11 +13,47 @@ const formatCategoryTitle = (slug: string) => {
   return titles[slug] || slug.replace(/-/g, " ")
 }
 
+// Check if title contains umlauts (Ä, Ö, Ü)
+const hasUmlauts = (text: string) => {
+  return /[ÄÖÜäöü]/.test(text)
+}
+
+import { supabase } from '@/lib/supabase'
+
 export default async function CategoryPage({ params }: { params: Promise<{ category: string }> }) {
   const { category } = await params
   
-  const categoryProducts = products.filter((p) => p.category === category)
+  // Fetch products from database
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .eq('category', category)
+    .order('created_at', { ascending: false })
+
+  if (error) {
+    console.error('Error fetching products:', error)
+    return notFound()
+  }
+
+  // Transform data to match frontend interface
+  const categoryProducts = (data || []).map((p: any) => ({
+    id: p.id,
+    title: p.title,
+    originalName: p.original_name,
+    description: p.description,
+    category: p.category,
+    slug: p.slug,
+    priceRange: p.price_range,
+    isNew: p.is_new,
+    features: p.features || [],
+    history: p.history,
+    usage: p.usage,
+    care: p.care,
+    imageUrl: p.image_url,
+  }))
+
   const title = formatCategoryTitle(category)
+  const hasUmlautsInTitle = hasUmlauts(title)
 
   return (
     <div className="min-h-screen bg-[#FAFAF8] text-[#1a1a1a]">
@@ -26,7 +61,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
       <section className="sticky top-0 z-0 min-h-[60vh] flex flex-col justify-center pt-32 pb-16 px-4 md:px-8 lg:px-12 bg-[#FAFAF8]">
         <div className="max-w-[1800px] mx-auto w-full">
           
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-500 mb-8">
+          <div className={`flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-500 ${hasUmlautsInTitle ? 'mb-12' : 'mb-8'}`}>
              <a href="/" className="hover:text-black transition-colors">Startseite</a>
              <span>/</span>
              <a href="/werkzeuge" className="hover:text-black transition-colors">Kollektion</a>
