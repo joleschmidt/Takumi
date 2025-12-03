@@ -67,3 +67,4 @@ export function VendorButton({ name, url, price, shipping_cost }: VendorButtonPr
   )
 }
 
+// hallooo, mache ein test für staging
