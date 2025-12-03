@@ -83,7 +83,7 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
           </div>
 
           {/* Fullscreen Button */}
-          <div className="absolute top-4 right-4 bg-black/70 hover:bg-black text-white p-2 rounded-full transition-colors opacity-0 group-hover:opacity-100 z-10">
+          <div className="absolute top-4 right-4 bg-black/70 hover:bg-black text-white p-2 rounded-full transition-colorsz-10">
             <Maximize2 className="w-5 h-5" />
           </div>
 
