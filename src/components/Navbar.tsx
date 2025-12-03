@@ -52,8 +52,19 @@ export function Navbar() {
       <div className="container mx-auto flex h-20 items-center px-4 md:px-8">
 
         {/* Logo */}
-        <Link href="/" className="mr-12 flex items-center space-x-2">
-          <span className="text-3xl font-oswald font-bold tracking-tighter uppercase text-black leading-none">Takumi<span className="text-[#BC002D] inline-flex items-center justify-center" style={{ transform: 'translateY(-0.05em)', lineHeight: '1' }}>匠</span></span>
+        <Link
+          href="/"
+          className="mr-12 flex flex-row items-center space-x-2"
+        >
+          <span className="text-3xl font-oswald font-bold tracking-tighter uppercase text-black leading-none flex flex-row items-center">
+            Takumi
+            <span
+              className="text-[#BC002D] inline-flex items-center justify-center"
+              style={{ transform: 'translateY(-0.05em)', lineHeight: '1' }}
+            >
+              匠
+            </span>
+          </span>
         </Link>
 
         {/* Desktop Nav */}
@@ -66,17 +77,13 @@ export function Navbar() {
                 </NavigationMenuTrigger>
                 <NavigationMenuContent className="!bg-white border-2 border-black shadow-xl p-0 w-auto min-w-[600px] rounded-none">
                   <div className="grid grid-cols-2 w-[600px] lg:w-[800px]">
-                    {tools.map((tool, index) => {
-                      const isFirstRow = index < 2;
-                      const isFirstCol = index % 2 === 0;
+                    {tools.map((tool) => {
                       return (
                         <NavigationMenuLink key={tool.title} asChild>
                           <Link
                             href={tool.href}
                             className={cn(
-                              "group block select-none p-8 leading-none no-underline outline-none h-full relative bg-white hover:bg-black transition-colors duration-150",
-                              isFirstRow && "border-b-2 border-black",
-                              isFirstCol && "border-r-2 border-black"
+                              "group block select-none p-8 leading-none no-underline outline-none h-full relative bg-white hover:bg-black transition-colors duration-150"
                             )}
                           >
                             <div className="flex items-start gap-4 relative">

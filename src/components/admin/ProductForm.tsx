@@ -1,13 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
-import { ArrowLeft, Save, Plus, X, ArrowUp, ArrowDown } from 'lucide-react'
+import { ArrowLeft, Save, Plus, ArrowUp, ArrowDown, Lock, LockOpen, Trash2, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 
 interface Product {
@@ -51,6 +51,21 @@ export function ProductForm({ product }: ProductFormProps) {
         : ['']
   )
 
+  const [imageErrors, setImageErrors] = useState<boolean[]>(() => images.map(() => false))
+
+  // URL-Felder sollen sich wie normale Inputs verhalten – Locks sind nur Edit-Modus-Toggle
+  const [editableImages, setEditableImages] = useState<boolean[]>(() => images.map(() => true))
+  const [editableVendorUrls, setEditableVendorUrls] = useState<boolean[]>(
+    () => (product?.vendors && product.vendors.length > 0 ? product.vendors.map(() => true) : [true])
+  )
+
+  const [vendorPriceLoading, setVendorPriceLoading] = useState<boolean[]>(
+    () => (product?.vendors && product.vendors.length > 0 ? product.vendors.map(() => false) : [false])
+  )
+
+  const imageInputRefs = useRef<Array<HTMLInputElement | null>>([])
+  const vendorUrlInputRefs = useRef<Array<HTMLInputElement | null>>([])
+
   const [formData, setFormData] = useState({
     title: product?.title || '',
     original_name: product?.original_name || '',
@@ -65,6 +80,109 @@ export function ProductForm({ product }: ProductFormProps) {
     care: product?.care || '',
     image_url: product?.image_url || '',
   })
+
+  // Category management
+  const builtinCategories = [
+    { value: 'scheren-zangen', label: 'Scheren & Zangen' },
+    { value: 'saegen-beile', label: 'Sägen & Beile' },
+    { value: 'bodenbearbeitung', label: 'Bodenbearbeitung' },
+    { value: 'besen-rechen', label: 'Besen & Rechen' },
+    { value: 'zubehoer', label: 'Zubehör' },
+  ]
+
+  // If product already has a non-standard category, include it in the list
+  const initialExtraCategory =
+    product?.category &&
+      !builtinCategories.some(c => c.value === product.category)
+      ? {
+        value: product.category,
+        label: product.category.replace(/-/g, ' '),
+      }
+      : null
+
+  const [categories, setCategories] = useState(
+    initialExtraCategory ? [...builtinCategories, initialExtraCategory] : builtinCategories,
+  )
+
+  const [showNewCategoryForm, setShowNewCategoryForm] = useState(false)
+  const [newCategoryName, setNewCategoryName] = useState('')
+  const [newCategorySlug, setNewCategorySlug] = useState('')
+
+  const slugifyCategory = (name: string) =>
+    name
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '') // strip accents
+      .replace(/&/g, ' und ')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+
+  const getVendorTotalInfo = (vendor: { price?: string; shipping_cost?: string }) => {
+    const parsePrice = (value?: string | null) => {
+      if (!value) return null
+      const cleaned = value.replace(/[^\d,.,-]/g, '').replace(',', '.')
+      const num = parseFloat(cleaned)
+      return Number.isFinite(num) ? num : null
+    }
+
+    const priceNum = parsePrice(vendor.price)
+    const shippingNum = parsePrice(vendor.shipping_cost)
+
+    if (priceNum === null && shippingNum === null) return null
+
+    const total = (priceNum ?? 0) + (shippingNum ?? 0)
+    const formattedTotal = total.toLocaleString('de-DE', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })
+
+    const parts: string[] = []
+    if (vendor.price) parts.push(`Preis: ${vendor.price}`)
+    if (vendor.shipping_cost) parts.push(`Versand: ${vendor.shipping_cost}`)
+
+    return {
+      breakdown: parts.join(' · '),
+      totalLabel: `${formattedTotal}€`,
+    }
+  }
+
+  const handleFetchVendorPrice = async (index: number) => {
+    const vendor = vendors[index]
+    if (!vendor?.url) return
+
+    // Set loading state
+    setVendorPriceLoading(prev => {
+      const next = [...prev]
+      next[index] = true
+      return next
+    })
+
+    try {
+      const res = await fetch(`/api/vendor-price?url=${encodeURIComponent(vendor.url)}`)
+      if (!res.ok) {
+        console.warn('Preisabfrage fehlgeschlagen', await res.text())
+        return
+      }
+      const data = await res.json()
+      if (data?.price) {
+        const newVendors = [...vendors]
+        newVendors[index] = {
+          ...newVendors[index],
+          price: data.price as string,
+        }
+        setVendors(newVendors)
+      }
+    } catch (err) {
+      console.error('Preisabfrage Fehler', err)
+    } finally {
+      // Clear loading state
+      setVendorPriceLoading(prev => {
+        const next = [...prev]
+        next[index] = false
+        return next
+      })
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -89,13 +207,39 @@ export function ProductForm({ product }: ProductFormProps) {
           shipping_cost: v.shipping_cost?.trim() || undefined,
         }))
 
+      // Determine lowest vendor price (ignoring Versand) and use it as price_range
+      const parsePriceNumber = (value?: string) => {
+        if (!value) return null
+        const cleaned = value.replace(/[^\d,.,,]/g, '').replace(',', '.')
+        const num = parseFloat(cleaned)
+        return Number.isFinite(num) ? num : null
+      }
+
+      let lowestPriceNumeric: number | null = null
+      let lowestPriceLabel: string | null = null
+
+      for (const v of validVendors) {
+        const priceNum = parsePriceNumber(v.price)
+        if (priceNum === null) continue
+        if (lowestPriceNumeric === null || priceNum < lowestPriceNumeric) {
+          lowestPriceNumeric = priceNum
+          const formatted = priceNum.toLocaleString('de-DE', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })
+          lowestPriceLabel = `${formatted}€`
+        }
+      }
+
+      const derivedPriceRange = lowestPriceLabel || formData.price_range
+
       const payload = {
         title: formData.title,
         original_name: formData.original_name || null,
         description: formData.description,
         category: formData.category,
         slug: formData.slug,
-        price_range: formData.price_range,
+        price_range: derivedPriceRange,
         is_new: formData.is_new,
         features,
         history: formData.history || null,
@@ -133,45 +277,89 @@ export function ProductForm({ product }: ProductFormProps) {
 
   return (
     <div className="min-h-screen bg-[#FAFAF8] text-[#1a1a1a]">
-      <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
+      <form onSubmit={handleSubmit} className="max-w-[1600px] mx-auto px-4 md:px-8 lg:px-12 pb-24 pt-2 space-y-4">
+
+        {/* Sticky admin toolbar with Back + Save */}
+        <div className="sticky top-20 z-40 pt-4 pb-4 bg-[#FAFAF8]/95 backdrop-blur-sm pb-3  -mx-4 md:-mx-8 lg:-mx-12 pb-4 md:px-8 lg:px-12">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <Link href="/admin/produkte">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="border-black h-9 px-3 text-xs font-bold uppercase tracking-widest"
+                >
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Zurück
+                </Button>
+              </Link>
+
+            </div>
+            <div className="flex gap-3">
+              <Button
+                type="submit"
+                disabled={loading}
+                className="bg-black text-white hover:bg-[#6B7F59] uppercase tracking-widest font-bold px-6 py-3 text-sm"
+              >
+                <Save className="h-4 w-4 mr-2" />
+                {loading ? 'Speichern…' : 'Speichern'}
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-start">
 
           {/* Left: Image Preview/Input */}
-          <div className="relative bg-[#F5F5F0] lg:h-[calc(100vh-5rem+10vh)] lg:sticky lg:top-20 flex items-start justify-center p-8 md:p-16 overflow-y-auto">
-            <div className="relative w-full space-y-6">
+          <div className="relative bg-[#F5F5F0] rounded-none border border-black/10 lg:sticky lg:top-24 max-h-[calc(100vh-7rem)] overflow-y-auto p-6 md:p-8 space-y-6">
+            <div className="flex items-center justify-between">
               <div>
-                <div className="flex items-center justify-between mb-2">
-                  <Label className="text-sm font-bold uppercase tracking-widest">
-                    Bilder
-                  </Label>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setImages([...images, ''])}
-                    className="border-black h-8 px-3"
-                  >
-                    <Plus className="h-4 w-4 mr-1" />
-                    Bild hinzufügen
-                  </Button>
-                </div>
+                <p className="text-xs font-bold uppercase tracking-widest text-gray-500">
+                  Produktbilder
+                </p>
+                <h2 className="font-oswald font-bold text-xl uppercase mt-1">
+                  Visuals & Reihenfolge
+                </h2>
+              </div>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setImages([...images, ''])
+                  setImageErrors(prev => [...prev, false])
+                }}
+                className="border-black h-8 px-3"
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                Bild
+              </Button>
+            </div>
+
+            <div className="space-y-3">
+              <div>
                 <div className="space-y-3">
                   {images.map((image, index) => (
                     <div key={index} className="flex gap-2 items-start">
-                      {image.trim() && (
+                      {image.trim() && !imageErrors[index] && (
                         <div className="relative w-20 h-20 bg-white border border-black/20 overflow-hidden shrink-0">
                           <img
                             src={image}
                             alt={`Preview ${index + 1}`}
                             className="w-full h-full object-cover"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).style.display = 'none'
-                              const parent = (e.target as HTMLImageElement).parentElement
-                              if (parent) {
-                                parent.innerHTML = '<div class="w-full h-full flex items-center justify-center text-xs text-gray-400">Fehler</div>'
-                              }
+                            onError={() => {
+                              setImageErrors(prev => {
+                                const next = [...prev]
+                                next[index] = true
+                                return next
+                              })
                             }}
                           />
+                        </div>
+                      )}
+                      {image.trim() && imageErrors[index] && (
+                        <div className="relative w-20 h-20 bg-white border border-black/20 overflow-hidden shrink-0 flex items-center justify-center text-[10px] text-gray-500 text-center px-1">
+                          Bild konnte nicht geladen werden
                         </div>
                       )}
                       <div className="flex flex-col gap-1 shrink-0 mt-1">
@@ -228,41 +416,81 @@ export function ProductForm({ product }: ProductFormProps) {
                         <span className="text-xs font-bold text-gray-500 shrink-0 w-6 text-center pt-2">
                           {index + 1}
                         </span>
-                        <Input
+                        <Textarea
+                          ref={el => {
+                            imageInputRefs.current[index] = el as unknown as HTMLInputElement
+                          }}
                           value={image}
+                          readOnly={!editableImages[index]}
                           onChange={(e) => {
+                            const value = e.target.value
                             const newImages = [...images]
-                            newImages[index] = e.target.value
+                            newImages[index] = value
                             setImages(newImages)
+
+                            setImageErrors(prev => {
+                              const next = [...prev]
+                              // Wenn der Nutzer die URL ändert, erneut versuchen zu laden
+                              next[index] = false
+                              return next
+                            })
+
                             // Update main image_url if it's the first image
                             if (index === 0) {
-                              setFormData(prev => ({ ...prev, image_url: e.target.value }))
+                              setFormData(prev => ({ ...prev, image_url: value }))
                             }
                           }}
                           placeholder="https://assets.katogroup.eu/i/..."
-                          className="bg-white border-black font-mono text-xs flex-1"
+                          rows={1}
+                          className="bg-white border-black font-mono text-[11px] leading-snug flex-1 resize-none overflow-hidden whitespace-nowrap"
+                          style={{ height: '2.25rem', minHeight: '2.25rem' }}
                         />
                       </div>
-                      {images.length > 1 && (
+                      <div className="flex gap-1 shrink-0 mt-1 items-center">
                         <Button
                           type="button"
                           variant="outline"
                           size="sm"
                           onClick={() => {
-                            const newImages = images.filter((_, i) => i !== index)
-                            setImages(newImages)
-                            if (index === 0 && newImages.length > 0) {
-                              setFormData(prev => ({ ...prev, image_url: newImages[0] }))
-                            } else if (newImages.length === 0) {
-                              setFormData(prev => ({ ...prev, image_url: '' }))
-                            }
+                            setEditableImages(prev => {
+                              const next = [...prev]
+                              next[index] = !next[index]
+                              return next
+                            })
                           }}
-                          className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white shrink-0 mt-1"
-                          title="Entfernen"
+                          className="border-black h-8 w-8 p-0 flex items-center justify-center"
+                          title={editableImages[index] ? 'Bearbeiten beenden' : 'Bearbeiten'}
                         >
-                          <X className="h-4 w-4" />
+                          {editableImages[index] ? (
+                            <LockOpen className="h-3 w-3" />
+                          ) : (
+                            <Lock className="h-3 w-3" />
+                          )}
                         </Button>
-                      )}
+                        {images.length > 1 && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              const newImages = images.filter((_, i) => i !== index)
+                              const newErrors = imageErrors.filter((_, i) => i !== index)
+                              setImages(newImages)
+                              setImageErrors(newErrors)
+
+                              if (index === 0 && newImages.length > 0) {
+                                setFormData(prev => ({ ...prev, image_url: newImages[0] }))
+                              } else if (newImages.length === 0) {
+                                setFormData(prev => ({ ...prev, image_url: '' }))
+                              }
+                            }}
+                            className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white h-8 w-8 p-0 flex items-center justify-center"
+                            title="Entfernen"
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        )}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -287,19 +515,10 @@ export function ProductForm({ product }: ProductFormProps) {
           </div>
 
           {/* Right: Form Fields */}
-          <div className="p-8 md:p-16 lg:pt-32 flex flex-col justify-center min-h-[calc(100vh-5rem+10vh)] space-y-8">
-
-            <div className="flex items-center gap-4 mb-4">
-              <Link href="/admin/produkte">
-                <Button type="button" variant="outline" className="border-black">
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Zurück
-                </Button>
-              </Link>
-            </div>
+          <div className="flex flex-col gap-8">
 
             {error && (
-              <div className="bg-red-50 border-2 border-red-500 text-red-700 p-4">
+              <div className="bg-red-50 border border-red-500 text-red-700 p-4 text-sm">
                 <p className="font-bold">Fehler:</p>
                 <p>{error}</p>
               </div>
@@ -349,19 +568,114 @@ export function ProductForm({ product }: ProductFormProps) {
                 <Label htmlFor="category" className="text-sm font-bold uppercase tracking-widest mb-2 block">
                   Kategorie *
                 </Label>
-                <select
-                  id="category"
-                  value={formData.category}
-                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  required
-                  className="w-full px-3 py-2 border-2 border-black bg-white font-bold uppercase tracking-widest"
-                >
-                  <option value="scheren-zangen">Scheren & Zangen</option>
-                  <option value="saegen-beile">Sägen & Beile</option>
-                  <option value="bodenbearbeitung">Bodenbearbeitung</option>
-                  <option value="besen-rechen">Besen & Rechen</option>
-                  <option value="zubehoer">Zubehör</option>
-                </select>
+
+                <div className="flex flex-col gap-2">
+                  {/* Select existing or trigger "new" */}
+                  <div className="flex gap-2">
+                    <select
+                      id="category"
+                      value={formData.category}
+                      onChange={(e) => {
+                        const value = e.target.value
+                        if (value === '__new__') {
+                          setShowNewCategoryForm(true)
+                        } else {
+                          setShowNewCategoryForm(false)
+                          setFormData(prev => ({ ...prev, category: value }))
+                        }
+                      }}
+                      required
+                      className="w-full px-3 py-2 border-2 border-black bg-white font-bold uppercase tracking-widest"
+                    >
+                      {categories.map(cat => (
+                        <option key={cat.value} value={cat.value}>
+                          {cat.label}
+                        </option>
+                      ))}
+                      <option value="__new__">+ Neue Kategorie …</option>
+                    </select>
+                  </div>
+
+                  {showNewCategoryForm && (
+                    <div className="border border-black/30 bg-[#F5F5F0] p-3 space-y-2">
+                      <p className="text-[11px] font-bold uppercase tracking-widest text-gray-600">
+                        Neue Kategorie anlegen
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <div>
+                          <Label className="text-[10px] font-bold uppercase tracking-widest mb-1 block">
+                            Anzeigename
+                          </Label>
+                          <Input
+                            value={newCategoryName}
+                            onChange={(e) => {
+                              const name = e.target.value
+                              setNewCategoryName(name)
+                              setNewCategorySlug(prev => (prev ? prev : slugifyCategory(name)))
+                            }}
+                            placeholder="z.B. Bonsai & Zubehör"
+                            className="bg-white border-black text-xs"
+                          />
+                        </div>
+                        <div>
+                          <Label className="text-[10px] font-bold uppercase tracking-widest mb-1 block">
+                            Slug (URL)
+                          </Label>
+                          <Input
+                            value={newCategorySlug}
+                            onChange={(e) => setNewCategorySlug(slugifyCategory(e.target.value))}
+                            placeholder="bonsai-zubehoer"
+                            className="bg-white border-black text-xs font-mono"
+                          />
+                          <p className="text-[10px] text-gray-500 mt-1">
+                            Wird als <span className="font-mono">/werkzeuge/[slug]</span> verwendet.
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex gap-2 justify-end pt-1">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          className="border-black h-7 px-3 text-[11px] uppercase tracking-widest"
+                          onClick={() => {
+                            setShowNewCategoryForm(false)
+                            setNewCategoryName('')
+                            setNewCategorySlug('')
+                          }}
+                        >
+                          Abbrechen
+                        </Button>
+                        <Button
+                          type="button"
+                          size="sm"
+                          className="bg-black text-white hover:bg-[#6B7F59] h-7 px-3 text-[11px] uppercase tracking-widest"
+                          disabled={!newCategorySlug}
+                          onClick={() => {
+                            if (!newCategorySlug) return
+                            const label =
+                              newCategoryName || newCategorySlug.replace(/-/g, ' ')
+                            const newCat = { value: newCategorySlug, label }
+
+                            setCategories(prev => {
+                              if (prev.some(c => c.value === newCat.value)) return prev
+                              return [...prev, newCat]
+                            })
+
+                            setFormData(prev => ({ ...prev, category: newCat.value }))
+
+                            setShowNewCategoryForm(false)
+                            setNewCategoryName('')
+                            setNewCategorySlug('')
+                          }}
+                        >
+                          Speichern
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div>
@@ -466,7 +780,11 @@ export function ProductForm({ product }: ProductFormProps) {
                     type="button"
                     variant="outline"
                     size="sm"
-                    onClick={() => setVendors([...vendors, { name: '', url: '', price: '', shipping_cost: '' }])}
+                    onClick={() => {
+                      setVendors([...vendors, { name: '', url: '', price: '', shipping_cost: '' }])
+                      setVendorPriceLoading(prev => [...prev, false])
+                      setEditableVendorUrls(prev => [...prev, true])
+                    }}
                     className="border-black h-8 px-3"
                   >
                     <Plus className="h-4 w-4 mr-1" />
@@ -487,60 +805,142 @@ export function ProductForm({ product }: ProductFormProps) {
                           placeholder="Shop Name (z.B. Dictum)"
                           className="bg-white border-black flex-1"
                         />
-                        <Input
+                        <Textarea
+                          ref={el => {
+                            vendorUrlInputRefs.current[index] = el as unknown as HTMLInputElement
+                          }}
                           value={vendor.url}
+                          readOnly={!editableVendorUrls[index]}
                           onChange={(e) => {
                             const newVendors = [...vendors]
                             newVendors[index].url = e.target.value
                             setVendors(newVendors)
                           }}
                           placeholder="https://www.dictum.com/..."
-                          className="bg-white border-black flex-1 font-mono text-xs"
+                          rows={1}
+                          className="bg-white border-black flex-1 font-mono text-[11px] leading-snug resize-none overflow-hidden whitespace-nowrap"
+                          style={{ height: '2.25rem', minHeight: '2.25rem' }}
                         />
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            const newVendors = vendors.filter((_, i) => i !== index)
-                            setVendors(newVendors.length > 0 ? newVendors : [{ name: '', url: '', price: '', shipping_cost: '' }])
-                          }}
-                          className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white shrink-0"
-                        >
-                          <X className="h-4 w-4" />
-                        </Button>
+                        <div className="flex gap-1 shrink-0 items-center">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              setEditableVendorUrls(prev => {
+                                const next = [...prev]
+                                next[index] = !next[index]
+                                return next
+                              })
+                              if (!editableVendorUrls[index]) {
+                                const input = vendorUrlInputRefs.current[index]
+                                if (input) {
+                                  input.focus()
+                                  input.select()
+                                }
+                              }
+                            }}
+                            className="border-black h-8 w-8 p-0 flex items-center justify-center"
+                            title={editableVendorUrls[index] ? 'Bearbeiten beenden' : 'Bearbeiten'}
+                          >
+                            {editableVendorUrls[index] ? (
+                              <LockOpen className="h-3 w-3" />
+                            ) : (
+                              <Lock className="h-3 w-3" />
+                            )}
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              const newVendors = vendors.filter((_, i) => i !== index)
+                              const newEditable = editableVendorUrls.filter((_, i) => i !== index)
+                              const newLoading = vendorPriceLoading.filter((_, i) => i !== index)
+                              setVendors(
+                                newVendors.length > 0 ? newVendors : [{ name: '', url: '', price: '', shipping_cost: '' }],
+                              )
+                              setEditableVendorUrls(newEditable.length > 0 ? newEditable : [false])
+                              setVendorPriceLoading(newLoading.length > 0 ? newLoading : [false])
+                            }}
+                            className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white h-8 w-8 p-0 flex items-center justify-center"
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        </div>
                       </div>
-                      <div className="grid grid-cols-2 gap-2">
-                        <div>
-                          <Label className="text-xs font-bold uppercase tracking-widest mb-1 block text-gray-600">
-                            Preis
-                          </Label>
-                          <Input
-                            value={vendor.price || ''}
-                            onChange={(e) => {
-                              const newVendors = [...vendors]
-                              newVendors[index].price = e.target.value
-                              setVendors(newVendors)
-                            }}
-                            placeholder="z.B. 65€"
-                            className="bg-white border-black text-sm"
-                          />
+                      <div className="space-y-2 border-t border-dashed border-black/20 pt-3 mt-2">
+                        <div className="grid grid-cols-2 gap-2">
+                          <div>
+                            <Label className="text-xs font-bold uppercase tracking-widest mb-1 block text-gray-600">
+                              Preis
+                            </Label>
+                            <div className="flex gap-2">
+                              <Input
+                                value={vendor.price || ''}
+                                onChange={(e) => {
+                                  const newVendors = [...vendors]
+                                  newVendors[index].price = e.target.value
+                                  setVendors(newVendors)
+                                }}
+                                placeholder="z.B. 65€"
+                                className="bg-white border-black text-sm flex-1"
+                              />
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={(e) => {
+                                  e.preventDefault()
+                                  e.stopPropagation()
+                                  handleFetchVendorPrice(index)
+                                }}
+                                disabled={!vendor.url || vendor.url.trim().length === 0 || vendorPriceLoading[index]}
+                                className="border-black h-9 w-9 p-0 flex items-center justify-center text-sm font-bold shrink-0 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                                title={
+                                  vendorPriceLoading[index]
+                                    ? 'Preis wird abgerufen...'
+                                    : vendor.url
+                                      ? 'Preis automatisch abrufen'
+                                      : 'Bitte zuerst URL eingeben'
+                                }
+                              >
+                                {vendorPriceLoading[index] ? (
+                                  <Loader2 className="h-4 w-4 animate-spin" />
+                                ) : (
+                                  '€'
+                                )}
+                              </Button>
+                            </div>
+                          </div>
+                          <div>
+                            <Label className="text-xs font-bold uppercase tracking-widest mb-1 block text-gray-600">
+                              Versandkosten
+                            </Label>
+                            <Input
+                              value={vendor.shipping_cost || ''}
+                              onChange={(e) => {
+                                const newVendors = [...vendors]
+                                newVendors[index].shipping_cost = e.target.value
+                                setVendors(newVendors)
+                              }}
+                              placeholder="z.B. 5€ oder kostenlos"
+                              className="bg-white border-black text-sm"
+                            />
+                          </div>
                         </div>
-                        <div>
-                          <Label className="text-xs font-bold uppercase tracking-widest mb-1 block text-gray-600">
-                            Versandkosten
-                          </Label>
-                          <Input
-                            value={vendor.shipping_cost || ''}
-                            onChange={(e) => {
-                              const newVendors = [...vendors]
-                              newVendors[index].shipping_cost = e.target.value
-                              setVendors(newVendors)
-                            }}
-                            placeholder="z.B. 5€ oder kostenlos"
-                            className="bg-white border-black text-sm"
-                          />
-                        </div>
+
+                        {getVendorTotalInfo(vendor) && (
+                          <div className="flex items-center justify-between text-[11px] uppercase tracking-widest">
+                            <span className="text-gray-500">
+                              {getVendorTotalInfo(vendor)?.breakdown}
+                            </span>
+                            <span className="font-bold text-[#1A1A1A]">
+                              ca. {getVendorTotalInfo(vendor)?.totalLabel}
+                              <span className="ml-1 text-gray-500 normal-case">gesamt</span>
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -548,17 +948,10 @@ export function ProductForm({ product }: ProductFormProps) {
               </div>
             </div>
 
-            <div className="flex gap-4 pt-8">
-              <Button
-                type="submit"
-                disabled={loading}
-                className="bg-black text-white hover:bg-[#6B7F59] uppercase tracking-widest font-bold px-8 py-6 text-lg"
-              >
-                <Save className="h-5 w-5 mr-2" />
-                {loading ? 'Wird gespeichert...' : 'Speichern'}
-              </Button>
-            </div>
+            {/* Close right column */}
           </div>
+
+          {/* Save button already in header – no extra footer button */}
         </div>
       </form>
     </div>

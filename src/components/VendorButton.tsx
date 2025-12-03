@@ -26,15 +26,10 @@ export function VendorButton({ name, url, price, shipping_cost }: VendorButtonPr
   }, [url])
 
   return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="block"
-    >
+    <a href={url} target="_blank" rel="noopener noreferrer" className="block">
       <Button
         size="lg"
-        className="w-full h-auto min-h-[4rem] rounded-none bg-[#1a1a1a] text-white hover:bg-[#6B7F59] text-lg font-bold uppercase tracking-widest flex items-center justify-between px-8 gap-4 py-4"
+        className="w-full h-auto min-h-[4rem] rounded-none bg-white text-[#1A1A1A] border-2 border-black hover:bg-[#1A1A1A] hover:text-white hover:border-[#1A1A1A] text-sm md:text-base font-bold uppercase tracking-widest flex items-center justify-between px-6 md:px-8 gap-4 py-3 transition-colors duration-200"
       >
         <div className="flex items-center gap-3 flex-1">
           {faviconUrl && (
@@ -49,17 +44,24 @@ export function VendorButton({ name, url, price, shipping_cost }: VendorButtonPr
             </div>
           )}
           <div className="flex-1">
-            <div className="text-base md:text-lg">Bei {name} kaufen</div>
-            {(price || shipping_cost) && (
-              <div className="text-xs font-normal normal-case tracking-normal mt-1 opacity-90">
-                {price && <span>{price}</span>}
-                {price && shipping_cost && <span> • </span>}
-                {shipping_cost && <span>Versand: {shipping_cost}</span>}
+            <div className="text-[11px] md:text-xs font-bold uppercase tracking-[0.18em]">
+              Bei {name} kaufen
+            </div>
+            {shipping_cost && (
+              <div className="text-[11px] normal-case tracking-normal mt-1 opacity-80">
+                Versand: {shipping_cost}
               </div>
             )}
           </div>
         </div>
-        <ArrowUpRight className="shrink-0" />
+        <div className="flex items-center gap-3 shrink-0">
+          {price && (
+            <span className="text-base md:text-lg font-oswald font-bold tracking-tight">
+              {price}
+            </span>
+          )}
+          <ArrowUpRight className="shrink-0" />
+        </div>
       </Button>
     </a>
   )

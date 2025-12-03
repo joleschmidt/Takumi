@@ -229,8 +229,8 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
                         setCurrentIndex(index);
                       }}
                       className={`relative w-20 h-20 flex-shrink-0 border-2 transition-all ${index === currentIndex
-                          ? "border-white scale-110"
-                          : "border-white/30 opacity-60 hover:opacity-100"
+                        ? "border-white scale-110"
+                        : "border-white/30 opacity-60 hover:opacity-100"
                         }`}
                     >
                       <Image

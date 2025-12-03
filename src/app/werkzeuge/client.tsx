@@ -67,13 +67,16 @@ export function WerkzeugeClient({ products }: { products: Product[] }) {
 
           {/* Grid */}
           <div className="md:col-span-3">
-             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0 border-t border-l border-black">
-               {products.map((product) => (
-                 <div key={product.id} className="-ml-[1px] -mt-[1px] border-r border-b border-black">
-                   <ProductCard {...product} />
-                 </div>
-               ))}
-             </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0">
+              {products.map((product) => (
+                <div
+                  key={product.id}
+                  className="group -ml-px -mt-px border border-black/10 hover:border-black transition-colors duration-200 [&>a]:border-none [&>a]:hover:border-none"
+                >
+                  <ProductCard {...product} />
+                </div>
+              ))}
+            </div>
           </div>
 
         </div>
