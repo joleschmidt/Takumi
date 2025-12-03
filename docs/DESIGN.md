@@ -282,3 +282,150 @@ const staggerContainer = {
 - **Section Padding**: Standard `px-4 md:px-8 lg:px-12` for horizontal spacing
 - **Z-Index Hierarchy**: Hero (z-0) → Sections (z-10) → Navbar (z-50)
 - **Smooth Scroll**: Wrap entire app in `SmoothScroll` component for Lenis integration
+
+---
+
+## Marquee Section (Scroll-Driven Animation)
+
+### Implementation
+The marquee section uses scroll-driven animation instead of automatic looping:
+
+```tsx
+const { scrollYProgress } = useScroll();
+const xTranslation = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]);
+
+<motion.div
+  style={{ x: xTranslation }}
+  className="flex items-center gap-12 text-4xl md:text-6xl font-oswald font-bold uppercase tracking-widest w-fit"
+>
+  {/* Content */}
+</motion.div>
+```
+
+### Bullet Point Alignment
+Bullet points (●) must be vertically centered with text:
+- Use `flex items-center justify-center` with `transform: translateY(-0.25em)`
+- Color: `text-[#6B7F59]` (Moss Green)
+- No drag functionality - purely scroll-driven
+
+---
+
+## Product Grid Patterns
+
+### Product Card Grid
+```tsx
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0 border-t border-l border-black/10">
+  {products.map((product) => (
+    <div className="-ml-[1px] -mt-[1px]">
+      <ProductCard {...product} />
+    </div>
+  ))}
+</div>
+```
+
+### Category Grid
+- Use `border-t border-l border-black/10` on container
+- Use `-ml-[1px] -mt-[1px]` on items to prevent double borders
+- Hover states: `hover:bg-black hover:text-white` for high contrast
+
+---
+
+## Form & Input Patterns
+
+### Search Input
+```tsx
+<Input
+  type="text"
+  placeholder="Suchen..."
+  className="pl-8 bg-muted/30 shadow-none border-none focus-visible:ring-0"
+/>
+```
+- **NO shadow** - plain style
+- **NO border** - minimal appearance
+- Background: `bg-muted/30`
+
+---
+
+## Error States & Empty States
+
+### Empty Product Grid
+```tsx
+<div className="py-32 text-center border border-black/10 bg-[#F5F5F0]">
+  <h3 className="font-oswald text-2xl uppercase mb-2">Keine Werkzeuge gefunden</h3>
+  <p className="text-gray-500">Diese Kollektion wird derzeit kuratiert.</p>
+</div>
+```
+
+---
+
+## Accessibility Considerations
+
+- **Text Contrast**: Ensure WCAG AA compliance (4.5:1 for normal text, 3:1 for large text)
+- **Focus States**: Use `focus-visible:ring-[3px]` for keyboard navigation
+- **Alt Text**: Always provide descriptive alt text for images
+- **Semantic HTML**: Use proper heading hierarchy (h1 → h2 → h3)
+
+---
+
+## Performance Optimization
+
+- **Image Loading**: Use `priority` prop for above-the-fold images
+- **Lazy Loading**: Use Next.js Image component with default lazy loading
+- **Animation Performance**: Use `transform` and `opacity` for animations (GPU-accelerated)
+- **Smooth Scroll**: Lenis provides optimized smooth scrolling
+
+---
+
+## Browser Compatibility
+
+- **Modern Browsers**: Chrome, Firefox, Safari, Edge (latest 2 versions)
+- **CSS Features**: Uses modern CSS (calc, viewport units, backdrop-filter)
+- **JavaScript**: Requires ES6+ support (Next.js handles transpilation)
+
+---
+
+## File Structure
+
+```
+src/
+├── app/
+│   ├── page.tsx              # Home page with hero, marquee, categories
+│   ├── layout.tsx            # Root layout with fonts and SmoothScroll
+│   ├── globals.css           # Global styles and CSS variables
+│   └── [routes]/             # Page routes
+├── components/
+│   ├── Navbar.tsx            # Navigation with dropdown
+│   ├── Footer.tsx             # Footer component
+│   ├── ProductCard.tsx        # Product card component
+│   └── SmoothScroll.tsx       # Lenis smooth scroll wrapper
+└── lib/
+    ├── data.ts               # Product data
+    └── utils.ts              # Utility functions
+```
+
+---
+
+## Quick Reference
+
+### Color Hex Codes
+- `#F2F0EA` - Light Background (Premium Beige/Cream)
+- `#1A1A1A` - Dark Background (Deep Black)
+- `#6B7F59` - Moss Green (Accent)
+- `#BC002D` - Red Accent (Logo character only)
+- `#FAFAF8` - Warm White (Text on dark)
+
+### Font Classes
+- `font-oswald` - Headings (Oswald)
+- `font-sans` - Body text (Inter)
+
+### Common Utilities
+- `leading-none` - Remove line height
+- `tracking-tighter` - Tight letter spacing
+- `tracking-widest` - Wide letter spacing
+- `uppercase` - Uppercase text
+- `rounded-none` - No border radius (brutalist)
+
+### Border Patterns
+- `border-2 border-black` - Brutalist 2px borders
+- `border-b-2 border-r-2 border-black` - Grid borders (no overlaps)
+- `border-black/10` - Subtle dividers

@@ -1,3 +1,5 @@
+"use client"
+
 export function Footer() {
   return (
     <footer className="border-t bg-muted/30">
@@ -36,6 +38,18 @@ export function Footer() {
               <li><a href="/impressum" className="hover:text-foreground transition-colors">Impressum</a></li>
               <li><a href="/datenschutz" className="hover:text-foreground transition-colors">Datenschutz</a></li>
               <li><a href="/transparenz" className="hover:text-foreground transition-colors">Affiliate Transparenz</a></li>
+              <li>
+                <button
+                  onClick={() => {
+                    if (typeof window !== 'undefined' && (window as any).openCookieSettings) {
+                      (window as any).openCookieSettings();
+                    }
+                  }}
+                  className="hover:text-foreground transition-colors text-left"
+                >
+                  Cookie-Einstellungen
+                </button>
+              </li>
             </ul>
           </div>
         </div>

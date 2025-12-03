@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Takumi Article Importer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Takumi Article Importer</h1>
+        </header>
+
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Extrahieren der Artikel-Daten...</p>
+        </div>
+
+        <div id="error" class="error hidden">
+            <p id="error-message"></p>
+        </div>
+
+        <form id="article-form" class="hidden">
+            <div class="form-group">
+                <label for="import-type">Typ *</label>
+                <select id="import-type" name="import-type" required>
+                    <option value="article">Artikel</option>
+                    <option value="product">Produkt</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="title">Titel *</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="excerpt">Kurzbeschreibung</label>
+                <textarea id="excerpt" name="excerpt" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="author">Autor</label>
+                <input type="text" id="author" name="author">
+            </div>
+
+            <div class="form-group">
+                <label for="category">Kategorie</label>
+                <div class="category-selector">
+                    <select id="category-select" name="category-select">
+                        <option value="">-- Neue Kategorie erstellen --</option>
+                    </select>
+                    <input type="text" id="category" name="category" placeholder="Oder neue Kategorie eingeben"
+                        class="hidden">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="price">Preis</label>
+                    <input type="number" id="price" name="price" step="0.01" min="0">
+                </div>
+                <div class="form-group">
+                    <label for="price_currency">Währung</label>
+                    <select id="price_currency" name="price_currency">
+                        <option value="EUR">EUR</option>
+                        <option value="USD">USD</option>
+                        <option value="GBP">GBP</option>
+                        <option value="JPY">JPY</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="source_url">Quell-URL *</label>
+                <input type="url" id="source_url" name="source_url" required readonly>
+            </div>
+
+            <div class="form-group">
+                <label>Bilder gefunden: <span id="image-count">0</span></label>
+                <div id="images-preview" class="images-preview"></div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" id="cancel-btn" class="btn btn-secondary">Abbrechen</button>
+                <button type="submit" id="submit-btn" class="btn btn-primary">Importieren</button>
+            </div>
+        </form>
+
+        <div id="success" class="success hidden">
+            <p id="success-message">Erfolgreich importiert!</p>
+            <button type="button" id="close-btn" class="btn btn-primary">Schließen</button>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>

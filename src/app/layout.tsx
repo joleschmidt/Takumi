@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 };
 
 import { SmoothScroll } from "@/components/SmoothScroll";
+import { CookieConsent } from "@/components/CookieConsent";
 
 export default function RootLayout({
   children,
@@ -33,6 +34,7 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          <CookieConsent />
         </SmoothScroll>
       </body>
     </html>

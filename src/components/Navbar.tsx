@@ -53,7 +53,7 @@ export function Navbar() {
 
         {/* Logo */}
         <Link href="/" className="mr-12 flex items-center space-x-2">
-          <span className="text-3xl font-oswald font-bold tracking-tighter uppercase text-black">Takumi<span className="text-[#BC002D]">匠</span></span>
+          <span className="text-3xl font-oswald font-bold tracking-tighter uppercase text-black leading-none">Takumi<span className="text-[#BC002D] inline-flex items-center justify-center" style={{ transform: 'translateY(-0.05em)', lineHeight: '1' }}>匠</span></span>
         </Link>
 
         {/* Desktop Nav */}
@@ -126,6 +126,13 @@ export function Navbar() {
               </NavigationMenuItem>
               <NavigationMenuItem>
                 <NavigationMenuLink asChild>
+                  <Link href="/artikel" className="text-sm font-bold uppercase tracking-widest bg-transparent hover:bg-transparent px-4 py-2 hover:underline underline-offset-4 decoration-2 text-black">
+                    Artikel
+                  </Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink asChild>
                   <Link href="/ueber-uns" className="text-sm font-bold uppercase tracking-widest bg-transparent hover:bg-transparent px-4 py-2 hover:underline underline-offset-4 decoration-2 text-black">
                     Über Uns
                   </Link>
@@ -168,6 +175,9 @@ export function Navbar() {
                 </Link>
                 <Link href="/ratgeber" className="text-3xl font-oswald font-bold uppercase hover:text-[#6B7F59]">
                   Magazin
+                </Link>
+                <Link href="/artikel" className="text-3xl font-oswald font-bold uppercase hover:text-[#6B7F59]">
+                  Artikel
                 </Link>
                 <Link href="/ueber-uns" className="text-3xl font-oswald font-bold uppercase hover:text-[#6B7F59]">
                   Über Uns
