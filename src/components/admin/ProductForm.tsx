@@ -321,20 +321,20 @@ export function ProductForm({ product }: ProductFormProps) {
                   Visuals & Reihenfolge
                 </h2>
               </div>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
                 onClick={() => {
                   setImages([...images, ''])
                   setImageErrors(prev => [...prev, false])
                 }}
-                className="border-black h-8 px-3"
-              >
-                <Plus className="h-4 w-4 mr-1" />
+                    className="border-black h-8 px-3"
+                  >
+                    <Plus className="h-4 w-4 mr-1" />
                 Bild
-              </Button>
-            </div>
+                  </Button>
+                </div>
 
             <div className="space-y-3">
               <div>
@@ -468,28 +468,28 @@ export function ProductForm({ product }: ProductFormProps) {
                           )}
                         </Button>
                         {images.length > 1 && (
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="sm"
-                            onClick={() => {
-                              const newImages = images.filter((_, i) => i !== index)
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const newImages = images.filter((_, i) => i !== index)
                               const newErrors = imageErrors.filter((_, i) => i !== index)
-                              setImages(newImages)
+                            setImages(newImages)
                               setImageErrors(newErrors)
 
-                              if (index === 0 && newImages.length > 0) {
-                                setFormData(prev => ({ ...prev, image_url: newImages[0] }))
-                              } else if (newImages.length === 0) {
-                                setFormData(prev => ({ ...prev, image_url: '' }))
-                              }
-                            }}
+                            if (index === 0 && newImages.length > 0) {
+                              setFormData(prev => ({ ...prev, image_url: newImages[0] }))
+                            } else if (newImages.length === 0) {
+                              setFormData(prev => ({ ...prev, image_url: '' }))
+                            }
+                          }}
                             className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white h-8 w-8 p-0 flex items-center justify-center"
-                            title="Entfernen"
-                          >
+                          title="Entfernen"
+                        >
                             <Trash2 className="h-3 w-3" />
-                          </Button>
-                        )}
+                        </Button>
+                      )}
                       </div>
                     </div>
                   ))}
@@ -529,12 +529,14 @@ export function ProductForm({ product }: ProductFormProps) {
                 <Label htmlFor="title" className="text-sm font-bold uppercase tracking-widest mb-2 block">
                   Titel *
                 </Label>
-                <Input
+                <Textarea
                   id="title"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   required
-                  className="bg-white border-black text-2xl font-oswald font-bold uppercase"
+                  rows={1}
+                  className="bg-white border-black text-2xl font-oswald font-bold uppercase resize-none overflow-hidden whitespace-nowrap"
+                  style={{ height: '2.25rem', minHeight: '2.25rem' }}
                 />
               </div>
 
@@ -542,11 +544,13 @@ export function ProductForm({ product }: ProductFormProps) {
                 <Label htmlFor="original_name" className="text-sm font-bold uppercase tracking-widest mb-2 block">
                   Original Name (Japanisch)
                 </Label>
-                <Input
+                <Textarea
                   id="original_name"
                   value={formData.original_name}
                   onChange={(e) => setFormData({ ...formData, original_name: e.target.value })}
-                  className="bg-white border-black italic"
+                  rows={1}
+                  className="bg-white border-black italic resize-none overflow-hidden whitespace-nowrap"
+                  style={{ height: '2.25rem', minHeight: '2.25rem' }}
                 />
               </div>
 
@@ -554,13 +558,15 @@ export function ProductForm({ product }: ProductFormProps) {
                 <Label htmlFor="slug" className="text-sm font-bold uppercase tracking-widest mb-2 block">
                   Slug (URL) *
                 </Label>
-                <Input
+                <Textarea
                   id="slug"
                   value={formData.slug}
                   onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
                   required
                   placeholder="okatsune-103"
-                  className="bg-white border-black font-mono"
+                  rows={1}
+                  className="bg-white border-black font-mono text-base leading-snug resize-none overflow-hidden whitespace-nowrap"
+                  style={{ height: '2.25rem', minHeight: '2.25rem' }}
                 />
               </div>
 
@@ -572,9 +578,9 @@ export function ProductForm({ product }: ProductFormProps) {
                 <div className="flex flex-col gap-2">
                   {/* Select existing or trigger "new" */}
                   <div className="flex gap-2">
-                    <select
-                      id="category"
-                      value={formData.category}
+                <select
+                  id="category"
+                  value={formData.category}
                       onChange={(e) => {
                         const value = e.target.value
                         if (value === '__new__') {
@@ -584,16 +590,16 @@ export function ProductForm({ product }: ProductFormProps) {
                           setFormData(prev => ({ ...prev, category: value }))
                         }
                       }}
-                      required
-                      className="w-full px-3 py-2 border-2 border-black bg-white font-bold uppercase tracking-widest"
-                    >
+                  required
+                  className="w-full px-3 py-2 border-2 border-black bg-white font-bold uppercase tracking-widest"
+                >
                       {categories.map(cat => (
                         <option key={cat.value} value={cat.value}>
                           {cat.label}
                         </option>
                       ))}
                       <option value="__new__">+ Neue Kategorie …</option>
-                    </select>
+                </select>
                   </div>
 
                   {showNewCategoryForm && (
@@ -682,13 +688,15 @@ export function ProductForm({ product }: ProductFormProps) {
                 <Label htmlFor="price_range" className="text-sm font-bold uppercase tracking-widest mb-2 block">
                   Preisbereich *
                 </Label>
-                <Input
+                <Textarea
                   id="price_range"
                   value={formData.price_range}
                   onChange={(e) => setFormData({ ...formData, price_range: e.target.value })}
                   required
                   placeholder="50€ - 70€"
-                  className="bg-white border-black text-xl font-bold"
+                  rows={1}
+                  className="bg-white border-black text-xl font-bold leading-snug resize-none overflow-hidden whitespace-nowrap"
+                  style={{ height: '2.25rem', minHeight: '2.25rem' }}
                 />
               </div>
 
@@ -795,7 +803,7 @@ export function ProductForm({ product }: ProductFormProps) {
                   {vendors.map((vendor, index) => (
                     <div key={index} className="border-2 border-black/10 p-4 space-y-3">
                       <div className="flex gap-2">
-                        <Input
+                        <Textarea
                           value={vendor.name}
                           onChange={(e) => {
                             const newVendors = [...vendors]
@@ -803,7 +811,9 @@ export function ProductForm({ product }: ProductFormProps) {
                             setVendors(newVendors)
                           }}
                           placeholder="Shop Name (z.B. Dictum)"
-                          className="bg-white border-black flex-1"
+                          rows={1}
+                          className="bg-white border-black flex-1 text-sm leading-snug resize-none overflow-hidden whitespace-nowrap"
+                          style={{ height: '2.25rem', minHeight: '2.25rem' }}
                         />
                         <Textarea
                           ref={el => {
@@ -849,12 +859,12 @@ export function ProductForm({ product }: ProductFormProps) {
                               <Lock className="h-3 w-3" />
                             )}
                           </Button>
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="sm"
-                            onClick={() => {
-                              const newVendors = vendors.filter((_, i) => i !== index)
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const newVendors = vendors.filter((_, i) => i !== index)
                               const newEditable = editableVendorUrls.filter((_, i) => i !== index)
                               const newLoading = vendorPriceLoading.filter((_, i) => i !== index)
                               setVendors(
@@ -862,30 +872,32 @@ export function ProductForm({ product }: ProductFormProps) {
                               )
                               setEditableVendorUrls(newEditable.length > 0 ? newEditable : [false])
                               setVendorPriceLoading(newLoading.length > 0 ? newLoading : [false])
-                            }}
+                          }}
                             className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white h-8 w-8 p-0 flex items-center justify-center"
-                          >
+                        >
                             <Trash2 className="h-3 w-3" />
-                          </Button>
+                        </Button>
                         </div>
                       </div>
                       <div className="space-y-2 border-t border-dashed border-black/20 pt-3 mt-2">
-                        <div className="grid grid-cols-2 gap-2">
-                          <div>
-                            <Label className="text-xs font-bold uppercase tracking-widest mb-1 block text-gray-600">
-                              Preis
-                            </Label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <Label className="text-xs font-bold uppercase tracking-widest mb-1 block text-gray-600">
+                            Preis
+                          </Label>
                             <div className="flex gap-2">
-                              <Input
-                                value={vendor.price || ''}
-                                onChange={(e) => {
-                                  const newVendors = [...vendors]
-                                  newVendors[index].price = e.target.value
-                                  setVendors(newVendors)
-                                }}
-                                placeholder="z.B. 65€"
-                                className="bg-white border-black text-sm flex-1"
-                              />
+                            <Textarea
+                              value={vendor.price || ''}
+                              onChange={(e) => {
+                                const newVendors = [...vendors]
+                                newVendors[index].price = e.target.value
+                                setVendors(newVendors)
+                              }}
+                              placeholder="z.B. 65€"
+                              rows={1}
+                              className="bg-white border-black text-sm flex-1 leading-snug resize-none overflow-hidden whitespace-nowrap"
+                              style={{ height: '2.25rem', minHeight: '2.25rem' }}
+                            />
                               <Button
                                 type="button"
                                 variant="outline"
@@ -912,22 +924,22 @@ export function ProductForm({ product }: ProductFormProps) {
                                 )}
                               </Button>
                             </div>
-                          </div>
-                          <div>
-                            <Label className="text-xs font-bold uppercase tracking-widest mb-1 block text-gray-600">
-                              Versandkosten
-                            </Label>
-                            <Input
-                              value={vendor.shipping_cost || ''}
-                              onChange={(e) => {
-                                const newVendors = [...vendors]
-                                newVendors[index].shipping_cost = e.target.value
-                                setVendors(newVendors)
-                              }}
-                              placeholder="z.B. 5€ oder kostenlos"
-                              className="bg-white border-black text-sm"
-                            />
-                          </div>
+                        </div>
+                        <div>
+                          <Label className="text-xs font-bold uppercase tracking-widest mb-1 block text-gray-600">
+                            Versandkosten
+                          </Label>
+                          <Input
+                            value={vendor.shipping_cost || ''}
+                            onChange={(e) => {
+                              const newVendors = [...vendors]
+                              newVendors[index].shipping_cost = e.target.value
+                              setVendors(newVendors)
+                            }}
+                            placeholder="z.B. 5€ oder kostenlos"
+                            className="bg-white border-black text-sm"
+                          />
+                        </div>
                         </div>
 
                         {getVendorTotalInfo(vendor) && (
