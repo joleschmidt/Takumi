@@ -9,6 +9,8 @@ interface ProductCardProps {
   description: string
   priceRange: string
   category: string
+  subcategory?: string | null
+  subtype?: string | null
   slug: string
   imageUrl?: string
   isNew?: boolean
@@ -20,6 +22,8 @@ export function ProductCard({
   description,
   priceRange,
   category,
+  subcategory,
+  subtype,
   slug,
   imageUrl,
   isNew,

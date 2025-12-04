@@ -8,6 +8,11 @@ import { ProductCard } from "@/components/ProductCard"
 
 import { supabase } from "@/lib/supabase"
 
+// Check if title contains umlauts (Ä, Ö, Ü)
+const hasUmlauts = (text: string) => {
+  return /[ÄÖÜäöü]/.test(text)
+}
+
 export default async function ProductPage({
   params,
 }: {
@@ -40,6 +45,8 @@ export default async function ProductPage({
     originalName: data.original_name,
     description: data.description,
     category: data.category,
+    subcategory: data.subcategory as string | null,
+    subtype: data.subtype as string | null,
     slug: data.slug,
     priceRange: data.price_range,
     isNew: data.is_new,
@@ -67,6 +74,8 @@ export default async function ProductPage({
       originalName: p.original_name,
       description: p.description,
       category: p.category,
+      subcategory: p.subcategory as string | null,
+      subtype: p.subtype as string | null,
       slug: p.slug,
       priceRange: p.price_range,
       isNew: p.is_new,
@@ -87,6 +96,10 @@ export default async function ProductPage({
   }
   const categoryLabel =
     categoryLabelMap[categorySlug] ?? categorySlug.replace(/-/g, " ")
+
+  const subcategoryLabel = productData.subcategory || ""
+  const subtypeLabel = productData.subtype || ""
+  const hasUmlautsInTitle = hasUmlauts(productData.title)
 
   return (
     <div className="min-h-screen bg-[#FAFAF8] text-[#1a1a1a]">
@@ -119,7 +132,7 @@ export default async function ProductPage({
 
         {/* Right: Content - 50% width */}
         <div className="p-8 md:p-12 lg:p-16 lg:pt-32 flex flex-col justify-start min-h-screen bg-white overflow-y-auto">
-          <div className="hidden lg:flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-500 mb-8">
+          <div className={`hidden lg:flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-500 ${hasUmlautsInTitle ? 'mb-12' : 'mb-8'}`}>
             <Link href="/werkzeuge" className="hover:text-black transition-colors">
               Kollektion
             </Link>
@@ -130,6 +143,18 @@ export default async function ProductPage({
             >
               {categoryLabel}
             </Link>
+            {subcategoryLabel && (
+              <>
+                <span>/</span>
+                <span>{subcategoryLabel}</span>
+              </>
+            )}
+            {subtypeLabel && (
+              <>
+                <span>/</span>
+                <span>{subtypeLabel}</span>
+              </>
+            )}
           </div>
 
           <div className="mb-8">
@@ -313,6 +338,8 @@ export default async function ProductPage({
                       description={rp.description}
                       priceRange={rp.priceRange}
                       category={rp.category}
+                      subcategory={rp.subcategory}
+                      subtype={rp.subtype}
                       slug={rp.slug}
                       imageUrl={rp.imageUrl}
                       isNew={rp.isNew}

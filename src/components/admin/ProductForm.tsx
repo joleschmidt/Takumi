@@ -16,6 +16,8 @@ interface Product {
   original_name?: string
   description: string
   category: string
+  subcategory?: string | null
+  subtype?: string | null
   slug: string
   price_range: string
   is_new?: boolean
@@ -71,6 +73,8 @@ export function ProductForm({ product }: ProductFormProps) {
     original_name: product?.original_name || '',
     description: product?.description || '',
     category: product?.category || 'scheren-zangen',
+    subcategory: product?.subcategory || '',
+    subtype: product?.subtype || '',
     slug: product?.slug || '',
     price_range: product?.price_range || '',
     is_new: product?.is_new || false,
@@ -238,6 +242,8 @@ export function ProductForm({ product }: ProductFormProps) {
         original_name: formData.original_name || null,
         description: formData.description,
         category: formData.category,
+        subcategory: formData.subcategory?.trim() || null,
+        subtype: formData.subtype?.trim() || null,
         slug: formData.slug,
         price_range: derivedPriceRange,
         is_new: formData.is_new,
@@ -681,6 +687,35 @@ export function ProductForm({ product }: ProductFormProps) {
                       </div>
                     </div>
                   )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Label className="text-xs font-bold uppercase tracking-widest mb-2 block">
+                    Unterkategorie
+                  </Label>
+                  <Input
+                    value={formData.subcategory || ''}
+                    onChange={(e) =>
+                      setFormData(prev => ({ ...prev, subcategory: e.target.value }))
+                    }
+                    placeholder="z.B. Sägen, Beile"
+                    className="bg-white border-black text-sm"
+                  />
+                </div>
+                <div>
+                  <Label className="text-xs font-bold uppercase tracking-widest mb-2 block">
+                    Typ
+                  </Label>
+                  <Input
+                    value={formData.subtype || ''}
+                    onChange={(e) =>
+                      setFormData(prev => ({ ...prev, subtype: e.target.value }))
+                    }
+                    placeholder="z.B. Einhandsäge, Klappsäge"
+                    className="bg-white border-black text-sm"
+                  />
                 </div>
               </div>
 
