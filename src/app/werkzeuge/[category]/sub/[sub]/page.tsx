@@ -110,18 +110,18 @@ export default async function SubCategoryPage({ params }: SubCategoryPageProps) 
       {/* Content */}
       <section className="relative z-10 bg-white px-4 md:px-8 lg:px-12 pb-24 min-h-[calc(100vh-5rem+10vh)] pt-12">
         <div className="max-w-[1800px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
-            {/* Sidebar: simple back + sibling info if needed */}
-            <div className="hidden md:block space-y-6 sticky top-32 h-fit text-xs font-bold uppercase tracking-widest">
-              <a
-                href={`/werkzeuge/${category}`}
-                className="block border border-black px-3 py-2 hover:bg-black hover:text-white transition-colors"
-              >
-                ← Zurück zu {categoryTitle}
-              </a>
-            </div>
+          {/* Sidebar: simple back + sibling info if needed */}
+          <div className="hidden md:block space-y-6 sticky top-32 h-fit text-xs font-bold uppercase tracking-widest">
+            <a
+              href={`/werkzeuge/${category}`}
+              className="block border border-black px-3 py-2 hover:bg-black hover:text-white transition-colors"
+            >
+              ← Zurück zu {categoryTitle}
+            </a>
+          </div>
 
-            {/* Grid */}
-            <div className="md:col-span-3">
+          {/* Grid */}
+          <div className="md:col-span-3">
             {products.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0">
                 {products.map((product) => (
@@ -154,8 +154,8 @@ export default async function SubCategoryPage({ params }: SubCategoryPageProps) 
                 </p>
               </div>
             )}
-            </div>
           </div>
+        </div>
       </section>
     </div>
   )

@@ -68,15 +68,15 @@ export function WerkzeugeClient({ products }: { products: Product[] }) {
           {/* Grid */}
           <div className="md:col-span-3">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0">
-              {products.map((product) => (
+               {products.map((product) => (
                 <div
                   key={product.id}
                   className="group -ml-px -mt-px border border-black/10 hover:border-black transition-colors duration-200 [&>a]:border-none [&>a]:hover:border-none"
                 >
-                  <ProductCard {...product} />
-                </div>
-              ))}
-            </div>
+                   <ProductCard {...product} />
+                 </div>
+               ))}
+             </div>
           </div>
 
         </div>
