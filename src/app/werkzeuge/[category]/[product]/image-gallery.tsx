@@ -45,6 +45,31 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
     setIsFullscreen(false);
   };
 
+  // Preload adjacent images for smoother navigation
+  useEffect(() => {
+    if (images.length <= 1) return;
+
+    const preloadImage = (src: string) => {
+      const link = document.createElement("link");
+      link.rel = "preload";
+      link.as = "image";
+      link.href = src;
+      document.head.appendChild(link);
+    };
+
+    // Preload next image
+    const nextIndex = (currentIndex + 1) % images.length;
+    if (images[nextIndex]) {
+      preloadImage(images[nextIndex]);
+    }
+
+    // Preload previous image
+    const prevIndex = (currentIndex - 1 + images.length) % images.length;
+    if (images[prevIndex] && prevIndex !== nextIndex) {
+      preloadImage(images[prevIndex]);
+    }
+  }, [currentIndex, images]);
+
   // Handle keyboard navigation in fullscreen
   useEffect(() => {
     if (!isFullscreen) {
@@ -86,7 +111,6 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
               fill
               className="object-contain"
               sizes="(max-width: 768px) 100vw, 50vw"
-              unoptimized
               priority={currentIndex === 0}
             />
           </div>
@@ -146,7 +170,7 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
                         fill
                         className="object-cover"
                         sizes="64px"
-                        unoptimized
+                        loading="lazy"
                       />
                     </button>
                   ))}
@@ -213,7 +237,6 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
                 fill
                 className="object-contain"
                 sizes="100vw"
-                unoptimized
               />
             </div>
 
@@ -239,7 +262,7 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
                         fill
                         className="object-cover"
                         sizes="80px"
-                        unoptimized
+                        loading="lazy"
                       />
                     </button>
                   ))}

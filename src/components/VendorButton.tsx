@@ -39,7 +39,8 @@ export function VendorButton({ name, url, price, shipping_cost }: VendorButtonPr
                 alt={name}
                 fill
                 className="object-contain"
-                unoptimized
+                sizes="24px"
+                loading="lazy"
               />
             </div>
           )}

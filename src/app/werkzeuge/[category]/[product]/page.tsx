@@ -1,6 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
+import { cache } from "react"
 import { VendorButton } from "@/components/VendorButton"
 import { ImageGallery } from "./image-gallery"
 import { ReadMore } from "@/components/ReadMore"
@@ -13,6 +14,39 @@ const hasUmlauts = (text: string) => {
   return /[ÄÖÜäöü]/.test(text)
 }
 
+// Cache product data fetch with 60s revalidation
+const getProductData = cache(async (slug: string) => {
+  const { data, error } = await supabase
+    .from("products")
+    .select("id, title, original_name, description, category, subcategory, subtype, slug, price_range, is_new, features, history, usage, care, image_url, images, vendors")
+    .eq("slug", slug)
+    .single()
+  
+  if (error || !data) {
+    return null
+  }
+  
+  return data
+})
+
+// Cache related products fetch with 60s revalidation
+const getRelatedProducts = cache(async (category: string, excludeSlug: string) => {
+  const { data, error } = await supabase
+    .from("products")
+    .select("id, title, original_name, description, category, subcategory, subtype, slug, price_range, is_new, image_url")
+    .eq("category", category)
+    .neq("slug", excludeSlug)
+    .limit(4)
+  
+  if (error) {
+    return []
+  }
+  
+  return data || []
+})
+
+export const revalidate = 3600 // 1 hour ISR
+
 export default async function ProductPage({ 
   params,
 }: { 
@@ -20,14 +54,10 @@ export default async function ProductPage({
 }) {
   const { category, product: slug } = await params
   
-  // Fetch current product
-  const { data, error } = await supabase
-    .from("products")
-    .select("*")
-    .eq("slug", slug)
-    .single()
+  // Fetch current product with optimized column selection
+  const data = await getProductData(slug)
 
-  if (error || !data) {
+  if (!data) {
     return notFound()
   }
 
@@ -59,16 +89,11 @@ export default async function ProductPage({
     vendors: data.vendors && Array.isArray(data.vendors) ? data.vendors : [],
   }
 
-  // Fetch related products from same category (exclude current)
-  const { data: relatedRaw } = await supabase
-    .from("products")
-    .select("*")
-    .eq("category", productData.category)
-    .neq("slug", productData.slug)
-    .limit(4)
+  // Fetch related products from same category (exclude current) with optimized columns
+  const relatedRaw = await getRelatedProducts(productData.category, productData.slug)
 
   const relatedProducts =
-    relatedRaw?.map((p) => ({
+    relatedRaw.map((p) => ({
       id: p.id,
       title: p.title,
       originalName: p.original_name,
@@ -105,14 +130,14 @@ export default async function ProductPage({
     <div className="min-h-screen bg-[#FAFAF8] text-[#1a1a1a]">
       <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
         {/* Left: Sticky Image Gallery - 50% width */}
-        <div className="relative bg-[#F2F0EA] lg:h-screen lg:sticky lg:top-20 flex items-center justify-center p-8 md:p-12 lg:p-16">
+        <div className="relative bg-[#F2F0EA] lg:h-screen lg:sticky lg:top-20 flex items-center justify-center p-4 md:p-8 lg:p-12 xl:p-16">
           <div className="relative w-full h-full flex items-center justify-center">
-            <div className="relative w-full flex items-center justify-center mb-10">
+            <div className="relative w-full flex items-center justify-center mb-6 md:mb-10">
               <ImageGallery images={productData.images} title={productData.title} />
 
               {/* Product Badge */}
               {productData.isNew && (
-                <div className="absolute top-4 left-4 md:top-8 md:left-8 bg-black text-white px-4 py-2 font-bold uppercase tracking-widest text-sm z-20">
+                <div className="absolute top-2 left-2 md:top-4 md:left-4 lg:top-8 lg:left-8 bg-black text-white px-3 py-1.5 md:px-4 md:py-2 font-bold uppercase tracking-widest text-xs md:text-sm z-20">
                   Neuheit
       </div>
               )}
@@ -120,10 +145,10 @@ export default async function ProductPage({
           </div>
 
           {/* Mobile Breadcrumb overlay */}
-          <div className="absolute top-24 left-4 md:left-8 lg:hidden z-20">
+          <div className="absolute top-20 left-2 md:top-24 md:left-4 lg:hidden z-20">
             <Link
               href={`/werkzeuge/${categorySlug}`}
-              className="bg-white/90 backdrop-blur-md px-4 py-2 text-xs font-bold uppercase tracking-widest border-2 border-black hover:bg-black hover:text-white transition-colors"
+              className="bg-white/90 backdrop-blur-md px-3 py-1.5 md:px-4 md:py-2 text-xs font-bold uppercase tracking-widest border-2 border-black hover:bg-black hover:text-white transition-colors"
             >
               ← Zurück
             </Link>
@@ -131,7 +156,7 @@ export default async function ProductPage({
         </div>
 
         {/* Right: Content - 50% width */}
-        <div className="p-8 md:p-12 lg:p-16 lg:pt-32 flex flex-col justify-start min-h-screen bg-white overflow-y-auto">
+        <div className="p-4 md:p-8 lg:p-12 xl:p-16 lg:pt-32 flex flex-col justify-start min-h-screen bg-white overflow-y-auto">
           <div className={`hidden lg:flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-500 ${hasUmlautsInTitle ? 'mb-12' : 'mb-8'}`}>
             <Link href="/werkzeuge" className="hover:text-black transition-colors">
               Kollektion
@@ -157,12 +182,12 @@ export default async function ProductPage({
             )}
           </div>
 
-          <div className="mb-8">
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-oswald font-bold uppercase leading-[0.9] mb-4">
+          <div className="mb-6 md:mb-8">
+            <h1 className="text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-oswald font-bold uppercase leading-[0.9] mb-3 md:mb-4">
               {productData.title}
             </h1>
             {productData.originalName && (
-              <p className="text-lg md:text-xl text-gray-500 font-medium italic mb-4">
+              <p className="text-base md:text-lg lg:text-xl text-gray-500 font-medium italic mb-3 md:mb-4">
                 {productData.originalName}
               </p>
             )}
@@ -180,7 +205,7 @@ export default async function ProductPage({
 
               if (vendorPrices.length === 0) {
                 return productData.priceRange ? (
-                  <p className="text-2xl md:text-3xl font-bold font-oswald">
+                  <p className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold font-oswald">
               {productData.priceRange}
                   </p>
                 ) : null
@@ -210,17 +235,17 @@ export default async function ProductPage({
           {productData.description &&
             typeof productData.description === "string" &&
             productData.description.trim() && (
-              <div className="mb-10">
+              <div className="mb-8 md:mb-10">
                 <ReadMore
                   text={productData.description}
                   maxLines={4}
-                  className="text-lg md:text-xl text-gray-700 leading-relaxed"
+                  className="text-base md:text-lg lg:text-xl text-gray-700 leading-relaxed"
                 />
             </div>
             )}
 
           {productData.vendors && productData.vendors.length > 0 && (
-            <div className="space-y-4 mb-16">
+            <div className="space-y-3 md:space-y-4 mb-12 md:mb-16">
               {productData.vendors.map(
                 (
                   vendor: {
@@ -246,17 +271,17 @@ export default async function ProductPage({
           </div>
           )}
 
-          <div className="grid gap-12">
+          <div className="grid gap-8 md:gap-12">
             {productData.features && productData.features.length > 0 && (
              <div>
-                <h3 className="font-oswald font-bold text-2xl md:text-3xl uppercase border-b-2 border-black pb-4 mb-6">
+                <h3 className="font-oswald font-bold text-xl md:text-2xl lg:text-3xl uppercase border-b-2 border-black pb-3 md:pb-4 mb-4 md:mb-6">
                   Eigenschaften
                 </h3>
-                <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                   {productData.features.map((feature: string, i: number) => (
-                    <li key={i} className="flex items-start gap-3">
+                    <li key={i} className="flex items-start gap-2 md:gap-3">
                       <div className="w-1.5 h-1.5 bg-[#6B7F59] mt-2 shrink-0 rounded-full" />
-                      <span className="font-medium text-gray-700 text-base">
+                      <span className="font-medium text-gray-700 text-sm md:text-base">
                         {feature}
                       </span>
                       </li>
@@ -266,46 +291,46 @@ export default async function ProductPage({
             )}
 
             {(productData.usage || productData.care || productData.history) && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
                 {productData.usage &&
                   typeof productData.usage === "string" &&
                   productData.usage.trim() && (
-                    <div className="bg-[#F2F0EA] p-6 md:p-8 border-2 border-black/5">
-                      <h4 className="font-bold uppercase tracking-widest text-sm mb-4 text-[#6B7F59]">
+                    <div className="bg-[#F2F0EA] p-4 md:p-6 lg:p-8 border-2 border-black/5">
+                      <h4 className="font-bold uppercase tracking-widest text-xs md:text-sm mb-3 md:mb-4 text-[#6B7F59]">
                         Verwendung
                       </h4>
                       <ReadMore
                         text={productData.usage}
                         maxLines={4}
-                        className="text-sm md:text-base leading-relaxed text-gray-700"
+                        className="text-xs md:text-sm lg:text-base leading-relaxed text-gray-700"
                       />
                 </div>
                   )}
                 {productData.care &&
                   typeof productData.care === "string" &&
                   productData.care.trim() && (
-                    <div className="bg-[#F2F0EA] p-6 md:p-8 border-2 border-black/5">
-                      <h4 className="font-bold uppercase tracking-widest text-sm mb-4 text-[#6B7F59]">
+                    <div className="bg-[#F2F0EA] p-4 md:p-6 lg:p-8 border-2 border-black/5">
+                      <h4 className="font-bold uppercase tracking-widest text-xs md:text-sm mb-3 md:mb-4 text-[#6B7F59]">
                         Pflege
                       </h4>
                       <ReadMore
                         text={productData.care}
                         maxLines={4}
-                        className="text-sm md:text-base leading-relaxed text-gray-700"
+                        className="text-xs md:text-sm lg:text-base leading-relaxed text-gray-700"
                       />
                 </div>
                   )}
                 {productData.history &&
                   typeof productData.history === "string" &&
                   productData.history.trim() && (
-                    <div className="bg-[#F2F0EA] p-6 md:p-8 md:col-span-2 border-2 border-black/5">
-                      <h4 className="font-bold uppercase tracking-widest text-sm mb-4 text-[#6B7F59]">
+                    <div className="bg-[#F2F0EA] p-4 md:p-6 lg:p-8 md:col-span-2 border-2 border-black/5">
+                      <h4 className="font-bold uppercase tracking-widest text-xs md:text-sm mb-3 md:mb-4 text-[#6B7F59]">
                         Geschichte
                       </h4>
                       <ReadMore
                         text={productData.history}
                         maxLines={4}
-                        className="text-sm md:text-base leading-relaxed text-gray-700"
+                        className="text-xs md:text-sm lg:text-base leading-relaxed text-gray-700"
                       />
              </div>
                   )}
@@ -316,21 +341,21 @@ export default async function ProductPage({
       </div>
 
       {relatedProducts.length > 0 && (
-        <section className="relative z-10 bg-white px-4 md:px-8 lg:px-12 py-16 border-t-2 border-black">
+        <section className="relative z-10 bg-white px-4 md:px-8 lg:px-12 py-12 md:py-16 border-t-2 border-black">
           <div className="max-w-[1800px] mx-auto">
-            <p className="text-sm font-bold uppercase tracking-widest text-gray-500 mb-4">
+            <p className="text-xs md:text-sm font-bold uppercase tracking-widest text-gray-500 mb-3 md:mb-4">
               Ähnliche Artikel
             </p>
-            <h2 className="text-3xl md:text-4xl font-oswald font-bold uppercase tracking-tighter mb-8">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-oswald font-bold uppercase tracking-tighter mb-6 md:mb-8">
               Mehr aus dieser Kategorie
             </h2>
 
-            <div className="overflow-x-auto">
-              <div className="flex gap-6 md:gap-8 pb-4 min-w-max">
-                {relatedProducts.map((rp) => (
+            <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
+              <div className="flex gap-4 md:gap-6 lg:gap-8 pb-4 min-w-max">
+                {relatedProducts.map((rp, index) => (
                   <div
                     key={rp.id}
-                    className="w-[260px] md:w-[320px] lg:w-[360px] flex-shrink-0"
+                    className="w-[240px] md:w-[320px] lg:w-[360px] flex-shrink-0"
                   >
                     <ProductCard
                       title={rp.title}
@@ -343,6 +368,7 @@ export default async function ProductPage({
                       slug={rp.slug}
                       imageUrl={rp.imageUrl}
                       isNew={rp.isNew}
+                      priority={index === 0}
                     />
                   </div>
                 ))}

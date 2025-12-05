@@ -24,13 +24,13 @@ export function WerkzeugeClient({ products }: { products: Product[] }) {
     <div className="min-h-screen bg-[#FAFAF8] text-[#1a1a1a]">
       
       {/* Hero */}
-      <section className="sticky top-0 z-0 pt-32 pb-16 px-4 md:px-8 lg:px-12 bg-[#FAFAF8] min-h-[50vh] flex flex-col justify-center">
+      <section className="sticky top-0 z-0 pt-32 pb-12 md:pb-16 px-4 md:px-8 lg:px-12 bg-[#FAFAF8] min-h-[50vh] flex flex-col justify-center">
         <div className="max-w-[1800px] mx-auto w-full">
           <motion.h1 
              initial={{ opacity: 0, y: "100%" }}
              animate={{ opacity: 1, y: 0 }}
              transition={{ duration: 0.8 }}
-             className="text-[12vw] leading-[0.9] font-oswald font-bold uppercase tracking-tighter mb-12"
+             className="text-[8vw] md:text-[10vw] lg:text-[12vw] leading-[0.9] font-oswald font-bold uppercase tracking-tighter mb-8 md:mb-12 max-w-full"
           >
             Werkzeug <br/><span className="text-[#6B7F59]">Kollektion</span>
           </motion.h1>
@@ -38,7 +38,7 @@ export function WerkzeugeClient({ products }: { products: Product[] }) {
         </div>
       </section>
 
-      <section className="relative z-10 bg-white px-4 md:px-8 lg:px-12 pb-24 min-h-[calc(100vh-5rem+10vh)] pt-12">
+      <section className="relative z-10 bg-white px-4 md:px-8 lg:px-12 pb-16 md:pb-24 min-h-[calc(100vh-5rem+10vh)] pt-8 md:pt-12">
         <div className="max-w-[1800px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
           
           {/* Sidebar */}
@@ -68,12 +68,12 @@ export function WerkzeugeClient({ products }: { products: Product[] }) {
           {/* Grid */}
           <div className="md:col-span-3">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0">
-               {products.map((product) => (
+               {products.map((product, index) => (
                 <div
                   key={product.id}
                   className="group -ml-px -mt-px border border-black/10 hover:border-black transition-colors duration-200 [&>a]:border-none [&>a]:hover:border-none"
                 >
-                   <ProductCard {...product} />
+                   <ProductCard {...product} priority={index < 6} />
                  </div>
                ))}
              </div>

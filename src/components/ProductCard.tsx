@@ -14,6 +14,7 @@ interface ProductCardProps {
   slug: string
   imageUrl?: string
   isNew?: boolean
+  priority?: boolean
 }
 
 export function ProductCard({
@@ -27,6 +28,7 @@ export function ProductCard({
   slug,
   imageUrl,
   isNew,
+  priority = false,
 }: ProductCardProps) {
   return (
     <Link
@@ -45,6 +47,9 @@ export function ProductCard({
             alt={title}
             fill
             className="object-cover scale-105 group-hover:scale-115 transition-transform duration-700 grayscale group-hover:grayscale-0"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            priority={priority}
+            loading={priority ? undefined : "lazy"}
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-stone-300">
@@ -60,27 +65,27 @@ export function ProductCard({
         </div>
       </div>
 
-      <div className="p-6 flex flex-col h-[200px] justify-between">
+      <div className="p-4 md:p-6 flex flex-col h-[180px] md:h-[200px] justify-between">
         <div>
           <div className="flex justify-between items-start mb-2">
             <span className="text-xs font-bold uppercase tracking-widest text-[#6B7F59]">{category.replace(/-/g, ' ')}</span>
-            <span className="font-bold text-sm">{priceRange}</span>
+            <span className="font-bold text-xs md:text-sm">{priceRange}</span>
           </div>
-          <h3 className="font-oswald font-bold text-2xl uppercase leading-none mb-1 group-hover:underline decoration-2 underline-offset-4">
+          <h3 className="font-oswald font-bold text-xl md:text-2xl uppercase leading-none mb-1 group-hover:underline decoration-2 underline-offset-4">
             {title}
           </h3>
           {originalName && (
-            <p className="text-xs text-gray-400 font-medium tracking-wide uppercase mb-4">
+            <p className="text-xs text-gray-400 font-medium tracking-wide uppercase mb-3 md:mb-4">
               {originalName}
             </p>
           )}
-          <p className="text-sm text-gray-600 line-clamp-2 leading-relaxed">
+          <p className="text-xs md:text-sm text-gray-600 line-clamp-2 leading-relaxed">
             {description}
           </p>
         </div>
 
-        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest mt-4">
-          Details <ArrowRight className="w-4 h-4" />
+        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest mt-3 md:mt-4">
+          Details <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
         </div>
       </div>
     </Link>

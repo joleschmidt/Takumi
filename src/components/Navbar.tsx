@@ -49,7 +49,7 @@ const tools = [
 export function Navbar() {
   return (
     <header className="fixed top-0 z-50 w-full border-b border-black/10 bg-[#F2F0EA]/90 backdrop-blur-md supports-[backdrop-filter]:bg-[#F2F0EA]/60">
-      <div className="container mx-auto flex h-20 items-center px-4 md:px-8">
+      <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-8">
 
         {/* Logo */}
         <Link
@@ -149,51 +149,6 @@ export function Navbar() {
           </NavigationMenu>
         </div>
 
-        {/* Mobile Menu */}
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="ghost" className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden">
-              <Menu className="h-8 w-8" />
-              <span className="sr-only">Menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="pr-0 w-full border-r-0 bg-[#FAFAF8]">
-            <Link href="/" className="flex items-center mb-12">
-              <span className="font-oswald font-bold text-4xl uppercase tracking-tighter">Takumi <span className="text-[#BC002D]">匠</span></span>
-            </Link>
-            <div className="pr-6">
-              <div className="flex flex-col space-y-6">
-                <div className="space-y-4 pb-6 border-b border-black">
-                  <p className="text-xs font-bold uppercase tracking-widest text-gray-500">Kollektion</p>
-                  {tools.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className="block text-2xl font-oswald font-bold uppercase hover:text-[#6B7F59] transition-colors"
-                    >
-                      {item.title}
-                    </Link>
-                  ))}
-                  <Link href="/werkzeuge" className="block text-sm font-bold uppercase tracking-widest pt-2">Alle Ansehen →</Link>
-                </div>
-
-                <Link href="/handwerker" className="text-3xl font-oswald font-bold uppercase hover:text-[#6B7F59]">
-                  Marken
-                </Link>
-                <Link href="/ratgeber" className="text-3xl font-oswald font-bold uppercase hover:text-[#6B7F59]">
-                  Magazin
-                </Link>
-                <Link href="/artikel" className="text-3xl font-oswald font-bold uppercase hover:text-[#6B7F59]">
-                  Artikel
-                </Link>
-                <Link href="/ueber-uns" className="text-3xl font-oswald font-bold uppercase hover:text-[#6B7F59]">
-                  Über Uns
-                </Link>
-              </div>
-            </div>
-          </SheetContent>
-        </Sheet>
-
         <div className="flex items-center space-x-4 md:space-x-6">
           <div className="hidden md:block relative w-full max-w-xs">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -204,6 +159,51 @@ export function Navbar() {
             />
           </div>
           <ShoppingBag className="h-6 w-6 cursor-pointer hover:opacity-60 transition-opacity text-black" />
+          
+          {/* Mobile Menu */}
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" className="ml-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden">
+                <Menu className="h-8 w-8" />
+                <span className="sr-only">Menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="pl-0 w-full border-l-0 bg-[#FAFAF8]">
+              <Link href="/" className="flex items-center mb-8 md:mb-12 px-4 md:px-6">
+                <span className="font-oswald font-bold text-3xl md:text-4xl uppercase tracking-tighter">Takumi <span className="text-[#BC002D]">匠</span></span>
+              </Link>
+              <div className="px-4 md:px-6">
+                <div className="flex flex-col space-y-4 md:space-y-6">
+                  <div className="space-y-3 md:space-y-4 pb-4 md:pb-6 border-b border-black">
+                    <p className="text-xs font-bold uppercase tracking-widest text-gray-500">Kollektion</p>
+                    {tools.map((item) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className="block text-xl md:text-2xl font-oswald font-bold uppercase hover:text-[#6B7F59] transition-colors py-1"
+                      >
+                        {item.title}
+                      </Link>
+                    ))}
+                    <Link href="/werkzeuge" className="block text-xs md:text-sm font-bold uppercase tracking-widest pt-2">Alle Ansehen →</Link>
+                  </div>
+
+                  <Link href="/handwerker" className="text-2xl md:text-3xl font-oswald font-bold uppercase hover:text-[#6B7F59] transition-colors py-1">
+                    Marken
+                  </Link>
+                  <Link href="/ratgeber" className="text-2xl md:text-3xl font-oswald font-bold uppercase hover:text-[#6B7F59] transition-colors py-1">
+                    Magazin
+                  </Link>
+                  <Link href="/artikel" className="text-2xl md:text-3xl font-oswald font-bold uppercase hover:text-[#6B7F59] transition-colors py-1">
+                    Artikel
+                  </Link>
+                  <Link href="/ueber-uns" className="text-2xl md:text-3xl font-oswald font-bold uppercase hover:text-[#6B7F59] transition-colors py-1">
+                    Über Uns
+                  </Link>
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
 
       </div>

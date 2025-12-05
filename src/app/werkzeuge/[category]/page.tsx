@@ -1,5 +1,6 @@
 import { ProductCard } from "@/components/ProductCard"
 import { notFound } from "next/navigation"
+import { cache } from "react"
 import { supabase } from "@/lib/supabase"
 
 // Helper to format category title
@@ -19,7 +20,38 @@ const hasUmlauts = (text: string) => {
   return /[ÄÖÜäöü]/.test(text)
 }
 
-export const dynamic = 'force-dynamic'
+// Cache category products fetch with 30min revalidation
+const getCategoryProducts = cache(async (category: string) => {
+  const { data, error } = await supabase
+    .from("products")
+    .select("id, title, original_name, description, category, subcategory, subtype, slug, price_range, is_new, image_url")
+    .eq("category", category)
+    .order("created_at", { ascending: false })
+  
+  if (error) {
+    return null
+  }
+  
+  return data || []
+})
+
+// Cache category description fetch
+const getCategoryDescription = cache(async (category: string) => {
+  const { data, error } = await supabase
+    .from('category_descriptions')
+    .select('description')
+    .eq('category', category)
+    .is('subcategory', null)
+    .maybeSingle()
+  
+  if (error) {
+    return null
+  }
+  
+  return data?.description || null
+})
+
+export const revalidate = 1800 // 30 minutes ISR
 
 type CategoryPageProps = {
   params: Promise<{ category: string }>
@@ -28,20 +60,18 @@ type CategoryPageProps = {
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { category } = await params
 
-  // Fetch products from database
-  const { data, error } = await supabase
-    .from("products")
-    .select("*")
-    .eq("category", category)
-    .order("created_at", { ascending: false })
+  // Fetch products and description in parallel with optimized column selection
+  const [productsData, descData] = await Promise.all([
+    getCategoryProducts(category),
+    getCategoryDescription(category)
+  ])
 
-  if (error) {
-    console.error("Error fetching products:", error)
+  if (productsData === null) {
     return notFound()
   }
 
   // Transform data to match frontend interface
-  const categoryProducts = (data || []).map((p: any) => ({
+  const categoryProducts = productsData.map((p: any) => ({
     id: p.id,
     title: p.title,
     originalName: p.original_name,
@@ -74,23 +104,15 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const title = formatCategoryTitle(category)
   const hasUmlautsInTitle = hasUmlauts(title)
 
-  // Fetch description for this main category
-  const { data: descData, error: descError } = await supabase
-    .from('category_descriptions')
-    .select('description')
-    .eq('category', category)
-    .is('subcategory', null)
-    .maybeSingle()
-
-  const customDescription = descData?.description || null
+  const customDescription = descData
 
   return (
     <div className="min-h-screen bg-[#FAFAF8] text-[#1a1a1a]">
       
       {/* Hero with Breadcrumbs + Category Title */}
-      <section className="sticky top-0 z-10 pt-32 pb-16 px-4 md:px-8 lg:px-12 bg-[#FAFAF8] min-h-[50vh] flex flex-col justify-center">
+      <section className="sticky top-0 z-10 pt-32 pb-12 md:pb-16 px-4 md:px-8 lg:px-12 bg-[#FAFAF8] min-h-[50vh] flex flex-col justify-center">
         <div className="max-w-[1800px] mx-auto w-full">
-          <div className={`flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-500 ${hasUmlautsInTitle ? 'mb-12' : 'mb-8'}`}>
+          <div className={`flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-500 ${hasUmlautsInTitle ? 'mb-8 md:mb-12' : 'mb-6 md:mb-8'}`}>
             <a href="/" className="hover:text-black transition-colors">Startseite</a>
             <span>/</span>
             <a href="/werkzeuge" className="hover:text-black transition-colors">Kollektion</a>
@@ -98,13 +120,13 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             <span className="text-black">{title}</span>
           </div>
 
-          <h1 className="text-[12vw] leading-[0.9] font-oswald font-bold uppercase tracking-tighter mb-12">
+          <h1 className="text-[8vw] md:text-[10vw] lg:text-[12vw] leading-[0.9] font-oswald font-bold uppercase tracking-tighter mb-8 md:mb-12 max-w-full">
             {title}
           </h1>
-          <div className="h-[1px] w-full bg-black mb-8"></div>
+          <div className="h-[1px] w-full bg-black mb-6 md:mb-8"></div>
           {/* Description */}
           {customDescription && (
-            <div className="text-lg md:text-xl text-gray-700 leading-relaxed max-w-3xl">
+            <div className="text-base md:text-lg lg:text-xl text-gray-700 leading-relaxed max-w-3xl">
               <p>{customDescription}</p>
             </div>
           )}
@@ -112,7 +134,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       </section>
 
       {/* Main Content with Sidebar */}
-      <section className="relative z-10 bg-white px-4 md:px-8 lg:px-12 pb-24 min-h-[calc(100vh-5rem+10vh)] pt-12">
+      <section className="relative z-10 bg-white px-4 md:px-8 lg:px-12 pb-16 md:pb-24 min-h-[calc(100vh-5rem+10vh)] pt-8 md:pt-12">
         <div className="max-w-[1800px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
           
           {/* Sidebar – only subcategories of this main category */}
@@ -149,7 +171,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           <div className="md:col-span-3">
             {categoryProducts.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0">
-                {categoryProducts.map((product) => (
+                {categoryProducts.map((product, index) => (
                   <div
                     key={product.id}
                     className="group -ml-px -mt-px border border-black/10 hover:border-black transition-colors duration-200 [&>a]:border-none [&>a]:hover:border-none"
@@ -165,6 +187,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                       slug={product.slug}
                       imageUrl={product.imageUrl}
                       isNew={product.isNew}
+                      priority={index < 6}
                     />
                   </div>
                 ))}
