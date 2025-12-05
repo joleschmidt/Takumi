@@ -13,13 +13,13 @@ const hasUmlauts = (text: string) => {
   return /[ÄÖÜäöü]/.test(text)
 }
 
-export default async function ProductPage({
+export default async function ProductPage({ 
   params,
-}: {
-  params: Promise<{ category: string; product: string }>
+}: { 
+  params: Promise<{ category: string; product: string }> 
 }) {
   const { category, product: slug } = await params
-
+  
   // Fetch current product
   const { data, error } = await supabase
     .from("products")
@@ -114,9 +114,9 @@ export default async function ProductPage({
               {productData.isNew && (
                 <div className="absolute top-4 left-4 md:top-8 md:left-8 bg-black text-white px-4 py-2 font-bold uppercase tracking-widest text-sm z-20">
                   Neuheit
-                </div>
+      </div>
               )}
-            </div>
+             </div>
           </div>
 
           {/* Mobile Breadcrumb overlay */}
@@ -181,7 +181,7 @@ export default async function ProductPage({
               if (vendorPrices.length === 0) {
                 return productData.priceRange ? (
                   <p className="text-2xl md:text-3xl font-bold font-oswald">
-                    {productData.priceRange}
+              {productData.priceRange}
                   </p>
                 ) : null
               }
@@ -202,7 +202,7 @@ export default async function ProductPage({
               return (
                 <p className="text-xs md:text-sm font-bold uppercase tracking-widest text-[#6B7F59]">
                   {label}
-                </p>
+            </p>
               )
             })()}
           </div>
@@ -216,7 +216,7 @@ export default async function ProductPage({
                   maxLines={4}
                   className="text-lg md:text-xl text-gray-700 leading-relaxed"
                 />
-              </div>
+            </div>
             )}
 
           {productData.vendors && productData.vendors.length > 0 && (
@@ -242,13 +242,13 @@ export default async function ProductPage({
               )}
               <p className="text-xs text-gray-400 text-center uppercase tracking-wider">
                 * Wir erhalten eine Provision von Partnerlinks.
-              </p>
-            </div>
+            </p>
+          </div>
           )}
 
           <div className="grid gap-12">
             {productData.features && productData.features.length > 0 && (
-              <div>
+             <div>
                 <h3 className="font-oswald font-bold text-2xl md:text-3xl uppercase border-b-2 border-black pb-4 mb-6">
                   Eigenschaften
                 </h3>
@@ -259,10 +259,10 @@ export default async function ProductPage({
                       <span className="font-medium text-gray-700 text-base">
                         {feature}
                       </span>
-                    </li>
-                  ))}
+                      </li>
+                   ))}
                 </ul>
-              </div>
+             </div>
             )}
 
             {(productData.usage || productData.care || productData.history) && (
@@ -279,7 +279,7 @@ export default async function ProductPage({
                         maxLines={4}
                         className="text-sm md:text-base leading-relaxed text-gray-700"
                       />
-                    </div>
+                </div>
                   )}
                 {productData.care &&
                   typeof productData.care === "string" &&
@@ -293,7 +293,7 @@ export default async function ProductPage({
                         maxLines={4}
                         className="text-sm md:text-base leading-relaxed text-gray-700"
                       />
-                    </div>
+                </div>
                   )}
                 {productData.history &&
                   typeof productData.history === "string" &&
@@ -307,9 +307,9 @@ export default async function ProductPage({
                         maxLines={4}
                         className="text-sm md:text-base leading-relaxed text-gray-700"
                       />
-                    </div>
+             </div>
                   )}
-              </div>
+             </div>
             )}
           </div>
         </div>

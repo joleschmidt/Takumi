@@ -44,15 +44,15 @@ const ProjectSpotlight = () => {
   ];
 
   return (
-    <section className="min-h-[calc(100vh-5rem+10vh)] px-4 md:px-8 lg:px-12 bg-[#1A1A1A] text-[#FAFAF8] flex items-center relative">
+    <section className="min-h-[calc(100vh-5rem+10vh)] px-4 md:px-8 lg:px-12 bg-[#1A1A1A] text-[#FAFAF8] flex items-center">
       <div className="max-w-[1800px] mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         {/* Left: List */}
         <div className="space-y-12">
           <div className="space-y-2">
             <h2 className="text-sm font-bold uppercase tracking-widest text-gray-500">Kuratierte Highlights</h2>
             <h3 className="text-5xl md:text-7xl font-oswald font-bold uppercase tracking-tighter">Essenzielles</h3>
-        </div>
-        
+          </div>
+
           <div className="flex flex-col">
             {projects.map((project, index) => (
               <div
@@ -67,14 +67,13 @@ const ProjectSpotlight = () => {
                   </div>
                   <ArrowRight className={`transform transition-transform duration-300 ${activeImage === index ? 'rotate-0' : '-rotate-45'}`} />
                 </Link>
-            </div>
+              </div>
             ))}
           </div>
         </div>
-      </div>
 
-      {/* Right: Image Display - absolutely positioned to align with category cards */}
-      <div className="hidden lg:block absolute right-0 top-0 aspect-[4/5] w-[50vw] overflow-hidden">
+        {/* Right: Image Display */}
+        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-sm bg-stone-800">
           {projects.map((project, index) => (
             <motion.div
               key={index}
@@ -95,6 +94,7 @@ const ProjectSpotlight = () => {
               />
             </motion.div>
           ))}
+        </div>
       </div>
     </section>
   );
@@ -107,72 +107,78 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-[#F2F0EA] text-[#1a1a1a] overflow-hidden">
 
-      {/* Hero Section - Light Background with Sticky Effect */}
-      <div className="sticky top-0 z-0">
-        <section className="min-h-screen flex flex-col justify-center px-4 md:px-8 lg:px-12 pt-32 bg-[#F2F0EA]">
-          <div className="max-w-[1800px] mx-auto w-full z-10 pb-8">
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              variants={staggerContainer}
-              className="space-y-[-1vw] mb-12"
-            >
-              <div className="overflow-hidden">
-                <motion.h1
-                  initial={{ y: "100%" }}
-                  animate={{ y: 0 }}
-                  transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                  className="text-[12vw] leading-[0.9] font-oswald font-bold uppercase tracking-tighter text-black"
-                >
-                  Japanische
-                </motion.h1>
+      {/* Hero + Marquee Section - Combined 100vh minus navbar */}
+      <div className="sticky top-0 z-0 flex flex-col h-[calc(100vh-5rem+9vh)] overflow-hidden">
+        {/* Hero Section - Light Background */}
+        <section className="flex-1 flex flex-col justify-center px-4 md:px-8 lg:px-12 pt-32 bg-[#F2F0EA] min-h-0">
+          <div className="max-w-[1800px] mx-auto w-full">
+            <div className="flex flex-col justify-center gap-10">
+              {/* Title block */}
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={staggerContainer}
+                className="space-y-[-1vw]"
+              >
+                <div className="overflow-hidden">
+                  <motion.h1
+                    initial={{ y: "100%" }}
+                    animate={{ y: 0 }}
+                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                    className="text-[12vw] leading-[0.9] font-oswald font-bold uppercase tracking-tighter text-black"
+                  >
+                    Japanische
+                  </motion.h1>
                 </div>
-              <div className="overflow-hidden">
-                <motion.h1
-                  initial={{ y: "100%" }}
-                  animate={{ y: 0 }}
-                  transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-                  className="text-[12vw] leading-[0.9] font-oswald font-bold uppercase tracking-tighter text-black"
-                >
-                  Gartenwerkzeuge
-                </motion.h1>
+                <div className="overflow-hidden">
+                  <motion.h1
+                    initial={{ y: "100%" }}
+                    animate={{ y: 0 }}
+                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+                    className="text-[12vw] leading-[0.9] font-oswald font-bold uppercase tracking-tighter text-black"
+                  >
+                    Gartenwerkzeuge
+                  </motion.h1>
                 </div>
-              <div className="overflow-hidden">
-                <motion.h1
-                  initial={{ y: "100%" }}
-                  animate={{ y: 0 }}
-                  transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-                  className="text-[12vw] leading-[0.9] font-oswald font-bold uppercase tracking-tighter text-[#6B7F59]"
-                >
-                  mit Seele
-                </motion.h1>
-              </div>
-            </motion.div>
+                <div className="overflow-hidden">
+                  <motion.h1
+                    initial={{ y: "100%" }}
+                    animate={{ y: 0 }}
+                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+                    className="text-[12vw] leading-[0.9] font-oswald font-bold uppercase tracking-tighter text-[#6B7F59]"
+                  >
+                    mit Seele
+                  </motion.h1>
+                </div>
+              </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 1 }}
-              className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 border-t border-black/10 pt-8"
-            >
-              <p className="max-w-md text-lg md:text-xl font-medium leading-tight">
-                Handgefertigt von Meistern in Japan. <br />
-                Kuratiert für jene, die die Natur mit Respekt formen.
-              </p>
-              <div className="flex gap-4">
-                <Link href="/werkzeuge" className="group flex items-center gap-2 text-lg font-bold uppercase tracking-wider hover:opacity-60 transition-opacity">
-                  Kollektion Entdecken
-                  <ArrowRight className="group-hover:translate-x-1 transition-transform" />
-                </Link>
+              {/* Divider + text/button block */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8, duration: 1 }}
+                className="w-full flex flex-col md:flex-row justify-between items-center gap-4 border-t border-black/10 pt-4 mb-12"
+              >
+                <p className="max-w-md text-lg md:text-xl font-medium leading-tight">
+                  Handgefertigt von Meistern in Japan. <br />
+                  Kuratiert für jene, die die Natur mit Respekt formen.
+                </p>
+                <div className="flex gap-4">
+                  <Link
+                    href="/werkzeuge"
+                    className="group flex items-center gap-2 text-lg font-bold uppercase tracking-wider hover:opacity-60 transition-opacity"
+                  >
+                    Kollektion Entdecken
+                    <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </div>
+              </motion.div>
             </div>
-            </motion.div>
-        </div>
-      </section>
-            </div>
+          </div>
+        </section>
 
-      {/* Marquee Section - Dark Background - Z-Index 10 to cover Sticky Hero */}
-      <div className="relative z-10">
-        <section className="bg-[#1A1A1A] text-[#FAFAF8] overflow-hidden whitespace-nowrap py-8">
+        {/* Marquee Section - Dark Background */}
+        <section className="flex-shrink-0 bg-[#1A1A1A] text-[#FAFAF8] overflow-hidden whitespace-nowrap py-8">
           <motion.div
             style={{ x: xTranslation }}
             className="flex items-center gap-12 text-4xl md:text-6xl font-oswald font-bold uppercase tracking-widest w-fit"
@@ -185,10 +191,14 @@ export default function Home() {
                 <span className="text-[#6B7F59] flex items-center justify-center leading-none" style={{ transform: 'translateY(-0.25em)' }}>●</span>
                 <span className="leading-none">Seele (Kokoro)</span>
                 <span className="text-[#6B7F59] flex items-center justify-center leading-none" style={{ transform: 'translateY(-0.25em)' }}>●</span>
-          </div>
+              </div>
             ))}
           </motion.div>
         </section>
+      </div>
+
+      {/* Content continues below */}
+      <div className="relative z-10">
 
         {/* Categories Grid - Light/Image Background */}
         <section className="bg-white min-h-[calc(100vh-5rem+10vh)]">
@@ -197,10 +207,10 @@ export default function Home() {
               <Link key={index} href={category.href} className="group relative min-h-[50vh] md:min-h-screen flex flex-col justify-between overflow-hidden bg-stone-100">
                 {/* Persistent Background Image with Overlay */}
                 <div className="absolute inset-0 z-0">
-                     <Image 
-                       src={category.image} 
-                       alt={category.title}
-                       fill
+                  <Image
+                    src={category.image}
+                    alt={category.title}
+                    fill
                     className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000 ease-out"
                   />
                   <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors duration-700" />
@@ -278,11 +288,11 @@ export default function Home() {
                 <h3 className="text-2xl font-bold uppercase tracking-wider">Langlebigkeit</h3>
                 <p className="text-gray-400 leading-relaxed">Werkzeuge, die weitergegeben werden. Austauschbare Teile, schärfbare Klingen.</p>
               </div>
-             </div>
+            </div>
             <Button asChild size="lg" className="bg-white text-black hover:bg-gray-200 rounded-none text-lg px-12 py-8 uppercase tracking-wider font-bold">
               <Link href="/ueber-uns">Unsere Geschichte</Link>
-                </Button>
-             </div>
+            </Button>
+          </div>
 
           <div className="relative w-full h-[calc(100vh-5rem+10vh)] overflow-hidden">
             <Image
