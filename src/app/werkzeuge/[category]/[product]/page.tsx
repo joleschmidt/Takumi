@@ -104,10 +104,6 @@ export default async function ProductPage({
       slug: p.slug,
       priceRange: p.price_range,
       isNew: p.is_new,
-      features: p.features || [],
-      history: p.history,
-      usage: p.usage,
-      care: p.care,
       imageUrl: p.image_url,
     })) ?? []
 
